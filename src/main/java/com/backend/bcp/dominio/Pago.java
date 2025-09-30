@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Pago {
-private final Long id;
+    private final Long id;
     private Prestamo prestamo;
     private BigDecimal monto;
     private LocalDate fecha;

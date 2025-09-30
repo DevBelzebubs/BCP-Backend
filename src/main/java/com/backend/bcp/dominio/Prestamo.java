@@ -113,7 +113,6 @@ public class Prestamo {
         BigDecimal tasaMensual = BigDecimal.valueOf(interes / 100.0 / 12.0);
 
         if (tasaMensual.compareTo(BigDecimal.ZERO) == 0) {
-            // Sin interés: solo dividir el capital entre los meses (2 decimales, redondeo HALF_UP)
             return monto.divide(BigDecimal.valueOf(plazoMeses), 2, RoundingMode.HALF_UP);
         }
         double i = tasaMensual.doubleValue();
