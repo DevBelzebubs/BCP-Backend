@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.ports.RealizacionPagos.in;
+package com.backend.bcp.aplicacion.ports.UseCases.RealizacionPagos.in;
 
 import java.math.BigDecimal;
 import java.util.List;

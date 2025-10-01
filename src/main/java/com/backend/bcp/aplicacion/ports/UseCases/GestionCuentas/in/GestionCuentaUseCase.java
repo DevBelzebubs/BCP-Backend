@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.ports.GestionCuentas.in;
+package com.backend.bcp.aplicacion.ports.UseCases.GestionCuentas.in;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.ports.RealizacionPagos.out;
+package com.backend.bcp.aplicacion.ports.UseCases.RealizacionPagos.out;
 
 import java.util.List;
 

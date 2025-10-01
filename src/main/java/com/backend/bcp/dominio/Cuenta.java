@@ -7,8 +7,10 @@ public class Cuenta {
     private final Long id;
     private Usuario usuario;
     private String tipo;
+    private String estadoCuenta;
+    private String numeroCuenta;
     private BigDecimal saldo;
-    public Cuenta(Long id, Usuario usuario, String tipo, BigDecimal saldo) {
+    public Cuenta(Long id, Usuario usuario, String tipo, String estadoCuenta, String numeroCuenta, BigDecimal saldo) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id de la cuenta debe ser positivo y no nulo");
         }
@@ -21,10 +23,36 @@ public class Cuenta {
         if (saldo == null || saldo.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("El saldo inicial no puede ser nulo ni negativo");
         }
+        if (estadoCuenta == null || estadoCuenta.isBlank()) {
+            throw new IllegalArgumentException("El estado de la cuenta no puede ser vacío");
+        }
+        if (numeroCuenta == null || numeroCuenta.isBlank()) {
+            throw new IllegalArgumentException("El número de cuenta no puede ser vacío");
+        }
         this.id = id;
         this.usuario = usuario;
         this.tipo = tipo;
+        this.estadoCuenta = estadoCuenta;
+        this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
+    }
+    public String getEstadoCuenta() {
+        return estadoCuenta;
+    }
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+    public void setNumeroCuenta(String numeroCuenta) {
+        if (numeroCuenta == null || numeroCuenta.isBlank()) {
+            throw new IllegalArgumentException("El número de cuenta no puede ser vacío");
+        }
+        this.numeroCuenta = numeroCuenta;
+    }
+    public void setEstadoCuenta(String estadoCuenta) {
+        if (estadoCuenta == null || estadoCuenta.isBlank()) {
+            throw new IllegalArgumentException("El estado de la cuenta no puede ser vacío");
+        }
+        this.estadoCuenta = estadoCuenta;
     }
     public Long getId() {
         return id;
