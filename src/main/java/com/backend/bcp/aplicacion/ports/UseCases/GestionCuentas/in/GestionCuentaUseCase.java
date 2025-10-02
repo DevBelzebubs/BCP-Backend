@@ -2,8 +2,8 @@ package com.backend.bcp.aplicacion.ports.UseCases.GestionCuentas.in;
 
 import java.util.List;
 
-import com.backend.bcp.aplicacion.dtos.GestionCuentas.CuentaDTO;
-import com.backend.bcp.aplicacion.dtos.GestionCuentas.DetalleCuentaDTO;
+import com.backend.bcp.aplicacion.ports.UseCases.GestionCuentas.dto.CuentaDTO;
+import com.backend.bcp.aplicacion.ports.UseCases.GestionCuentas.dto.DetalleCuentaDTO;
 
 public interface GestionCuentaUseCase {
     List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId);

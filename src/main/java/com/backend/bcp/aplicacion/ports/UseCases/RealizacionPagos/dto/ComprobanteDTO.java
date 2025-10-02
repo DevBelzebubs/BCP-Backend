@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.dtos.RealizacionPagos;
+package com.backend.bcp.aplicacion.ports.UseCases.RealizacionPagos.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

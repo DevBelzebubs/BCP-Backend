@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.dtos.GestionCuentas;
+package com.backend.bcp.aplicacion.ports.UseCases.GestionCuentas.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
