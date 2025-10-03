@@ -1,4 +1,4 @@
-package com.backend.bcp.aplicacion.ports.seguridad;
+package com.backend.bcp.shared.Aplication.Security;
 
 public interface TokenService {
     String generarToken(String usuarioId);
