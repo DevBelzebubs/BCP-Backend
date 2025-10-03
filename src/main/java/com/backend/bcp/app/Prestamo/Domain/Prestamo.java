@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.backend.bcp.app.Usuario.Domain.Usuario;
+import com.backend.bcp.shared.Domain.Usuario;
 
 import java.math.RoundingMode;
 

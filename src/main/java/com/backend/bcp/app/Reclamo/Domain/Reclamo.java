@@ -2,12 +2,13 @@ package com.backend.bcp.app.Reclamo.Domain;
 
 import java.time.LocalDate;
 
-import com.backend.bcp.app.Usuario.Domain.Usuario;
+import com.backend.bcp.app.Usuario.Domain.Empleado;
+import com.backend.bcp.shared.Domain.Usuario;
 
 public class Reclamo {
     private final Long id;
     private Usuario cliente;
-    private Usuario empleado;
+    private Empleado empleado;
     private final LocalDate fechaCreacion;
     private String descripcion;
     private EstadoReclamo estado;
@@ -17,7 +18,7 @@ public class Reclamo {
         EN_REVISION,
         ATENDIDO
     }
-    public Reclamo(Long id, Usuario cliente, Usuario empleado, LocalDate fechaCreacion, String descripcion,
+    public Reclamo(Long id, Usuario cliente, Empleado empleado, LocalDate fechaCreacion, String descripcion,
             EstadoReclamo estado, String respuesta) {
                 if (id == null || id <= 0) {
             throw new IllegalArgumentException("El ID del reclamo debe ser positivo");
@@ -51,7 +52,7 @@ public class Reclamo {
     public Usuario getEmpleado() {
         return empleado;
     }
-    public void setEmpleado(Usuario empleado) {
+    public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
     public LocalDate getFechaCreacion() {
@@ -75,7 +76,7 @@ public class Reclamo {
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
-    public void asignarEmpleado(Usuario empleado) {
+    public void asignarEmpleado(Empleado empleado) {
         if (empleado == null) {
             throw new IllegalArgumentException("Debe asignarse un empleado válido");
         }

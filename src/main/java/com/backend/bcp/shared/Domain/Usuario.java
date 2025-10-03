@@ -1,6 +1,6 @@
-package com.backend.bcp.app.Usuario.Domain;
+package com.backend.bcp.shared.Domain;
 
-public class Usuario {
+public abstract class Usuario {
     private final Long id;
     private String nombre;
     private String contrasena;

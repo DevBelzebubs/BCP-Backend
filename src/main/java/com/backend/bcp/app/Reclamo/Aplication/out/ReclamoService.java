@@ -1,5 +1,11 @@
 package com.backend.bcp.app.Reclamo.Aplication.out;
 
+import java.util.List;
+
+import com.backend.bcp.app.Reclamo.Domain.Reclamo;
+
 public interface ReclamoService {
-    void guardarReclamo();
+    Reclamo findById(Long id);
+    void guardarReclamo(Reclamo reclamo);
+    List<Reclamo> findAll();
 }

@@ -3,21 +3,21 @@ package com.backend.bcp.app.Cuenta.Domain;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import com.backend.bcp.app.Usuario.Domain.Usuario;
+import com.backend.bcp.app.Usuario.Domain.Cliente;
 
 public class Cuenta {
     private final Long id;
-    private Usuario usuario;
+    private Cliente cliente;
     private String tipo;
     private String estadoCuenta;
     private String numeroCuenta;
     private BigDecimal saldo;
-    public Cuenta(Long id, Usuario usuario, String tipo, String estadoCuenta, String numeroCuenta, BigDecimal saldo) {
+    public Cuenta(Long id, Cliente cliente, String tipo, String estadoCuenta, String numeroCuenta, BigDecimal saldo) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id de la cuenta debe ser positivo y no nulo");
         }
-        if (usuario == null) {
-            throw new IllegalArgumentException("La cuenta debe estar asociada a un usuario válido");
+        if (cliente == null) {
+            throw new IllegalArgumentException("La cuenta debe estar asociada a un cliente válido");
         }
         if (tipo == null || tipo.isBlank()) {
             throw new IllegalArgumentException("El tipo de cuenta no puede ser vacío");
@@ -32,7 +32,7 @@ public class Cuenta {
             throw new IllegalArgumentException("El número de cuenta no puede ser vacío");
         }
         this.id = id;
-        this.usuario = usuario;
+        this.cliente = cliente;
         this.tipo = tipo;
         this.estadoCuenta = estadoCuenta;
         this.numeroCuenta = numeroCuenta;
@@ -59,14 +59,14 @@ public class Cuenta {
     public Long getId() {
         return id;
     }
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
-    public void setUsuario(Usuario usuario) {
-        if (usuario == null) {
-            throw new IllegalArgumentException("El usuario no puede ser nulo");
+    public void setCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("El cliente no puede ser nulo");
         }
-        this.usuario = usuario;
+        this.cliente = cliente;
     }
     public String getTipo() {
         return tipo;

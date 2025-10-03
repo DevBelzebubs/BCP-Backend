@@ -4,22 +4,22 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.backend.bcp.app.Usuario.Domain.Usuario;
+import com.backend.bcp.app.Usuario.Domain.Cliente;
 
 public class Tarjeta {
     private final Long id;
-    private Usuario usuario;
+    private Cliente cliente;
     private String numero;
     private LocalDate fechaVencimiento;
     private BigDecimal limiteCredito;
 
-    public Tarjeta(Long id, Usuario usuario, String numero,
+    public Tarjeta(Long id, Cliente cliente, String numero,
                    LocalDate fechaVencimiento, BigDecimal limiteCredito) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id de la tarjeta debe ser positivo y no nulo");
         }
-        if (usuario == null) {
-            throw new IllegalArgumentException("La tarjeta debe estar asociada a un usuario válido");
+        if (cliente == null) {
+            throw new IllegalArgumentException("La tarjeta debe estar asociada a un cliente válido");
         }
         if (numero == null || numero.isBlank()) {
             throw new IllegalArgumentException("El número de tarjeta no puede ser nulo o vacío");
@@ -37,7 +37,7 @@ public class Tarjeta {
             throw new IllegalArgumentException("El límite de crédito debe ser mayor que cero");
         }
         this.id = id;
-        this.usuario = usuario;
+        this.cliente = cliente;
         this.numero = numero;
         this.fechaVencimiento = fechaVencimiento;
         this.limiteCredito = limiteCredito;
@@ -47,15 +47,15 @@ public class Tarjeta {
         return id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setUsuario(Usuario usuario) {
-        if (usuario == null) {
-            throw new IllegalArgumentException("El usuario no puede ser nulo");
+    public void setCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("El cliente no puede ser nulo");
         }
-        this.usuario = usuario;
+        this.cliente = cliente;
     }
 
     public String getNumero() {
