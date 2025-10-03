@@ -3,7 +3,7 @@ package com.backend.bcp.aplicacion.ports.UseCases.TransferirFondos.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.backend.bcp.dominio.Cuenta;
+import com.backend.bcp.Cuenta.Domain.Cuenta;
 
 public interface CuentaRepository {
     List<Cuenta> obtenerCuentasPorUsuario(Long usuarioId);
