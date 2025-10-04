@@ -8,6 +8,14 @@ public abstract class Usuario {
     private String dni;
     private String direccion;
     private String telefono;
+    public Usuario() {
+        this.id = null;
+    }
+    public Usuario(String nombre, String contrasena) {
+        this.id = null;
+        this.nombre = nombre;
+        this.contrasena = contrasena;
+    }
     public Usuario(Long id, String nombre, String contrasena, String correo,
                    String dni, String direccion, String telefono) {
         this.id = id;

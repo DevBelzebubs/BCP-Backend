@@ -7,30 +7,39 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.backend.bcp.shared.Aplication.Security.in.TokenService;
+import com.backend.bcp.shared.Infraestructure.Security.JwtFilter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final TokenService tokenService;
+    public SecurityConfig(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
+        httpSecurity.csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .permitAll()
-            );
+            .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
+            .cors(cors -> cors.configurationSource(corsConfiguration()));
         return httpSecurity.build();
     }
 
@@ -46,4 +55,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**",config);
         return source;
     }
+
 }
