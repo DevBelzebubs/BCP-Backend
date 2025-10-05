@@ -1,10 +1,10 @@
 package com.backend.bcp.shared.Infraestructure.adapters.in;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.backend.bcp.shared.Aplication.Security.in.AuthService;
-import com.backend.bcp.shared.Infraestructure.dto.LoginDTO;
+import com.backend.bcp.shared.Aplication.Security.dto.in.LoginDTO;
+import com.backend.bcp.shared.Aplication.Security.dto.out.LoginResponseDTO;
+import com.backend.bcp.shared.Aplication.Security.ports.in.AuthService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 public class AuthController {
     private AuthService authService;
     @PostMapping("/login")
-    public LoginDTO login(@RequestBody LoginDTO loginDTO) {
-        return authService.login(loginDTO.getUsername(), loginDTO.getPassword());
+    public LoginResponseDTO login(@RequestBody LoginDTO loginDTO) {
+        return authService.login(loginDTO.username(), loginDTO.password());
     }
 }

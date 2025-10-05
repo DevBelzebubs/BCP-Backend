@@ -5,7 +5,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.shared.Aplication.Security.in.TokenService;
+import com.backend.bcp.shared.Aplication.Security.ports.out.TokenService;
 import com.backend.bcp.shared.Domain.Usuario;
 
 import io.jsonwebtoken.Claims;

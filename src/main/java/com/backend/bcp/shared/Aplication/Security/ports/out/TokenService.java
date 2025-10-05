@@ -1,4 +1,4 @@
-package com.backend.bcp.shared.Aplication.Security.in;
+package com.backend.bcp.shared.Aplication.Security.ports.out;
 
 import com.backend.bcp.shared.Domain.Usuario;
 
@@ -9,5 +9,4 @@ public interface TokenService {
     boolean validToken(String token, Usuario user);
     String getUser(String token);
     Claims getClaims(String token);
-
 }

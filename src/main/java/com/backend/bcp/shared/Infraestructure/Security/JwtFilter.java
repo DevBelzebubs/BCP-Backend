@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.backend.bcp.shared.Aplication.Security.in.TokenService;
+import com.backend.bcp.shared.Aplication.Security.ports.out.TokenService;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
