@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 @RequestMapping("/auth")
 
 public class AuthController {
-    @Autowired
     private AuthService authService;
     @PostMapping("/login")
     public LoginDTO login(@RequestBody LoginDTO loginDTO) {

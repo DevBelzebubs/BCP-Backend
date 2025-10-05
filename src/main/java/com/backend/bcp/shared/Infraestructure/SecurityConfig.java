@@ -18,12 +18,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.backend.bcp.shared.Aplication.Security.in.TokenService;
 import com.backend.bcp.shared.Infraestructure.Security.JwtFilter;
+import com.backend.bcp.shared.Infraestructure.Security.JwtService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final TokenService tokenService;
-    public SecurityConfig(TokenService tokenService) {
+    private final JwtService tokenService;
+    public SecurityConfig(JwtService tokenService) {
         this.tokenService = tokenService;
     }
     @Bean

@@ -3,6 +3,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.stereotype.Service;
+
 import com.backend.bcp.shared.Aplication.Security.in.TokenService;
 import com.backend.bcp.shared.Domain.Usuario;
 
@@ -10,6 +12,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Service
 public class JwtService implements TokenService {
     final SecretKey secret = JwtConfig.SECRET_KEY;
     @Override
