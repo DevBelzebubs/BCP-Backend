@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Infraestructure.entity;
+package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,5 +14,5 @@ public class BackOfficeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Backoffice")
     private Long idBackoffice;
-    
+
 }

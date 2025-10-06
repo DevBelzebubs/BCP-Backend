@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Infraestructure.entity;
+package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,10 +19,8 @@ public class AsesorEntity {
     private Long id;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_Empleado", referencedColumnName="idEmpleado")
-    @Column(name = "ID_Empleado")
     private Long idEmpleado;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_Prestamos", referencedColumnName = "idPrestamo")
-    @Column(name = "ID_Prestamo")
     private Long idPrestamo;
 }

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Infraestructure.entity;
+package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
 
 import jakarta.persistence.CascadeType;

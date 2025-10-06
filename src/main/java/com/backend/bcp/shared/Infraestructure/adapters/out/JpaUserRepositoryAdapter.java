@@ -2,8 +2,8 @@ package com.backend.bcp.shared.Infraestructure.adapters.out;
 
 import java.util.Optional;
 
-import com.backend.bcp.app.Usuario.Infraestructure.entity.ClienteEntity;
-import com.backend.bcp.app.Usuario.Infraestructure.entity.EmpleadoEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
 import com.backend.bcp.shared.Aplication.Security.ports.out.UserRepository;
 import com.backend.bcp.shared.Domain.Usuario;
 import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
