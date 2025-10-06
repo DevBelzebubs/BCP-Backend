@@ -1,4 +1,4 @@
-package com.backend.bcp.shared.Infraestructure.Security;
+package com.backend.bcp.shared.Infraestructure.adapters.out;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.bcp.shared.Aplication.Security.ports.out.TokenService;
 import com.backend.bcp.shared.Domain.Usuario;
+import com.backend.bcp.shared.Infraestructure.Security.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

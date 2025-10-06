@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.backend.bcp.shared.Infraestructure.Security.JwtFilter;
-import com.backend.bcp.shared.Infraestructure.Security.JwtService;
+import com.backend.bcp.shared.Infraestructure.adapters.out.JwtService;
 
 @Configuration
 @EnableWebSecurity

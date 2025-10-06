@@ -1,13 +1,12 @@
 package com.backend.bcp.shared.Infraestructure.repo;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-/* 
+
+import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
+
 @Repository
-public interface SpringDataUserRepository extends JpaRepository<User,Long> { //Need to change to JPA Entity  
-        Optional<User> findByUsername(String username);
- 
+public interface SpringDataUserRepository extends JpaRepository<UsuarioEntity,Long> {
+        Optional<UsuarioEntity> findByUsername(String username);
 }
-*/
