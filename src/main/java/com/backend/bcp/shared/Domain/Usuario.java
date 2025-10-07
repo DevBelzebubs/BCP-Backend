@@ -1,7 +1,7 @@
 package com.backend.bcp.shared.Domain;
 
-public abstract class Usuario {
-    private final Long id;
+public class Usuario {
+    private Long id;
     private String nombre;
     private String contrasena;
     private String correo;
@@ -26,6 +26,7 @@ public abstract class Usuario {
         this.direccion = direccion;
         this.telefono = telefono;
     }
+    
     public Long getId() {
         return id;
     }
@@ -64,6 +65,9 @@ public abstract class Usuario {
     }
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }

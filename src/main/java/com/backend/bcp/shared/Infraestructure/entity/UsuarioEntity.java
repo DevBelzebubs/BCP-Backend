@@ -1,6 +1,5 @@
 package com.backend.bcp.shared.Infraestructure.entity;
 
-import org.springframework.boot.context.properties.bind.Name;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +27,9 @@ public class UsuarioEntity {
     private String direccion;
     @Column(name = "Telefono")
     private String telefono;
+    
+    public UsuarioEntity() {
+    }
     public UsuarioEntity(Long id, String nombre, String contrasena, String correo, String dni, String direccion,
             String telefono) {
         this.id = id;

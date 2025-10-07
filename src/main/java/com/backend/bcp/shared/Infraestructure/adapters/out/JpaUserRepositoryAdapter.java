@@ -1,25 +1,30 @@
 package com.backend.bcp.shared.Infraestructure.adapters.out;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
-import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
+import org.springframework.stereotype.Component;
+
+import com.backend.bcp.shared.Aplication.Security.dto.out.UsuarioMapper;
 import com.backend.bcp.shared.Aplication.Security.ports.out.UserRepository;
 import com.backend.bcp.shared.Domain.Usuario;
-import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
 import com.backend.bcp.shared.Infraestructure.repo.SpringDataUserRepository;
-/*
+
+@Component
 public class JpaUserRepositoryAdapter implements UserRepository {
     private final SpringDataUserRepository repository;
-
-    @Override
-    public Optional<Usuario> findByUsername(String username) {
-        return repository.findByUsername(username).map(entity -> {
-            if (entity instanceof ClienteEntity clienteEntity) {
-                return new ClienteEntity(clienteEntity.getId(),clienteEntity.getNombre(),clienteEntity.getContrasena(),clienteEntity.getCorreo(),clienteEntity.getDni(),clienteEntity.getDireccion(),clienteEntity.getTelefono());
-            }else if(entity instanceof EmpleadoEntity empleadoEntity){
-                String rol =
-        }});
+    private final UsuarioMapper mapper;
+    public JpaUserRepositoryAdapter(SpringDataUserRepository repository) {
+        this.repository = repository;
+        this.mapper = new UsuarioMapper();
     }
+    @Override
+    public List<Usuario> findAllUsuarios() {
+        return repository.findAll().stream().map(mapper::toDomain).collect(Collectors.toList());
+    }
+    @Override
+    public Optional<Usuario> findByNombre(String nombre) {
+        return repository.findByNombre(nombre).map(mapper::toDomain);
+    }   
 }
-*/

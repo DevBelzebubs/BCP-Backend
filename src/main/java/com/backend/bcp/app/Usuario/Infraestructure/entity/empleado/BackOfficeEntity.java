@@ -15,4 +15,12 @@ public class BackOfficeEntity {
     @Column(name = "ID_Backoffice")
     private Long idBackoffice;
 
+    public Long getIdBackoffice() {
+        return idBackoffice;
+    }
+
+    public void setIdBackoffice(Long idBackoffice) {
+        this.idBackoffice = idBackoffice;
+    }
+    
 }

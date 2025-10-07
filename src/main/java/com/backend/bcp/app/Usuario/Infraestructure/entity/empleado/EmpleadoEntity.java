@@ -1,6 +1,10 @@
 package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
 
+import java.time.LocalDate;
+
+import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,38 +21,38 @@ public class EmpleadoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Empleado")
-    private Long id;
+    private Long idEmpleado;
     @Column(name = "Fecha_Contratacion")
-    private String fechaContratacion;
+    private LocalDate fechaContratacion;
     @Column(name = "Salario")
     private double salario;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Usuario_ID_Usuario", referencedColumnName = "idUsuario")
-    private Long idUsuario;
+    @JoinColumn(name = "ID_Usuario", referencedColumnName = "ID_Usuario")
+    private UsuarioEntity idUsuario;
     
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getFechaContratacion() {
-        return fechaContratacion;
-    }
-    public void setFechaContratacion(String fechaContratacion) {
-        this.fechaContratacion = fechaContratacion;
-    }
     public double getSalario() {
         return salario;
     }
     public void setSalario(double salario) {
         this.salario = salario;
     }
-    public Long getIdUsuario() {
+    public UsuarioEntity getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(Long idUsuario) {
+    public void setIdUsuario(UsuarioEntity idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
+    public Long getIdEmpleado() {
+        return idEmpleado;
+    }
+    public void setIdEmpleado(Long idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+    public LocalDate getFechaContratacion() {
+        return fechaContratacion;
+    }
+    public void setFechaContratacion(LocalDate fechaContratacion) {
+        this.fechaContratacion = fechaContratacion;
+    }
+
 }

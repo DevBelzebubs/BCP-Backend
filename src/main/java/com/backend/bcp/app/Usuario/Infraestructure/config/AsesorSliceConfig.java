@@ -13,7 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "com.bcp.app.Usuario.Infraestructure.repo.asesor")
 @EntityScan(basePackages = {
     "com.backend.bcp.app.Usuario.Infraestructure.entity.empleado",
-    "com.backend.bcp.app.Usuario.Infraestructure.entity.asesor"
+    "com.backend.bcp.app.Usuario.Infraestructure.entity.asesor",
+    "com.backend.bcp.app.Prestamo.Infraestructure.entity",
+    "com.backend.bcp.shared.Infraestructure.entity"
 })
 public class AsesorSliceConfig {
 }

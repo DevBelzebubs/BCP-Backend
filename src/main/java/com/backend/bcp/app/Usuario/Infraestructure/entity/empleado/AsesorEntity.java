@@ -1,5 +1,7 @@
 package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
+import com.backend.bcp.app.Prestamo.Infraestructure.entity.PrestamoEntity;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,11 +18,29 @@ public class AsesorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Asesor")
-    private Long id;
+    private Long idAsesor;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_Empleado", referencedColumnName="idEmpleado")
-    private Long idEmpleado;
+    @JoinColumn(name = "ID_Empleado", referencedColumnName="ID_Empleado")
+    private EmpleadoEntity idEmpleado;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_Prestamos", referencedColumnName = "idPrestamo")
-    private Long idPrestamo;
+    @JoinColumn(name = "ID_Prestamos", referencedColumnName = "ID_Prestamos")
+    private PrestamoEntity idPrestamo;
+    public EmpleadoEntity getIdEmpleado() {
+        return idEmpleado;
+    }
+    public void setIdEmpleado(EmpleadoEntity idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+    public PrestamoEntity getIdPrestamo() {
+        return idPrestamo;
+    }
+    public void setIdPrestamo(PrestamoEntity idPrestamo) {
+        this.idPrestamo = idPrestamo;
+    }
+    public Long getIdAsesor() {
+        return idAsesor;
+    }
+    public void setIdAsesor(Long idAsesor) {
+        this.idAsesor = idAsesor;
+    }
 }

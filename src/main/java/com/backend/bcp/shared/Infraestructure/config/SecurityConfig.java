@@ -1,4 +1,4 @@
-package com.backend.bcp.shared.Infraestructure;
+package com.backend.bcp.shared.Infraestructure.config;
 
 import java.util.Arrays;
 import java.util.List;

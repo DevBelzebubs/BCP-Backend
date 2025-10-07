@@ -13,5 +13,5 @@ public class PrestamoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Prestamos")
-    private Long id;
+    private Long idPrestamo;
 }

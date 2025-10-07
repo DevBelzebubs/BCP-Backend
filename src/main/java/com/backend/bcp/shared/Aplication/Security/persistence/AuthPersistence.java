@@ -14,9 +14,9 @@ public class AuthPersistence implements AuthService{
         this.tokenService = tokenService;
     }
     @Override
-    public LoginResponseDTO login(String username, String password) {
-        Usuario user = usuarioRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getContrasena().equals(password)) {
+    public LoginResponseDTO login(String nombre, String contrasena) {
+        Usuario user = usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("User not found"));
+        if (!user.getContrasena().equals(contrasena)) {
             throw new RuntimeException("Contraseña incorrecta");
         }
         String token = tokenService.generateToken(user);

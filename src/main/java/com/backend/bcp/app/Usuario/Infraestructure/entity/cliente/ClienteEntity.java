@@ -2,6 +2,8 @@ package com.backend.bcp.app.Usuario.Infraestructure.entity.cliente;
 
 import java.time.LocalDate;
 
+import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +22,7 @@ public class ClienteEntity {
     private LocalDate fechaRegistro;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Usuario_ID_Usuario", referencedColumnName = "ID_USUARIO")
-    private Long idUsuario;
+    private UsuarioEntity idUsuario;
     public Long getId() {
         return id;
     }
@@ -33,10 +35,10 @@ public class ClienteEntity {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    public Long getIdUsuario() {
+    public UsuarioEntity getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(Long idUsuario) {
+    public void setIdUsuario(UsuarioEntity idUsuario) {
         this.idUsuario = idUsuario;
     }
     
