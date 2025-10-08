@@ -3,13 +3,15 @@ package com.backend.bcp.shared.Aplication.Security.dto.in;
 public class LoginDTO {
     private String nombre;
     private String contrasena;
+    private String tipoUsuario;
     
     public LoginDTO() {
     }
     
-    public LoginDTO(String nombre, String contrasena) {
+    public LoginDTO(String nombre, String contrasena, String tipoUsuario) {
         this.nombre = nombre;
         this.contrasena = contrasena;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getNombre() {
@@ -26,5 +28,13 @@ public class LoginDTO {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 }

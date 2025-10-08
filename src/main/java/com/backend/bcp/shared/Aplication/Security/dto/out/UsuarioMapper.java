@@ -3,9 +3,11 @@ package com.backend.bcp.shared.Aplication.Security.dto.out;
 import org.springframework.stereotype.Component;
 
 import com.backend.bcp.app.Usuario.Domain.Asesor;
+import com.backend.bcp.app.Usuario.Domain.BackOffice;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
 import com.backend.bcp.shared.Domain.Usuario;
 import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
@@ -72,10 +74,34 @@ public class UsuarioMapper {
 
         AsesorEntity a = new AsesorEntity();
         a.setIdEmpleado(emp);
-
         return a;
     }
-    
+    public static BackOffice toDomain(BackOfficeEntity entity){
+        if(entity == null) return null;
+        EmpleadoEntity bOffice = entity.getIdEmpleado();
+        UsuarioEntity u = bOffice.getIdUsuario();
+        return new BackOffice(u.getId(), u.getNombre(), u.getContrasena(), u.getCorreo(), u.getDni(), u.getDireccion(), u.getTelefono(), bOffice.getSalario(), bOffice.getFechaContratacion());
+    }
+
+    public static BackOfficeEntity toEntity(BackOffice domain){
+        if (domain == null) return null;
+        UsuarioEntity u = new UsuarioEntity();
+        u.setId(domain.getId());
+        u.setNombre(domain.getNombre());
+        u.setContrasena(domain.getContrasena());
+        u.setCorreo(domain.getCorreo());
+        u.setDni(domain.getDni());
+        u.setDireccion(domain.getDireccion());
+        u.setTelefono(domain.getTelefono());
+
+        EmpleadoEntity emp = new EmpleadoEntity();
+        emp.setFechaContratacion(domain.getFechaContratacion());
+        emp.setSalario(domain.getPago());
+        emp.setIdUsuario(u);
+        BackOfficeEntity bOffice = new BackOfficeEntity();
+        bOffice.setIdEmpleado(emp);
+        return bOffice;
+    }
     private static UsuarioEntity baseToEntity(Usuario usuario) {
         if (usuario == null) return null;
         UsuarioEntity e = new UsuarioEntity();

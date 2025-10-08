@@ -1,5 +1,7 @@
 package com.backend.bcp.shared.Infraestructure.adapters.out;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
@@ -17,15 +19,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtService implements TokenService {
     final SecretKey secret = JwtConfig.SECRET_KEY;
     @Override
-    public String generateToken(Usuario user) {
+    public String generateToken(Usuario user,String tipoUsuario) {
         final long expiration = 3600000;
         return Jwts.builder()
             .subject(user.getNombre())
+            .claim("tipoUsuario", tipoUsuario)
             .expiration(new Date(System.currentTimeMillis() + expiration))
             .signWith(SignatureAlgorithm.HS512, secret)
             .compact();
     }
-
     @Override
     public boolean validToken(String token, Usuario user) {
         try{
