@@ -36,7 +36,6 @@ public class RegistroServiceImpl implements RegistroService {
         usuario.setDni(dto.getDni());
         usuario.setDireccion(dto.getDireccion());
         usuario.setTelefono(dto.getTelefono());
-        springDataUserRepository.save(usuario);
 
         ClienteEntity cliente = new ClienteEntity();
         cliente.setFechaRegistro(LocalDate.now());
@@ -55,7 +54,6 @@ public class RegistroServiceImpl implements RegistroService {
         usuario.setDireccion(dto.getDireccion());
         usuario.setTelefono(dto.getTelefono());
 
-        springDataUserRepository.save(usuario);
 
         EmpleadoEntity empleado = new EmpleadoEntity();
         empleado.setFechaContratacion(LocalDate.now());

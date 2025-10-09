@@ -27,15 +27,15 @@ public class AuthController {
         try {
             LoginResponseDTO response = authService.login(loginDTO.getNombre(), loginDTO.getContrasena());
             return ResponseEntity.ok(response);
-        } 
+        }
         catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("error", e.getMessage()));
-        } 
+        }
         catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", e.getMessage()));
-        } 
+        }
         catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
