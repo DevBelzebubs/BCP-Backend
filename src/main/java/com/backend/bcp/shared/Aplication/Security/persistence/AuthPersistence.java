@@ -3,15 +3,16 @@ package com.backend.bcp.shared.Aplication.Security.persistence;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
 import com.backend.bcp.shared.Aplication.Security.dto.out.LoginResponseDTO;
 import com.backend.bcp.shared.Aplication.Security.ports.in.AuthService;
 import com.backend.bcp.shared.Aplication.Security.ports.out.TokenService;
 import com.backend.bcp.shared.Aplication.Security.ports.out.UserRepository;
 import com.backend.bcp.shared.Domain.Usuario;
-import com.backend.bcp.shared.Infraestructure.repo.SpringADataBackofficeRepository;
-import com.backend.bcp.shared.Infraestructure.repo.SpringDataAsesorRepository;
-import com.backend.bcp.shared.Infraestructure.repo.SpringDataClientRepository;
-import com.backend.bcp.shared.Infraestructure.repo.SpringDataEmpleadoRepository;
 
 public class AuthPersistence implements AuthService{
     private final UserRepository usuarioRepository;
@@ -19,16 +20,18 @@ public class AuthPersistence implements AuthService{
     private final SpringDataEmpleadoRepository empleadoRepository;
     private final SpringDataAsesorRepository asesorRepository;
     private final SpringADataBackofficeRepository backOfficeRepository;
+    private final SpringDataAdminRepository adminRepository;
     private final TokenService tokenService;
 
     public AuthPersistence(UserRepository usuarioRepository, SpringDataClientRepository clienteRepository,
             SpringDataEmpleadoRepository empleadoRepository, SpringDataAsesorRepository asesorRepository,
-            SpringADataBackofficeRepository backOfficeRepository, TokenService tokenService) {
+            SpringADataBackofficeRepository backOfficeRepository,SpringDataAdminRepository adminRepository, TokenService tokenService) {
         this.usuarioRepository = usuarioRepository;
         this.clienteRepository = clienteRepository;
         this.empleadoRepository = empleadoRepository;
         this.asesorRepository = asesorRepository;
         this.backOfficeRepository = backOfficeRepository;
+        this.adminRepository = adminRepository;
         this.tokenService = tokenService;
     }
 
@@ -50,7 +53,10 @@ public class AuthPersistence implements AuthService{
                 tipoUsuario.set("ASESOR");
             } else if (backOfficeRepository.findByIdEmpleado_IdEmpleado(empleado.getIdEmpleado()).isPresent()) {
                 tipoUsuario.set("BACKOFFICE");
-            } else {
+            }else if (adminRepository.findByIdEmpleado_IdEmpleado(empleado.getIdEmpleado()).isPresent()){
+                tipoUsuario.set("ADMIN");
+            } 
+            else {
                 tipoUsuario.set("EMPLEADO");
             }
         }

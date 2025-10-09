@@ -1,4 +1,4 @@
-package com.backend.bcp.shared.Infraestructure.repo;
+package com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado;
 
 import java.util.Optional;
 

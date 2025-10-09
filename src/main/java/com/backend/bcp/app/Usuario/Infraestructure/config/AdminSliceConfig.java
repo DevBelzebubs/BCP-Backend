@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = {
-    "com.backend.bcp.app.Usuario.Aplicacion.cliente",
-    "com.backend.bcp.app.Usuario.Infraestructure.cliente"
+    "com.backend.bcp.app.Usuario.Aplicacion.admin",
+    "com.backend.bcp.app.Usuario.Infraestructure.admin"
 })
 @EntityScan(basePackages = {
-    "com.backend.bcp.app.Usuario.Infraestructure.entity.cliente", // Contiene ClienteEntity
-    "com.backend.bcp.shared.Infraestructure.entity" // Contiene UsuarioEntity
+    "com.backend.bcp.app.Usuario.Infraestructure.entity.empleado",
+    "com.backend.bcp.shared.Infraestructure.entity"
 })
-public class ClienteSliceConfig {
+public class AdminSliceConfig {
 
 }

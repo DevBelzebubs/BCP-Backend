@@ -2,10 +2,12 @@ package com.backend.bcp.shared.Aplication.Security.dto.out;
 
 import org.springframework.stereotype.Component;
 
+import com.backend.bcp.app.Usuario.Domain.Admin;
 import com.backend.bcp.app.Usuario.Domain.Asesor;
 import com.backend.bcp.app.Usuario.Domain.BackOffice;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AdminEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
@@ -101,6 +103,33 @@ public class UsuarioMapper {
         BackOfficeEntity bOffice = new BackOfficeEntity();
         bOffice.setIdEmpleado(emp);
         return bOffice;
+    }
+    public static Admin toDomain(AdminEntity entity){
+        if(entity == null) return null;
+        EmpleadoEntity adminEmp = entity.getIdEmpleado();
+        UsuarioEntity u = adminEmp.getIdUsuario();
+        return new Admin(u.getId(), u.getNombre(), u.getContrasena(), u.getCorreo(), u.getDni(), u.getDireccion(), u.getTelefono(), adminEmp.getSalario(), adminEmp.getFechaContratacion());
+    }
+
+    public static AdminEntity toEntity(Admin domain){
+        if (domain == null) return null;
+        UsuarioEntity u = new UsuarioEntity();
+        u.setId(domain.getId());
+        u.setNombre(domain.getNombre());
+        u.setContrasena(domain.getContrasena());
+        u.setCorreo(domain.getCorreo());
+        u.setDni(domain.getDni());
+        u.setDireccion(domain.getDireccion());
+        u.setTelefono(domain.getTelefono());
+
+        EmpleadoEntity emp = new EmpleadoEntity();
+        emp.setFechaContratacion(domain.getFechaContratacion());
+        emp.setSalario(domain.getPago());
+        emp.setIdUsuario(u);
+        
+        AdminEntity admin = new AdminEntity();
+        admin.setIdEmpleado(emp);
+        return admin;
     }
     private static UsuarioEntity baseToEntity(Usuario usuario) {
         if (usuario == null) return null;

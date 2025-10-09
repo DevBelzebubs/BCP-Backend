@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
 import com.backend.bcp.shared.Aplication.Security.dto.in.ClienteDTO;
 import com.backend.bcp.shared.Aplication.Security.dto.in.EmpleadoDTO;
 import com.backend.bcp.shared.Aplication.Security.ports.in.RegistroService;
 import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
-import com.backend.bcp.shared.Infraestructure.repo.SpringDataClientRepository;
-import com.backend.bcp.shared.Infraestructure.repo.SpringDataEmpleadoRepository;
 import com.backend.bcp.shared.Infraestructure.repo.SpringDataUserRepository;
 
 @Service
