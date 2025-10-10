@@ -45,7 +45,7 @@ public class UsuarioMapper {
     public static ClienteEntity toEntity(Cliente domain) {
         UsuarioEntity usuario = baseToEntity(domain);
         ClienteEntity e = new ClienteEntity();
-        e.setId(domain.getId());
+        e.setIdCliente(domain.getId());
         e.setFechaRegistro(domain.getFechaRegistro());
         e.setIdUsuario(usuario);
         return e;

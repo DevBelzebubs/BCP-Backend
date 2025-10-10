@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.backend.bcp.app.Comprobante.Aplication.dto.ComprobanteDTO;
-import com.backend.bcp.app.Cuenta.Aplication.dto.CuentaDTO;
-import com.backend.bcp.app.Cuenta.Aplication.dto.DetalleCuentaDTO;
+import com.backend.bcp.app.Cuenta.Aplication.dto.in.CuentaDTO;
+import com.backend.bcp.app.Cuenta.Aplication.dto.in.DetalleCuentaDTO;
 
 public interface GestionCuentaUseCase {
     List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId);
