@@ -8,6 +8,7 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBack
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
+import com.backend.bcp.shared.Aplication.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.shared.Aplication.Security.dto.out.LoginResponseDTO;
 import com.backend.bcp.shared.Aplication.Security.ports.in.AuthService;
 import com.backend.bcp.shared.Aplication.Security.ports.out.TokenService;
@@ -39,15 +40,15 @@ public class AuthPersistence implements AuthService{
 
     @Override
     public LoginResponseDTO login(String nombre, String contrasena) {
-        Usuario user = usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getContrasena().equals(contrasena)) {
+        UsuarioDTO userDto = usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("User not found"));
+        if (!userDto.contrasena().equals(contrasena)) {
             throw new RuntimeException("Contraseña incorrecta");
         }
         AtomicReference<String> tipoUsuario = new AtomicReference<>("DESCONOCIDO");
-        if (clienteRepository.findByIdUsuario_Id(user.getId()).isPresent()) {
+        if (clienteRepository.findByIdUsuario_Id(userDto.id()).isPresent()) {
             tipoUsuario.set("CLIENTE");
         } else {
-        empleadoRepository.findByIdUsuario_Id(user.getId()).ifPresent(empleado -> {
+        empleadoRepository.findByIdUsuario_Id(userDto.id()).ifPresent(empleado -> {
         if (empleado.getIdEmpleado() != null) {
             if (asesorRepository.findByIdEmpleado_IdEmpleado(empleado.getIdEmpleado()).isPresent()) {
                 tipoUsuario.set("ASESOR");
@@ -62,7 +63,16 @@ public class AuthPersistence implements AuthService{
         }
         });
         }
-        String token = tokenService.generateToken(user, tipoUsuario.get());
-        return new LoginResponseDTO(user.getNombre(),token,tipoUsuario.get());
+        Usuario domainUser = new Usuario(
+            userDto.id(), 
+            userDto.nombre(), 
+            userDto.contrasena(),
+            userDto.correo(), 
+            userDto.dni(), 
+            userDto.direccion(), 
+            userDto.telefono()
+        );
+        String token = tokenService.generateToken(domainUser, tipoUsuario.get());
+        return new LoginResponseDTO(userDto.nombre(),token,tipoUsuario.get());
     }
 }

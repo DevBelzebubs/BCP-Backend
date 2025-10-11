@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Cuenta.Aplication.dto.out.CuentaMapper;
+import com.backend.bcp.app.Cuenta.Aplication.dto.in.CuentaDTO;
+import com.backend.bcp.app.Cuenta.Aplication.dto.out.CuentaPersistenceMapper;
 import com.backend.bcp.app.Cuenta.Aplication.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
@@ -17,21 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class JpaCuentaRepositoryAdapter implements CuentaRepository {
     private final SpringDataCuentaRepository cuentaRepository;
-    private final CuentaMapper mapper;
-    public JpaCuentaRepositoryAdapter(SpringDataCuentaRepository cuentaRepository, CuentaMapper mapper) {
+    private final CuentaPersistenceMapper mapper;
+    public JpaCuentaRepositoryAdapter(SpringDataCuentaRepository cuentaRepository, CuentaPersistenceMapper mapper) {
         this.cuentaRepository = cuentaRepository;
         this.mapper = mapper;
     }
     @Override
     @Transactional(readOnly = true)
-    public List<Cuenta> obtenerCuentasPorUsuario(Long usuarioId) {
-        List<CuentaEntity> entities = cuentaRepository.findByClienteId_UsuarioId(usuarioId);
-        return entities.stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<CuentaDTO> obtenerCuentasPorUsuario(Long usuarioId) {
+        List<CuentaEntity> entities = cuentaRepository.findByCliente_IdUsuario_Id(usuarioId);
+        return entities.stream().map(mapper::toPersistenceDTO).collect(Collectors.toList());
     }
     @Override
     @Transactional(readOnly = true)
-    public Optional<Cuenta> obtenerPorId(Long cuentaId) {
-        return cuentaRepository.findById(cuentaId).map(mapper::toDomain);
+    public Optional<CuentaDTO> obtenerPorId(Long cuentaId) {
+        return cuentaRepository.findById(cuentaId).map(mapper::toPersistenceDTO);
     }
     @Override
     @Transactional(readOnly = true)
@@ -43,5 +44,4 @@ public class JpaCuentaRepositoryAdapter implements CuentaRepository {
         cuentaEntity.setSaldo(cuenta.getSaldo());
         cuentaRepository.save(cuentaEntity);
     }
-    
 }

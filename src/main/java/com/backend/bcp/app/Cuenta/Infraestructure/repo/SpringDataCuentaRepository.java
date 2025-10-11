@@ -10,5 +10,5 @@ import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 
 @Repository
 public interface SpringDataCuentaRepository extends JpaRepository<CuentaEntity,Long> {
-    List<CuentaEntity> findByClienteId_UsuarioId(Long idUsuario);
+    List<CuentaEntity> findByCliente_IdUsuario_Id(Long idUsuario);
 }

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.backend.bcp.shared.Aplication.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.shared.Aplication.Security.dto.out.UsuarioMapper;
 import com.backend.bcp.shared.Aplication.Security.ports.out.UserRepository;
 import com.backend.bcp.shared.Domain.Usuario;
@@ -20,11 +21,11 @@ public class JpaUserRepositoryAdapter implements UserRepository {
         this.mapper = new UsuarioMapper();
     }
     @Override
-    public List<Usuario> findAllUsuarios() {
-        return repository.findAll().stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<UsuarioDTO> findAllUsuarios() {
+        return repository.findAll().stream().map(mapper::toPersistenceDTO).collect(Collectors.toList());
     }
     @Override
-    public Optional<Usuario> findByNombre(String nombre) {
-        return repository.findByNombre(nombre).map(mapper::toDomain);
+    public Optional<UsuarioDTO> findByNombre(String nombre) {
+        return repository.findByNombre(nombre).map(mapper::toPersistenceDTO);
     }   
 }

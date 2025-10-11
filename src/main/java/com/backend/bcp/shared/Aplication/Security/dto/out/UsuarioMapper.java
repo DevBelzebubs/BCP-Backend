@@ -11,19 +11,25 @@ import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AdminEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
+import com.backend.bcp.shared.Aplication.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.shared.Domain.Usuario;
 import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
 
 @Component
 public class UsuarioMapper {
-    public Usuario toDomain(UsuarioEntity entity) {
-        Usuario usuario = new Usuario();
-        usuario.setId(entity.getId());
-        usuario.setNombre(entity.getNombre());
-        usuario.setCorreo(entity.getCorreo());
-        usuario.setContrasena(entity.getContrasena());
-        return usuario;
+    public UsuarioDTO toPersistenceDTO(UsuarioEntity entity) {
+        if (entity == null) return null;
+        return new UsuarioDTO(
+            entity.getId(), 
+            entity.getNombre(), 
+            entity.getContrasena(),
+            entity.getCorreo(), 
+            entity.getDni(), 
+            entity.getDireccion(), 
+            entity.getTelefono()
+        );
     }
+    
     public UsuarioEntity toEntity(Usuario domain) {
         UsuarioEntity entity = new UsuarioEntity();
         entity.setId(domain.getId());
