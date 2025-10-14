@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Cuenta.Aplication.dto.in.CuentaDTO;
+import com.backend.bcp.app.Cuenta.Aplication.dto.in.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Aplication.dto.out.CuentaPersistenceMapper;
 import com.backend.bcp.app.Cuenta.Aplication.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
@@ -25,13 +25,13 @@ public class JpaCuentaRepositoryAdapter implements CuentaRepository {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<CuentaDTO> obtenerCuentasPorUsuario(Long usuarioId) {
+    public List<CuentaPersistenceDTO> obtenerCuentasPorUsuario(Long usuarioId) {
         List<CuentaEntity> entities = cuentaRepository.findByCliente_IdUsuario_Id(usuarioId);
         return entities.stream().map(mapper::toPersistenceDTO).collect(Collectors.toList());
     }
     @Override
     @Transactional(readOnly = true)
-    public Optional<CuentaDTO> obtenerPorId(Long cuentaId) {
+    public Optional<CuentaPersistenceDTO> obtenerPorId(Long cuentaId) {
         return cuentaRepository.findById(cuentaId).map(mapper::toPersistenceDTO);
     }
     @Override

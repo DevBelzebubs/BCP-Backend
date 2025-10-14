@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.backend.bcp.app.Transaccion.Aplication.dto.in.MovimientoDTO;
+import com.backend.bcp.app.Transaccion.Aplication.dto.in.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Aplication.dto.out.TransaccionPersistenceMapper;
 import com.backend.bcp.app.Transaccion.Aplication.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
@@ -25,7 +25,7 @@ public class JpaTransaccionRepositoryAdapter implements TransaccionRepository {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<MovimientoDTO> buscarUltimosMovimientos(Long cuentaId) {
+    public List<MovimientoPersistenceDTO> buscarUltimosMovimientos(Long cuentaId) {
         List<TransaccionEntity> entities = transaccionRepository.findTop10ByCuenta_IdCuentaOrderByFechaDesc(cuentaId);
         return entities.stream()
             .map(mapper::toPersistenceDTO)

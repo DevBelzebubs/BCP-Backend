@@ -3,18 +3,18 @@ package com.backend.bcp.app.Transaccion.Aplication.dto.out;
 import org.springframework.stereotype.Component;
 
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
-import com.backend.bcp.app.Transaccion.Aplication.dto.in.MovimientoDTO;
+import com.backend.bcp.app.Transaccion.Aplication.dto.in.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Transaccion.Infraestructure.entity.TransaccionEntity;
 
 @Component
 public class TransaccionPersistenceMapper {
-    public MovimientoDTO toPersistenceDTO(TransaccionEntity entity) {
+    public MovimientoPersistenceDTO toPersistenceDTO(TransaccionEntity entity) {
         if (entity == null) return null;
 
         Long cuentaId = (entity.getCuenta() != null) ? entity.getCuenta().getIdCuenta() : null;
         
-        return new MovimientoDTO(
+        return new MovimientoPersistenceDTO(
             entity.getIdTransaccion(),
             cuentaId,
             entity.getTipo(),
