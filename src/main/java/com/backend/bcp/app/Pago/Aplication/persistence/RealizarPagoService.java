@@ -75,37 +75,41 @@ private final PagoRepository pagoRepository;
         Cuenta cuenta = cuentaRepository.obtenerPorId(cuentaId)
             .map(this::toCuentaDomain)
             .orElseThrow(() -> new RuntimeException("Cuenta no encontrada."));
-
         ServicioPersistenceDTO servicioDto = servicioRepository.obtenerServicioPorId(servicioId)
             .orElseThrow(() -> new RuntimeException("Servicio/Préstamo no encontrado: " + servicioId));
-        
         Servicio servicio = toServicioDomain(servicioDto);
-
         cuenta.retirar(monto); // El dominio Cuenta valida fondos insuficientes.
-        
         cuentaRepository.actualizar(cuenta);
-
         PagoServicio pago = new PagoServicio(
             null, // ID nulo para autogeneración
             monto, 
             LocalDate.now(), 
             servicio,
             "PAGADO",
-            1L
+            cuenta.getCliente().getId()
         );
         pagoRepository.registrarPago(pago);
+        Comprobante comprobanteDomain = new Comprobante();
 
-        ComprobanteDTO comprobanteDTO = new ComprobanteDTO(
-            1L,
-            servicio.getNombre(),
-            monto, 
-            LocalDate.now(), 
-            "CMP-" + System.currentTimeMillis()
-        );
+        comprobanteDomain.setServicio(servicio.getNombre()); 
+        comprobanteDomain.setMontoPagado(monto);
+        comprobanteDomain.setFecha(LocalDate.now());
         
-        comprobanteRepository.guardarComprobante(mockComprobanteDomain);
+        // Generar Código de Autorización (Simulación, pero dinámica)
+        String codigoAutorizacion = "CMP-PAGO-" + System.currentTimeMillis();
+        comprobanteDomain.setCodigoAutorizacion(codigoAutorizacion);
+        
+        // 6. Persistir Comprobante Domain
+        // El repositorio debe devolver el objeto con el ID generado (IdPago)
+        comprobanteRepository.guardarComprobante(comprobanteDomain); 
 
-        return comprobanteDTO; 
+        return new ComprobanteDTO(
+            comprobanteDomain.getId(), // Si la persistencia actualiza el ID
+            comprobanteDomain.getServicio(), 
+            comprobanteDomain.getMontoPagado(), 
+            comprobanteDomain.getFecha(), 
+            comprobanteDomain.getCodigoAutorizacion()
+        );
     }
     
 
