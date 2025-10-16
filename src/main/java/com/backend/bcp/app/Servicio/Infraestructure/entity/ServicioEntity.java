@@ -1,18 +1,27 @@
-package com.backend.bcp.app.Servicio.Domain;
+package com.backend.bcp.app.Servicio.Infraestructure.entity;
 
 import java.math.BigDecimal;
 
-public class Servicio {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Servicio")
+public class ServicioEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Servicio")
     private Long idServicio;
+    @Column(name = "Nombre")
     private String nombre;
+    @Column(name = "Descripcion")
     private String descripcion;
+    @Column(name = "Recibo")
     private BigDecimal recibo;
-    public Servicio(Long idServicio, String nombre, String descripcion, BigDecimal recibo) {
-        this.idServicio = idServicio;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.recibo = recibo;
-    }
     public Long getIdServicio() {
         return idServicio;
     }
@@ -37,4 +46,5 @@ public class Servicio {
     public void setRecibo(BigDecimal recibo) {
         this.recibo = recibo;
     }
+    
 }

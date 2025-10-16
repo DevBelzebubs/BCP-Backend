@@ -1,6 +1,7 @@
 package com.backend.bcp.app.Cuenta.Aplication.persistence;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,7 +122,13 @@ private final CuentaRepository cuentaRepository;
          if (!otpService.validarOtp(clienteId, codigoOTP)) {
             throw new RuntimeException("Código OTP inválido o expirado.");
         }
-        return new ComprobanteDTO(); 
+       return new ComprobanteDTO(
+            1L, // idPago (mock)
+            "Transferencia entre Cuentas", // servicio (mock)
+            BigDecimal.valueOf(100.00), // montoPagado (mock)
+            LocalDate.now(), // fecha (mock)
+            "AUT-90210-XYZ" // codigoAutorizacion (mock)
+        ); 
     }
 
 }

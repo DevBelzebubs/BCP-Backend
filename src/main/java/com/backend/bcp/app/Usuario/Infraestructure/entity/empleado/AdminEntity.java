@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class AdminEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ADMIN")
+    @Column(name = "ID_Admin")
     private long idAdmin;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_Empleado", referencedColumnName="ID_Empleado")

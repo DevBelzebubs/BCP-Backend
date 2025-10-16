@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Pago.Aplication.dto;
+package com.backend.bcp.app.Pago.Aplication.dto.in;
 
 import java.math.BigDecimal;
 

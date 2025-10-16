@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 public class ClienteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CLIENTE")
+    @Column(name = "ID_Cliente")
     private Long idCliente;
     @Column(name = "Fecha_Registro")
     private LocalDate fechaRegistro;
