@@ -3,15 +3,20 @@ package com.backend.bcp.app.Pago.Infraestructure.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,13 +28,16 @@ public abstract class PagoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Pago")
     private Long idPago;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_Cliente", referencedColumnName = "ID_Cliente")
+    private ClienteEntity cliente; 
     @Column(name = "Monto")
     private BigDecimal monto;
     @Column(name = "Fecha")
     private LocalDate fecha;
     @Column(name = "Estado")
     private String estado;
-    
+        
     public Long getIdPago() {
         return idPago;
     }
@@ -53,5 +61,11 @@ public abstract class PagoEntity {
     }
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+    public ClienteEntity getCliente() {
+        return cliente;
+    }
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
 }

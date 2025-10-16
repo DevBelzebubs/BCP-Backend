@@ -1,9 +1,12 @@
 package com.backend.bcp.app.Servicio.Aplication.dto.out;
 
+import org.springframework.stereotype.Service;
+
 import com.backend.bcp.app.Servicio.Aplication.dto.in.ServicioPersistenceDTO;
 import com.backend.bcp.app.Servicio.Domain.Servicio;
 import com.backend.bcp.app.Servicio.Infraestructure.entity.ServicioEntity;
 
+@Service
 public class ServicioMapper {
     public ServicioPersistenceDTO toPersistenceDTO(ServicioEntity entity){
         if (entity == null) return null;
