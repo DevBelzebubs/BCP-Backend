@@ -90,7 +90,8 @@ private final PagoRepository pagoRepository;
             monto, 
             LocalDate.now(), 
             servicio,
-            "PAGADO"
+            "PAGADO",
+            1L
         );
         pagoRepository.registrarPago(pago);
 

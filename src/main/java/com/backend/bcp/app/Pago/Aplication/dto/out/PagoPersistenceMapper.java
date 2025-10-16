@@ -11,9 +11,16 @@ import com.backend.bcp.app.Pago.Infraestructure.entity.PagoPrestamoEntity;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoServicioEntity;
 import com.backend.bcp.app.Prestamo.Infraestructure.entity.PrestamoEntity;
 import com.backend.bcp.app.Servicio.Infraestructure.entity.ServicioEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 
 @Component
 public class PagoPersistenceMapper {
+     private ClienteEntity createClienteReference(Long clienteId) {
+        if (clienteId == null) return null;
+        ClienteEntity clienteRef = new ClienteEntity();
+        clienteRef.setIdCliente(clienteId);
+        return clienteRef;
+    }
     public PagoPersistenceDTO toPersistenceDTO(PagoEntity entity){
         if (entity == null) return null;
 
@@ -32,6 +39,7 @@ public class PagoPersistenceMapper {
             }
             tipoPago = "SERVICIO";
         }
+        
         return new PagoPersistenceDTO(
             entity.getIdPago(),
             prestamoId,
@@ -44,32 +52,42 @@ public class PagoPersistenceMapper {
     }
     public PagoEntity toEntity(Pago domain){
         if (domain == null) return null;
+
         if (domain instanceof PagoPrestamo pagoPrestamo) {
             PagoPrestamoEntity entity = new PagoPrestamoEntity();
+            
+            // 1. Obtener ID de Cliente desde el campo expuesto en la clase Pago (asumido)
+            Long clienteId = pagoPrestamo.getClienteId(); 
+            entity.setCliente(createClienteReference(clienteId)); // AJUSTE CLAVE: Setea la FK del cliente en la base
+            
+            // 2. Seteo de FK específica de Prestamo
             PrestamoEntity prestamoRef = new PrestamoEntity();
-            // Asumo que Prestamo tiene getId()
             prestamoRef.setIdPrestamo(pagoPrestamo.getPrestamo().getId()); 
             entity.setPrestamo(prestamoRef);
             
-            // Seteo de campos comunes (asumiendo setters en PagoEntity)
+            // 3. Seteo de campos comunes 
             entity.setMonto(pagoPrestamo.getMonto());
             entity.setFecha(pagoPrestamo.getFecha());
-            entity.setEstado("PAGADO"); 
+            entity.setEstado(pagoPrestamo.getEstado()); 
 
             return entity;
+            
         }else if (domain instanceof PagoServicio pagoServicio) {
             PagoServicioEntity entity = new PagoServicioEntity();
             
-            // Seteo de FK
+            // 1. Obtener ID de Cliente desde el campo expuesto en la clase Pago (asumido)
+            Long clienteId = pagoServicio.getClienteId(); 
+            entity.setCliente(createClienteReference(clienteId)); // AJUSTE CLAVE: Setea la FK del cliente en la base
+            
+            // 2. Seteo de FK específica de Servicio
             ServicioEntity servicioRef = new ServicioEntity();
-            // Asumo que Servicio tiene getId()
-            // servicioRef.setIdServicio(pagoServicio.getServicio().getId()); 
+            servicioRef.setIdServicio(pagoServicio.getServicio().getIdServicio()); 
             entity.setServicio(servicioRef);
             
-            // Seteo de campos comunes
+            // 3. Seteo de campos comunes
             entity.setMonto(pagoServicio.getMonto());
             entity.setFecha(pagoServicio.getFecha());
-            entity.setEstado("PAGADO"); 
+            entity.setEstado(pagoServicio.getEstado()); 
             
             return entity;
         }

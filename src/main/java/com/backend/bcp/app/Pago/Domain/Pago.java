@@ -8,12 +8,13 @@ public abstract class Pago {
     protected BigDecimal monto;
     protected LocalDate fecha;
     protected String estado;
-
-    public Pago(Long id, BigDecimal monto, LocalDate fecha, String estado) {
+    protected Long clienteId;
+    public Pago(Long id, BigDecimal monto, LocalDate fecha, String estado, Long clienteId) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
         this.estado = estado;
+        this.clienteId = clienteId;
     }
     
     public Long getId() {
@@ -38,6 +39,14 @@ public abstract class Pago {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
     
 }
