@@ -9,10 +9,6 @@ import org.springframework.context.annotation.Configuration;
     "com.backend.bcp.app.Usuario.Aplicacion.backoffice",
     "com.backend.bcp.app.Usuario.Infraestructure.backoffice"
 })
-@EntityScan(basePackages = {
-    "com.backend.bcp.app.Usuario.Infraestructure.entity.empleado", // Contiene EmpleadoEntity y BackOfficeEntity
-    "com.backend.bcp.shared.Infraestructure.entity" // Contiene UsuarioEntity
-})
 public class BackOfficeSliceConfig {
 
 }

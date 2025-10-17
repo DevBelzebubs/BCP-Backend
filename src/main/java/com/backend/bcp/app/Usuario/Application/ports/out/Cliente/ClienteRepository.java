@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Aplication.ports.out.Cliente;
+package com.backend.bcp.app.Usuario.Application.ports.out.Cliente;
 
 import java.util.Optional;
 

@@ -9,10 +9,6 @@ import org.springframework.context.annotation.Configuration;
     "com.backend.bcp.app.Usuario.Aplicacion.cliente",
     "com.backend.bcp.app.Usuario.Infraestructure.cliente"
 })
-@EntityScan(basePackages = {
-    "com.backend.bcp.app.Usuario.Infraestructure.entity.cliente", // Contiene ClienteEntity
-    "com.backend.bcp.shared.Infraestructure.entity" // Contiene UsuarioEntity
-})
 public class ClienteSliceConfig {
 
 }

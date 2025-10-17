@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Aplication.ports.in.Cliente;
+package com.backend.bcp.app.Usuario.Application.ports.in.Cliente;
 
 import java.math.BigDecimal;
 import java.util.List;

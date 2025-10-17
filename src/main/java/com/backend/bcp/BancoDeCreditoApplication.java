@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {
-    "com.backend.bcp.shared.Infraestructure.repo",
+    "com.backend.bcp.app.shared.Infraestructure.repo",
     "com.backend.bcp.app.Usuario.Infraestructure.repo",
     "com.backend.bcp.app.Cuenta.Infraestructure.repo",
     "com.backend.bcp.app.Transaccion.Infraestructure.repo",
@@ -20,13 +20,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "com.backend.bcp.app.Servicio.Infraestructure.repo"
 })
 @EntityScan(basePackages = {
-    "com.backend.bcp.shared.Infraestructure.entity",
-    "com.backend.bcp.app.Usuario.Infraestructure.entity",
-    "com.backend.bcp.app.Cuenta.Infraestructure.entity",
-    "com.backend.bcp.app.Transaccion.Infraestructure.entity",
-    "com.backend.bcp.app.Comprobante.Infraestructure.entity",
-    "com.backend.bcp.app.Pago.Infraestructure.entity",
-    "com.backend.bcp.app.Servicio.Infraestructure.entity"
+    "com.backend.bcp.app", 
+    "com.backend.bcp.shared" 
 })
 @ComponentScan(basePackages = "com.backend.bcp")
 public class BancoDeCreditoApplication {

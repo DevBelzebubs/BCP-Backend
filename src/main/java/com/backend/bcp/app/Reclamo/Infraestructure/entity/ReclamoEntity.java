@@ -3,16 +3,19 @@ package com.backend.bcp.app.Reclamo.Infraestructure.entity;
 import java.time.LocalDate;
 
 import com.backend.bcp.app.Reclamo.Domain.Reclamo.EstadoReclamo;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,16 +25,17 @@ public class ReclamoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Reclamo")
     private Long idReclamo;
-    @OneToMany
-    @JoinColumn(name = "ID_Cliente")
-    private Long idCliente;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "ID_Cliente", referencedColumnName = "ID_CLIENTE")
+    private ClienteEntity cliente;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_EMPLEADO", referencedColumnName = "ID_EMPLEADO")
-    private Long idEmpleado;
+    private EmpleadoEntity empleado;
     @Column(name = "Fecha_Creacion")
     private LocalDate fechaCreacion;
     @Column(name = "Descripcion")
     private String descripcion;
+    @Enumerated(EnumType.STRING)
     @Column(name = "Estado_Reclamo")
     private EstadoReclamo estadoReclamo;
     @Column(name = "Respuesta")
@@ -42,17 +46,18 @@ public class ReclamoEntity {
     public void setIdReclamo(Long idReclamo) {
         this.idReclamo = idReclamo;
     }
-    public Long getIdCliente() {
-        return idCliente;
+    
+    public ClienteEntity getCliente() {
+        return cliente;
     }
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
-    public Long getIdEmpleado() {
-        return idEmpleado;
+    public EmpleadoEntity getEmpleado() {
+        return empleado;
     }
-    public void setIdEmpleado(Long idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setEmpleado(EmpleadoEntity empleado) {
+        this.empleado = empleado;
     }
     public LocalDate getFechaCreacion() {
         return fechaCreacion;

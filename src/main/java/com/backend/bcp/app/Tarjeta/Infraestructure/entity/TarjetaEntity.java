@@ -3,6 +3,8 @@ package com.backend.bcp.app.Tarjeta.Infraestructure.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,21 +20,25 @@ public class TarjetaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Tarjeta")
-    private long idTarjeta;
+    private Long idTarjeta;
     @ManyToOne
-    @JoinColumn(name = "ID_Cliente" )
-    private long idCliente;
+    @JoinColumn(name = "ID_Cliente", referencedColumnName = "ID_CLIENTE")
+    private ClienteEntity cliente;
     @Column(name = "Num_tarjeta")
     private String numeroTarjeta;
     @Column(name = "Fecha_Vencimiento")
     private LocalDate fechaVencimiento;
     @Column(name = "Saldo")
     private BigDecimal saldo;
-    public long getIdCliente() {
-        return idCliente;
+    
+    public void setIdTarjeta(Long idTarjeta) {
+        this.idTarjeta = idTarjeta;
     }
-    public void setIdCliente(long idCliente) {
-        this.idCliente = idCliente;
+    public ClienteEntity getCliente() {
+        return cliente;
+    }
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
     public String getNumeroTarjeta() {
         return numeroTarjeta;

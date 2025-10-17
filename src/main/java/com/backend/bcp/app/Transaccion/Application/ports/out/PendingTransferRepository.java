@@ -8,4 +8,5 @@ public interface PendingTransferRepository {
     String savePendingTransfer(PendingTransferDTO transferDTO);
     Optional<PendingTransferDTO> getTransferByOtpKey(String otpKey);
     void deleteTransfer(String otpKey);
+    void updatePendingTransfer(PendingTransferDTO transferDTO);
 }

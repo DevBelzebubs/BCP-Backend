@@ -5,5 +5,7 @@ import java.math.BigDecimal;
 public record PendingTransferDTO(Long idCliente,
     Long idCuentaOrigen, 
     Long idCuentaDestino, 
-    BigDecimal monto) {
+    BigDecimal monto,
+    Integer retries
+    ) {
 }

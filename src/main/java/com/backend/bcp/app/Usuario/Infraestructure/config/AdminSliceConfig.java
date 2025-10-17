@@ -9,10 +9,7 @@ import org.springframework.context.annotation.Configuration;
     "com.backend.bcp.app.Usuario.Aplicacion.admin",
     "com.backend.bcp.app.Usuario.Infraestructure.admin"
 })
-@EntityScan(basePackages = {
-    "com.backend.bcp.app.Usuario.Infraestructure.entity.empleado",
-    "com.backend.bcp.shared.Infraestructure.entity"
-})
+
 public class AdminSliceConfig {
 
 }

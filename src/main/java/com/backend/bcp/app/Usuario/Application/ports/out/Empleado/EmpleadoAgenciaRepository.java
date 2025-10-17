@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Usuario.Aplication.ports.out.Empleado;
+package com.backend.bcp.app.Usuario.Application.ports.out.Empleado;
 
 import java.util.List;
 
