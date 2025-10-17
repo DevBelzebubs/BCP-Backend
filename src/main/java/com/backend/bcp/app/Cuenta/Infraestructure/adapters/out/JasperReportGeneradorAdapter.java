@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Cuenta.Aplication.ports.out.GeneradorEstadoCuentaPdf;
+import com.backend.bcp.app.Cuenta.Application.ports.out.GeneradorEstadoCuentaPdf;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 

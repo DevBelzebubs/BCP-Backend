@@ -3,10 +3,10 @@ package com.backend.bcp.app.Cuenta.Infraestructure.adapters.in;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Comprobante.Aplication.dto.ComprobanteDTO;
-import com.backend.bcp.app.Cuenta.Aplication.dto.in.DetalleCuentaDTO;
-import com.backend.bcp.app.Cuenta.Aplication.dto.in.TransferenciaRequestDTO;
-import com.backend.bcp.app.Cuenta.Aplication.ports.in.GestionCuentaUseCase;
+import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.in.TransferenciaRequestDTO;
+import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.backend.bcp.app.Pago.Aplication.dto.in.PagoPersistenceDTO;
-import com.backend.bcp.app.Pago.Aplication.dto.out.PagoPersistenceMapper;
-import com.backend.bcp.app.Pago.Aplication.ports.out.PagoRepository;
+import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceMapper;
+import com.backend.bcp.app.Pago.Application.ports.out.PagoRepository;
 import com.backend.bcp.app.Pago.Domain.Pago;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoEntity;
 import com.backend.bcp.app.Pago.Infraestructure.repo.SpringDataPagoRepository;

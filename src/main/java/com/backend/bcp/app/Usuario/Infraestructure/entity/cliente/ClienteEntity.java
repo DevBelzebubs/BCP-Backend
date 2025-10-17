@@ -2,7 +2,7 @@ package com.backend.bcp.app.Usuario.Infraestructure.entity.cliente;
 
 import java.time.LocalDate;
 
-import com.backend.bcp.shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

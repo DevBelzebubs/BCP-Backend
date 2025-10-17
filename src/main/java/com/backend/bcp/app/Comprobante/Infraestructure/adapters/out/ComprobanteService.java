@@ -2,7 +2,7 @@ package com.backend.bcp.app.Comprobante.Infraestructure.adapters.out;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Comprobante.Aplication.ports.out.ComprobanteRepository;
+import com.backend.bcp.app.Comprobante.Application.ports.out.ComprobanteRepository;
 import com.backend.bcp.app.Comprobante.Domain.Comprobante;
 import com.backend.bcp.app.Comprobante.Infraestructure.repo.SpringDataComprobanteRepository;
 

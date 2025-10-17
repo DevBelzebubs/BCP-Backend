@@ -2,7 +2,7 @@ package com.backend.bcp.app.Usuario.Domain;
 
 import java.time.LocalDate;
 
-import com.backend.bcp.shared.Domain.Usuario;
+import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class Cliente extends Usuario {
     private LocalDate fechaRegistro;

@@ -3,7 +3,7 @@ package com.backend.bcp.app.Reclamo.Domain;
 import java.time.LocalDate;
 
 import com.backend.bcp.app.Usuario.Domain.Empleado;
-import com.backend.bcp.shared.Domain.Usuario;
+import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class Reclamo {
     private final Long id;
