@@ -3,6 +3,9 @@ package com.backend.bcp.app.shared.Application.Security.persistence;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
@@ -16,6 +19,8 @@ import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class AuthPersistence implements AuthService{
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final UserRepository usuarioRepository;
     private final SpringDataClientRepository clienteRepository;
     private final SpringDataEmpleadoRepository empleadoRepository;
@@ -36,12 +41,10 @@ public class AuthPersistence implements AuthService{
         this.tokenService = tokenService;
     }
 
-
-
     @Override
     public LoginResponseDTO login(String nombre, String contrasena) {
         UsuarioDTO userDto = usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("User not found"));
-        if (!userDto.contrasena().equals(contrasena)) {
+        if (!passwordEncoder.matches(contrasena, userDto.contrasena())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
         AtomicReference<String> tipoUsuario = new AtomicReference<>("DESCONOCIDO");

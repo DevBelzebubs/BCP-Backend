@@ -9,6 +9,8 @@ import com.backend.bcp.app.shared.Application.Security.dto.in.ClienteDTO;
 import com.backend.bcp.app.shared.Application.Security.dto.in.EmpleadoDTO;
 import com.backend.bcp.app.shared.Application.Security.ports.in.RegistroService;
 
+import jakarta.validation.Valid;
+
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ public class RegistroController {
         this.registroService = registroService;
     }
     @PostMapping("/cliente")
-    public ResponseEntity<ClienteEntity> registrarCliente (@RequestBody ClienteDTO dto) {
+    public ResponseEntity<ClienteEntity> registrarCliente (@Valid @RequestBody ClienteDTO dto) {
         ClienteEntity cliente = registroService.registrarCliente(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }

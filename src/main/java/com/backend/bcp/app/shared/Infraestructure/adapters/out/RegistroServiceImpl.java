@@ -2,6 +2,8 @@ package com.backend.bcp.app.shared.Infraestructure.adapters.out;
 
 import java.time.LocalDate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
@@ -16,6 +18,8 @@ import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository;
 
 @Service
 public class RegistroServiceImpl implements RegistroService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final SpringDataUserRepository springDataUserRepository;
     private final SpringDataClientRepository springDataClientRepository;
     private final SpringDataEmpleadoRepository springDataEmpleadoRepository;
@@ -29,9 +33,10 @@ public class RegistroServiceImpl implements RegistroService {
 
     @Override
     public ClienteEntity registrarCliente(ClienteDTO dto) {
+        String passwordEncrypt = passwordEncoder.encode(dto.getContrasena());
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNombre(dto.getNombre());
-        usuario.setContrasena(dto.getContrasena());
+        usuario.setContrasena(passwordEncrypt);
         usuario.setCorreo(dto.getCorreo());
         usuario.setDni(dto.getDni());
         usuario.setDireccion(dto.getDireccion());
@@ -46,9 +51,10 @@ public class RegistroServiceImpl implements RegistroService {
 
     @Override
     public EmpleadoEntity registrarEmpleado(EmpleadoDTO dto) {
+        String passwordEncrypt = passwordEncoder.encode(dto.getContrasena());
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNombre(dto.getNombre());
-        usuario.setContrasena(dto.getContrasena());
+        usuario.setContrasena(passwordEncrypt);
         usuario.setCorreo(dto.getCorreo());
         usuario.setDni(dto.getDni());
         usuario.setDireccion(dto.getDireccion());

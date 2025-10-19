@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
+
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {
     "com.backend.bcp.app.shared.Infraestructure.repo",
@@ -25,7 +27,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @ComponentScan(basePackages = "com.backend.bcp")
 public class BancoDeCreditoApplication {
-	public static void main(String[] args) {
+    private final JwtConfig jwtConfig;
+    
+	public BancoDeCreditoApplication(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
+        this.jwtConfig.afterPropertiesSet();
+    }
+    
+    public static void main(String[] args) {
 		SpringApplication.run(BancoDeCreditoApplication.class, args);
 	}
 	@Bean
