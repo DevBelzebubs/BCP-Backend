@@ -4,6 +4,8 @@ package com.backend.bcp.app.shared.Application.Security.persistence;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
@@ -43,9 +45,11 @@ public class AuthPersistence implements AuthService{
 
     @Override
     public LoginResponseDTO login(String nombre, String contrasena) {
-        UsuarioDTO userDto = usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("User not found"));
+        UsuarioDTO userDto = usuarioRepository.findByNombre(nombre).orElseThrow(() -> 
+            new UsernameNotFoundException("Usuario no encontrado") 
+        );
         if (!passwordEncoder.matches(contrasena, userDto.contrasena())) {
-            throw new RuntimeException("Contraseña incorrecta");
+            throw new BadCredentialsException("Contraseña incorrecta");
         }
         AtomicReference<String> tipoUsuario = new AtomicReference<>("DESCONOCIDO");
         if (clienteRepository.findByIdUsuario_Id(userDto.id()).isPresent()) {

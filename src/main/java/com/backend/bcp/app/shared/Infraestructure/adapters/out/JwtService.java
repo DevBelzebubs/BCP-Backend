@@ -11,41 +11,50 @@ import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtService implements TokenService {
-    final SecretKey secret = JwtConfig.SECRET_KEY;
+    private final JwtConfig jwtConfig;
+    
+    public JwtService(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
+    }
     @Override
     public String generateToken(Usuario user,String tipoUsuario) {
         final long expiration = 3600000;
+        final SecretKey secret = jwtConfig.getSecretKey();
+        System.out.println("➡️  Firmando token... Usando clave con HashCode: " + secret.hashCode());
         return Jwts.builder()
             .subject(user.getNombre())
             .claim("tipoUsuario", tipoUsuario)
             .expiration(new Date(System.currentTimeMillis() + expiration))
-            .signWith(SignatureAlgorithm.HS512, secret)
+            .signWith(secret)
             .compact();
     }
     @Override
     public boolean validToken(String token, Usuario user) {
         try{
-            final Claims claims = Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token).getBody();
             final String username = getUser(token);
+            final Claims claims = getClaims(token);
             return username.equals(user.getNombre()) && !claims.getExpiration().before(new Date());
-        }catch (Exception e){
+        } catch (Exception e){
             return false;
         }
-
     }
 
     @Override
     public String getUser(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token).getBody();
-    return claims.getSubject();     
+        return getClaims(token).getSubject();     
     }
 
     @Override
     public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token).getBody();
+        SecretKey secretKey = jwtConfig.getSecretKey();
+        System.out.println("⬅️  Verificando token... Usando clave con HashCode: " + secretKey.hashCode());
+        return Jwts.parser()
+                   .verifyWith(secretKey)
+                   .build()
+                   .parseSignedClaims(token)
+                   .getPayload();
     }
 }

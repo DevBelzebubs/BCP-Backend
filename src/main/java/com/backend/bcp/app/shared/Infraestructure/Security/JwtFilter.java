@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
@@ -18,6 +19,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class JwtFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
     
@@ -40,12 +42,17 @@ public class JwtFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         username, 
                         null, 
-                        Collections.singletonList(authority) 
+                        Collections.singletonList(authority)
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             } catch (Exception e) {
+                // --- AÑADE ESTAS LÍNEAS PARA DIAGNÓSTICO ---
+                System.err.println("Error al procesar el token JWT: " + e.getClass().getName() + " - " + e.getMessage());
+                // La siguiente línea te dará el detalle completo del error
+                e.printStackTrace(); 
+                // --- FIN DEL BLOQUE DE DIAGNÓSTICO ---
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }

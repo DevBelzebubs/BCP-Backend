@@ -31,7 +31,6 @@ public class BancoDeCreditoApplication {
     
 	public BancoDeCreditoApplication(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
-        this.jwtConfig.afterPropertiesSet();
     }
     
     public static void main(String[] args) {
