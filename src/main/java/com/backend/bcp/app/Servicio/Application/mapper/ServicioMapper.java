@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Servicio.Application.dto.out;
+package com.backend.bcp.app.Servicio.Application.mapper;
 
 import org.springframework.stereotype.Service;
 

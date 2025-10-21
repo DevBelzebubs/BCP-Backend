@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Reclamo.Application.in;
+package com.backend.bcp.app.Reclamo.Application.ports.in;
 
 import java.util.List;
 

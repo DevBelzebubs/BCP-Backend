@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Transaccion.Application.dto.out;
+package com.backend.bcp.app.Transaccion.Application.mapper;
 
 import org.springframework.stereotype.Component;
 

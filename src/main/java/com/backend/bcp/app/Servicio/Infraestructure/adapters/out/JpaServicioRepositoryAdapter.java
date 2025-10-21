@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.backend.bcp.app.Servicio.Application.dto.in.ServicioPersistenceDTO;
-import com.backend.bcp.app.Servicio.Application.dto.out.ServicioMapper;
+import com.backend.bcp.app.Servicio.Application.mapper.ServicioMapper;
 import com.backend.bcp.app.Servicio.Application.ports.out.ServicioRepository;
 import com.backend.bcp.app.Servicio.Infraestructure.repo.SpringDataServicioRepository;
 

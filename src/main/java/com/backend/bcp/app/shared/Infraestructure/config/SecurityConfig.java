@@ -45,6 +45,9 @@ public class SecurityConfig {
 
                 .requestMatchers("/api/backoffice/**", "/api/reclamos/**", "/api/empleados/**").hasAnyRole("BACKOFFICE","ADMIN")
 
+                .requestMatchers("/api/prestamos/solicitar").hasRole("CLIENTE")
+                .requestMatchers("/api/prestamos/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
+
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)

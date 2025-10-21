@@ -19,7 +19,8 @@ import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
     "com.backend.bcp.app.Transaccion.Infraestructure.repo",
     "com.backend.bcp.app.Comprobante.Infraestructure.repo",
     "com.backend.bcp.app.Pago.Infraestructure.repo",
-    "com.backend.bcp.app.Servicio.Infraestructure.repo"
+    "com.backend.bcp.app.Servicio.Infraestructure.repo",
+    "com.backend.bcp.app.Prestamo.Infraestructure.repo"
 })
 @EntityScan(basePackages = {
     "com.backend.bcp.app", 

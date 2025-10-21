@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Cuenta.Application.dto.out;
+package com.backend.bcp.app.Cuenta.Application.mapper;
 
 import org.springframework.stereotype.Component;
 

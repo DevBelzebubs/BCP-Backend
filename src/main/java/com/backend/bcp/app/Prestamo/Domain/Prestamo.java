@@ -15,7 +15,37 @@ public class Prestamo {
     private double interes;
     private int plazoMeses;
     private LocalDate fechaInicio;
+    private String estado;
 
+    public Prestamo(Long id, Usuario usuario, BigDecimal monto,
+                    double interes, int plazoMeses, LocalDate fechaInicio, String estado) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("El id del préstamo debe ser positivo y no nulo");
+        }
+        if (usuario == null) {
+            throw new IllegalArgumentException("El préstamo debe estar asociado a un usuario válido");
+        }
+        if (monto == null || monto.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El monto del préstamo debe ser mayor que cero");
+        }
+        if (interes < 0 || interes > 100) {
+            throw new IllegalArgumentException("El interés debe estar entre 0% y 100%");
+        }
+        if (plazoMeses <= 0) {
+            throw new IllegalArgumentException("El plazo en meses debe ser mayor que cero");
+        }
+        if (fechaInicio == null) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser nula");
+        }
+        this.id = id;
+        this.usuario = usuario;
+        this.monto = monto;
+        this.interes = interes;
+        this.plazoMeses = plazoMeses;
+        this.fechaInicio = fechaInicio;
+        this.estado = estado;
+    }
+    
     public Prestamo(Long id, Usuario usuario, BigDecimal monto,
                     double interes, int plazoMeses, LocalDate fechaInicio) {
         if (id == null || id <= 0) {
@@ -36,15 +66,13 @@ public class Prestamo {
         if (fechaInicio == null) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser nula");
         }
-        if (fechaInicio.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de inicio no puede estar en el futuro");
-        }
         this.id = id;
         this.usuario = usuario;
         this.monto = monto;
         this.interes = interes;
         this.plazoMeses = plazoMeses;
         this.fechaInicio = fechaInicio;
+        this.estado = "PENDIENTE"; 
     }
 
     public Long getId() {
@@ -98,7 +126,13 @@ public class Prestamo {
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
+    public String getEstado() {
+        return estado;
+    }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     public void setFechaInicio(LocalDate fechaInicio) {
         if (fechaInicio == null) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser nula");

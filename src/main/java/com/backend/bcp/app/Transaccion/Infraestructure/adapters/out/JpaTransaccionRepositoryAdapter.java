@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
-import com.backend.bcp.app.Transaccion.Application.dto.out.TransaccionPersistenceMapper;
+import com.backend.bcp.app.Transaccion.Application.mapper.TransaccionPersistenceMapper;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Transaccion.Infraestructure.entity.TransaccionEntity;
