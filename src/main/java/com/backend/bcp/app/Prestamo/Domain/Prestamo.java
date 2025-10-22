@@ -48,9 +48,6 @@ public class Prestamo {
     
     public Prestamo(Long id, Usuario usuario, BigDecimal monto,
                     double interes, int plazoMeses, LocalDate fechaInicio) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El id del préstamo debe ser positivo y no nulo");
-        }
         if (usuario == null) {
             throw new IllegalArgumentException("El préstamo debe estar asociado a un usuario válido");
         }

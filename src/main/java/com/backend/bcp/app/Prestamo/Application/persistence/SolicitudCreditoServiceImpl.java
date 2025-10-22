@@ -31,16 +31,17 @@ public class SolicitudCreditoServiceImpl implements SolicitudCreditoUseCase {
     @Override
     @Transactional
     public PrestamoResponseDTO crearSolicitudCredito(SolicitudCreditoDTO solicitudDTO) {
-        if (solicitudDTO.monto() == null || solicitudDTO.plazoMeses() <= 0) {
+        if (solicitudDTO.getMonto() == null || solicitudDTO.getPlazoMeses() <= 0) {
             throw new IllegalArgumentException("Datos incompletos para la solicitud.");
         }
         Usuario usuario = new Usuario();
+        usuario.setId(solicitudDTO.getUsuarioId());
         double interes = 15.0;
         Prestamo solicitudPrestamo = new Prestamo(null,
                 usuario,
-                solicitudDTO.monto(),
+                solicitudDTO.getMonto(),
                 interes,
-                solicitudDTO.plazoMeses(),
+                solicitudDTO.getPlazoMeses(),
                 LocalDate.now());
         PrestamoPersistenceDTO dtoParaGuardar = mapper.toPersistenceDTO(solicitudPrestamo);
 
