@@ -34,21 +34,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**","/api/registro/**").permitAll()
-                
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/auth/**","/api/registro/**").permitAll()
+            
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                .requestMatchers("/api/cuentas/**", "/api/pagos/**", "/api/transferencias/**", "/api/cliente/**").hasRole("CLIENTE")
+            .requestMatchers("/api/cuentas/**", "/api/pagos/**", "/api/transferencias/**", "/api/cliente/**").hasRole("CLIENTE")
 
-                .requestMatchers("/api/prestamos/**", "/api/asesor/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
+            // --- INICIO DE LA CORRECCIÓN ---
+            // 1. REGLA ESPECÍFICA: El CLIENTE SÍ puede solicitar
+            .requestMatchers("/api/prestamos/solicitar").hasRole("CLIENTE")
+            
+            // 2. REGLA GENERAL: Los demás endpoints de prestamos son para Asesores/Admins
+            .requestMatchers("/api/prestamos/**", "/api/asesor/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
+            // --- FIN DE LA CORRECCIÓN ---
 
-                .requestMatchers("/api/backoffice/**", "/api/reclamos/**", "/api/empleados/**").hasAnyRole("BACKOFFICE","ADMIN")
+            .requestMatchers("/api/backoffice/**", "/api/reclamos/**", "/api/empleados/**").hasAnyRole("BACKOFFICE","ADMIN")
 
-                .requestMatchers("/api/prestamos/solicitar").hasRole("CLIENTE")
-                .requestMatchers("/api/prestamos/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
-
-                .anyRequest().authenticated()
+            .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
             .cors(cors -> cors.configurationSource(corsConfiguration()));

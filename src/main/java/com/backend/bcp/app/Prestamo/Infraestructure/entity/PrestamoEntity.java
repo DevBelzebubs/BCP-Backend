@@ -27,14 +27,14 @@ public class PrestamoEntity {
     @JoinColumn(name = "ID_Usuario")
     private UsuarioEntity usuario;
 
-    @Column(name = "Monto_Interes")
-    private BigDecimal montoInteres;
+    @Column(name = "monto")
+    private BigDecimal monto;
 
-    @Column(name = "Tasa_Interes")
-    private double tasaInteres;
+    @Column(name = "interes")
+    private double interes;
 
-    @Column(name = "N_Cuotas")
-    private int nCuotas;
+    @Column(name = "plazo_meses")
+    private int plazoMeses;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
@@ -49,29 +49,21 @@ public class PrestamoEntity {
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
-    
-    public BigDecimal getMontoInteres() {
-        return montoInteres;
+
+    public BigDecimal getMonto() {
+        return monto;
     }
 
-    public void setMontoInteres(BigDecimal montoInteres) {
-        this.montoInteres = montoInteres;
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
     }
 
-    public double getTasaInteres() {
-        return tasaInteres;
+    public int getPlazoMeses() {
+        return plazoMeses;
     }
 
-    public void setTasaInteres(double tasaInteres) {
-        this.tasaInteres = tasaInteres;
-    }
-
-    public int getnCuotas() {
-        return nCuotas;
-    }
-
-    public void setnCuotas(int nCuotas) {
-        this.nCuotas = nCuotas;
+    public void setPlazoMeses(int plazoMeses) {
+        this.plazoMeses = plazoMeses;
     }
 
     public LocalDate getFechaInicio() {
@@ -96,6 +88,14 @@ public class PrestamoEntity {
 
     public void setIdPrestamo(Long idPrestamo) {
         this.idPrestamo = idPrestamo;
+    }
+
+    public double getInteres() {
+        return interes;
+    }
+
+    public void setInteres(double interes) {
+        this.interes = interes;
     }
     
 }

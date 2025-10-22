@@ -1,11 +1,11 @@
-package com.backend.bcp.app.Prestamo.Application.dto.in;
+package com.backend.bcp.app.Prestamo.Application.dto.out;
 
 import java.math.BigDecimal;
 
-public record PrestamoDTO(Long id,
+public record PrestamoResponseDTO(Long id,
         Long usuarioId,
         BigDecimal monto,
-        int plazo,
+        int plazoMeses,
         double interes,
         String estado) {
 }

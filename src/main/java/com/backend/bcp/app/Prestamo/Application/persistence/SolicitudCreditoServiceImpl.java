@@ -7,50 +7,64 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Prestamo.Application.dto.in.PrestamoDTO;
-import com.backend.bcp.app.Prestamo.Application.dto.out.SolicitudCreditoDTO;
+import com.backend.bcp.app.Prestamo.Application.dto.in.SolicitudCreditoDTO;
+import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
+import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
 import com.backend.bcp.app.Prestamo.Application.ports.out.CreditoService;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
 import com.backend.bcp.app.shared.Domain.Usuario;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SolicitudCreditoServiceImpl implements SolicitudCreditoUseCase {
     private final CreditoService creditoService;
     private final PrestamoMapper mapper;
-    
+
     public SolicitudCreditoServiceImpl(CreditoService creditoService, PrestamoMapper mapper) {
         this.creditoService = creditoService;
         this.mapper = mapper;
     }
 
     @Override
-    public PrestamoDTO crearSolicitudCredito(SolicitudCreditoDTO solicitudDTO) {
+    @Transactional
+    public PrestamoResponseDTO crearSolicitudCredito(SolicitudCreditoDTO solicitudDTO) {
         if (solicitudDTO.monto() == null || solicitudDTO.plazoMeses() <= 0) {
             throw new IllegalArgumentException("Datos incompletos para la solicitud.");
         }
         Usuario usuario = new Usuario();
         double interes = 15.0;
-        Prestamo solicitudPrestamo = new Prestamo(null, 
-        usuario, 
-        solicitudDTO.monto(), 
-        interes, 
-        solicitudDTO.plazoMeses(), 
-        LocalDate.now()
-        );
-        creditoService.guardarSolicitudCredito(solicitudPrestamo);
-        return mapper.toDto(solicitudPrestamo);
+        Prestamo solicitudPrestamo = new Prestamo(null,
+                usuario,
+                solicitudDTO.monto(),
+                interes,
+                solicitudDTO.plazoMeses(),
+                LocalDate.now());
+        PrestamoPersistenceDTO dtoParaGuardar = mapper.toPersistenceDTO(solicitudPrestamo);
+
+        PrestamoPersistenceDTO dtoGuardado = creditoService.guardarSolicitudCredito(dtoParaGuardar);
+
+        Prestamo solicitudGuardada = mapper.fromPersistenceDTO(dtoGuardado);
+
+        return mapper.toDto(solicitudGuardada);
     }
 
     @Override
-    public List<PrestamoDTO> obtenerSolicitudes() {
-        return creditoService.findAllSolicitudes().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<PrestamoResponseDTO> obtenerSolicitudes() {
+        return creditoService.findAllSolicitudes().stream()
+            .map(mapper::fromPersistenceDTO)
+            .map(mapper::toDto)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public PrestamoDTO findSolicitudById(Long id) {
-        return creditoService.findById(id).map(mapper::toDto).orElse(null);
+    public PrestamoResponseDTO findSolicitudById(Long id) {
+        return creditoService.findById(id)
+            .map(mapper::fromPersistenceDTO)
+            .map(mapper::toDto)
+            .orElse(null);
     }
 
     @Override

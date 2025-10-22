@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.app.shared.Application.Security.mapper.UsuarioMapper;
 import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.shared.Domain.Usuario;
 import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository;
 
 @Component

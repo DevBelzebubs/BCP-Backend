@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Prestamo.Application.dto.in.PrestamoDTO;
-import com.backend.bcp.app.Prestamo.Application.dto.out.SolicitudCreditoDTO;
+import com.backend.bcp.app.Prestamo.Application.dto.in.SolicitudCreditoDTO;
+import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/prestamos")
@@ -24,16 +25,16 @@ private final SolicitudCreditoUseCase solicitudCreditoUseCase;
         this.solicitudCreditoUseCase = solicitudCreditoUseCase;
     }
     @PostMapping("/solicitar")
-    public ResponseEntity<PrestamoDTO> solicitarCredito(@RequestBody SolicitudCreditoDTO solicitudDTO){
+    public ResponseEntity<PrestamoResponseDTO> solicitarCredito(@RequestBody SolicitudCreditoDTO solicitudDTO){
         try{
-            PrestamoDTO nuevaSolicitud = solicitudCreditoUseCase.crearSolicitudCredito(solicitudDTO);
+            PrestamoResponseDTO nuevaSolicitud = solicitudCreditoUseCase.crearSolicitudCredito(solicitudDTO);
             return new ResponseEntity<>(nuevaSolicitud, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping
-    public ResponseEntity<List<PrestamoDTO>> listarSolicitudes() {
+    public ResponseEntity<List<PrestamoResponseDTO>> listarSolicitudes() {
         return ResponseEntity.ok(solicitudCreditoUseCase.obtenerSolicitudes());
     }
 }

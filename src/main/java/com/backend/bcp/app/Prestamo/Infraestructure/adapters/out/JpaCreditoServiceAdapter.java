@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
 import com.backend.bcp.app.Prestamo.Application.ports.out.CreditoService;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
@@ -24,25 +25,23 @@ public class JpaCreditoServiceAdapter implements CreditoService {
     }
 
     @Override
-    public Optional<Prestamo> findById(Long id) {
-        return prestamoRepository.findById(id).map(prestamoMapper::toDomain);
+    public Optional<PrestamoPersistenceDTO> findById(Long id) {
+        return prestamoRepository.findById(id).map(prestamoMapper::entityToPersistenceDTO);
     }
 
     @Override
-    public void guardarSolicitudCredito(Prestamo solicitud) {
-        PrestamoEntity entity = prestamoMapper.toEntity(solicitud);
-        prestamoRepository.save(entity);
+    public PrestamoPersistenceDTO guardarSolicitudCredito(PrestamoPersistenceDTO solicitud) {
+        PrestamoEntity entity = prestamoMapper.persistenceDTOToEntity(solicitud);
+        
+        PrestamoEntity savedEntity = prestamoRepository.save(entity);
+        
+        return prestamoMapper.entityToPersistenceDTO(savedEntity);
     }
 
     @Override
-    public List<Prestamo> findAllSolicitudes() {
-        return prestamoRepository.findAll().stream().map(prestamoMapper::toDomain).collect(Collectors.toList());
+    public List<PrestamoPersistenceDTO> findAllSolicitudes() {
+        return prestamoRepository.findAll().stream().map(prestamoMapper::entityToPersistenceDTO ).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Prestamo> findSolicitudesById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findSolicitudesById'");
-    }
 
 }
