@@ -14,8 +14,8 @@ public class CuentaPersistenceMapper {
         if (entity == null) return null;
 
         ClienteReferenceDTO clienteRef = null;
-        if (entity.getCliente() != null && entity.getCliente().getIdUsuario() != null) {
-            clienteRef = new ClienteReferenceDTO(entity.getCliente().getIdUsuario().getId());
+        if (entity.getCliente() != null) {
+            clienteRef = new ClienteReferenceDTO(entity.getCliente().getIdCliente());
         }
         return new CuentaPersistenceDTO(
             entity.getIdCuenta(),

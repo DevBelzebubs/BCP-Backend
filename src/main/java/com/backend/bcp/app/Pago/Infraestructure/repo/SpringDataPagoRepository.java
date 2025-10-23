@@ -1,5 +1,6 @@
 package com.backend.bcp.app.Pago.Infraestructure.repo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface SpringDataPagoRepository extends JpaRepository<PagoEntity,Long>
     @Query("SELECT p FROM PagoEntity p " +
            "WHERE p.estado = 'PENDIENTE' AND p.cliente.idUsuario.id = :usuarioId")
     List<PagoEntity> findPendientesByClienteId(Long usuarioId);
+    List<PagoEntity> findByFecha(LocalDate fecha);
 }

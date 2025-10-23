@@ -15,9 +15,6 @@ public class Transaccion {
 
     public Transaccion(Long id, Cuenta cuenta, String tipo,
                        BigDecimal monto, LocalDateTime fecha) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El id de la transacción debe ser positivo y no nulo");
-        }
         if (cuenta == null) {
             throw new IllegalArgumentException("La transacción debe estar asociada a una cuenta válida");
         }

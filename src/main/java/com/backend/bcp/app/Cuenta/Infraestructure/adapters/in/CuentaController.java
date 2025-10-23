@@ -33,7 +33,7 @@ public class CuentaController {
         List<CuentaDTO> cuentas = gestionCuentaUseCase.listarCuentasPorUsuario(usuarioId);
         return ResponseEntity.ok(cuentas);
     }
-    @GetMapping("/usuario/{cuentaId}")
+    @GetMapping("/{cuentaId}")
     public ResponseEntity<?> obtenerDetalle(@PathVariable Long cuentaId) {
     try {
         DetalleCuentaDTO detalleCuentaDTO = gestionCuentaUseCase.obtenerDetalleCuenta(cuentaId);
@@ -60,9 +60,9 @@ public class CuentaController {
         }
     }
     @PostMapping("/confirmar-transferencia")
-    public ResponseEntity<?> postMethodName(@RequestParam String codigoOTP){
+    public ResponseEntity<?> postMethodName(@RequestParam Long clienteId, @RequestParam String codigoOTP){
         try {
-            ComprobanteDTO comprobante = gestionCuentaUseCase.confirmarTransferencia(codigoOTP);
+            ComprobanteDTO comprobante = gestionCuentaUseCase.confirmarTransferencia(clienteId,codigoOTP);
             return ResponseEntity.ok(comprobante);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));

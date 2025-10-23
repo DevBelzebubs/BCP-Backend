@@ -13,15 +13,18 @@ import com.backend.bcp.app.Comprobante.Domain.Comprobante;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Application.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
+import com.backend.bcp.app.Pago.Application.dto.in.EditarPagoDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceMapper;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
 import com.backend.bcp.app.Pago.Application.ports.out.PagoRepository;
 import com.backend.bcp.app.Pago.Domain.PagoServicio;
 import com.backend.bcp.app.Servicio.Application.dto.in.ServicioPersistenceDTO;
 import com.backend.bcp.app.Servicio.Application.ports.out.ServicioRepository;
 import com.backend.bcp.app.Servicio.Domain.Servicio;
-import com.backend.bcp.app.Usuario.Domain.Cliente;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 
 @Service
 public class RealizarPagoService implements RealizarPagoUseCase {
@@ -29,60 +32,47 @@ private final PagoRepository pagoRepository;
     private final CuentaRepository cuentaRepository;
     private final ServicioRepository servicioRepository;
     private final ComprobanteRepository comprobanteRepository;
+    private final PagoPersistenceMapper mapper;
+    private final SpringDataClientRepository springDataClientRepository;
 
     public RealizarPagoService(PagoRepository pagoRepository, CuentaRepository cuentaRepository,
-            ServicioRepository servicioRepository, ComprobanteRepository comprobanteRepository) {
+            ServicioRepository servicioRepository, ComprobanteRepository comprobanteRepository,
+            PagoPersistenceMapper mapper,SpringDataClientRepository springDataClientRepository) {
         this.pagoRepository = pagoRepository;
         this.cuentaRepository = cuentaRepository;
         this.servicioRepository = servicioRepository;
         this.comprobanteRepository = comprobanteRepository;
-    }
-    private Cuenta toCuentaDomain(CuentaPersistenceDTO dto) {
-        if (dto == null) throw new RuntimeException("Cuenta no encontrada.");
-        Cliente cliente = new Cliente();
-        if (dto.cliente() != null) cliente.setId(dto.cliente().id());
-        
-        return new Cuenta(dto.id(), cliente, dto.tipo(), dto.estadoCuenta(), dto.numeroCuenta(), dto.saldo());
-    }
-    private Servicio toServicioDomain(ServicioPersistenceDTO dto) {
-        return new Servicio(dto.id(), dto.nombre(), dto.descripcion(), dto.recibo()); 
-    }
-    private PagoPendienteDTO toPagoPendienteDTO(PagoPersistenceDTO dto) {
-        String nombreItemMock = (dto.servicioId() != null) 
-                                ? "Servicio ID: " + dto.servicioId() 
-                                : "Préstamo ID: " + dto.prestamoId();
-        
-        return new PagoPendienteDTO(
-            dto.id(), 
-            nombreItemMock,
-            dto.monto()
-        );
+        this.springDataClientRepository = springDataClientRepository;
+        this.mapper = mapper;
     }
     @Override
     public List<PagoPendienteDTO> listarPagosPendientes(Long usuarioId) {
         List<PagoPersistenceDTO> pendientes = pagoRepository.obtenerPendientesPorUsuario(usuarioId);
-        
         return pendientes.stream()
-            .map(this::toPagoPendienteDTO)
+            .map(mapper::toPagoPendienteDTO)
             .collect(Collectors.toList());
     }
     @Override
     public ComprobanteDTO realizarPago(Long cuentaId, Long servicioId, BigDecimal monto) {
         Cuenta cuenta = cuentaRepository.obtenerPorId(cuentaId)
-            .map(this::toCuentaDomain)
+            .map(mapper::toCuentaDomain)
             .orElseThrow(() -> new RuntimeException("Cuenta no encontrada."));
-        ServicioPersistenceDTO servicioDto = servicioRepository.obtenerServicioPorId(servicioId)
+        ServicioPersistenceDTO servicioDto = servicioRepository.findById(servicioId)
             .orElseThrow(() -> new RuntimeException("Servicio/Préstamo no encontrado: " + servicioId));
-        Servicio servicio = toServicioDomain(servicioDto);
+        Servicio servicio = mapper.toServicioDomain(servicioDto);
         cuenta.retirar(monto);
         cuentaRepository.actualizar(cuenta);
+        Long usuarioId = cuenta.getCliente().getId();
+        ClienteEntity clienteEntity = springDataClientRepository.findByIdUsuario_Id(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Error fatal: No se encontró la entidad Cliente para el usuario: " + usuarioId));
+        Long idCliente = clienteEntity.getIdCliente();
         PagoServicio pago = new PagoServicio(
             null,
             monto, 
             LocalDate.now(), 
             servicio,
             "PAGADO",
-            cuenta.getCliente().getId()
+            idCliente
         );
         pagoRepository.registrarPago(pago);
         Comprobante comprobanteDomain = new Comprobante();
@@ -102,6 +92,14 @@ private final PagoRepository pagoRepository;
             comprobanteDomain.getFecha(), 
             comprobanteDomain.getCodigoAutorizacion()
         );
+    }
+    @Override
+    public PagoPendienteDTO editarPago(Long pagoId, EditarPagoDTO editarPagoDTO) {
+        return pagoRepository.editarPago(pagoId, editarPagoDTO);
+    }
+    @Override
+    public void eliminarPago(Long pagoId) {
+        pagoRepository.eliminarPago(pagoId);
     }
     
 

@@ -136,12 +136,12 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public ComprobanteDTO confirmarTransferencia(String codigoOTP) {
-        PendingTransferDTO pendingDTO = pendingTransferRepository.getTransferByOtpKey(codigoOTP)
-            .orElseThrow(() -> new RuntimeException("OTP inválido o transferencia expirada. (A1)"));
+    @Transactional
+    public ComprobanteDTO confirmarTransferencia(Long clienteId, String codigoOTP) {
+        PendingTransferDTO pendingDTO = pendingTransferRepository.getTransferByOtpKey(String.valueOf(clienteId))
+            .orElseThrow(() -> new RuntimeException("No se encontró ninguna transferencia pendiente para este cliente. (A1)"));
             Long idCliente = pendingDTO.idCliente();
-            if (!otpService.validarOtp(pendingDTO.idCliente(), codigoOTP)) {
+            if (!otpService.validarOtp(clienteId, codigoOTP)) {
                 final int MAX_RETRIES = 3;
                 int currentRetries = pendingDTO.retries();
                 if (currentRetries < MAX_RETRIES - 1) {
@@ -163,7 +163,7 @@ public class GestionCuentaService implements GestionCuentaUseCase {
         
                 Cuenta cuentaDestino = cuentaRepository.obtenerPorId(pendingDTO.idCuentaDestino())
                 .map(this::toDomain)
-                .orElseThrow(() -> new RuntimeException("Cuenta destino no encontrada. (A2)")); // Maneja A2
+                .orElseThrow(() -> new RuntimeException("Cuenta destino no encontrada. (A2)"));
                 BigDecimal monto = pendingDTO.monto();
                 
                 LocalDateTime now = LocalDateTime.now();
@@ -187,9 +187,10 @@ public class GestionCuentaService implements GestionCuentaUseCase {
                 comprobanteDomain.setFecha(LocalDate.now());
                 comprobanteDomain.setCodigoAutorizacion("TRX-" + System.currentTimeMillis());
 
+                Comprobante comprobanteGuardado = comprobanteRepository.guardarComprobante(comprobanteDomain);
                 comprobanteRepository.guardarComprobante(comprobanteDomain);
                 return new ComprobanteDTO(
-                null, 
+                    comprobanteGuardado.getId(), 
                     comprobanteDomain.getServicio(),
                     comprobanteDomain.getMontoPagado(), 
                     comprobanteDomain.getFecha(), 

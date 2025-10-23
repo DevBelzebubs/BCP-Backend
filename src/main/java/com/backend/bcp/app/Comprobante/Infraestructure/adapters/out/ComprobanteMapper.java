@@ -17,4 +17,14 @@ public class ComprobanteMapper {
         entity.setCodigoAutorizacion(domain.getCodigoAutorizacion());
         return entity;
     }
+    public Comprobante toDomain(ComprobanteEntity entity) {
+        if (entity == null) return null;
+        Comprobante domain = new Comprobante();
+        domain.setId(entity.getIdComprobante());
+        domain.setServicio(entity.getServicio());
+        domain.setMontoPagado(entity.getMontoPagado());
+        domain.setFecha(entity.getFecha());
+        domain.setCodigoAutorizacion(entity.getCodigoAutorizacion());
+        return domain;
+    }
 }

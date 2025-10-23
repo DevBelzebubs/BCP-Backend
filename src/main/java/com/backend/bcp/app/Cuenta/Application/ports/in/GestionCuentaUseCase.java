@@ -13,5 +13,5 @@ public interface GestionCuentaUseCase {
     DetalleCuentaDTO obtenerDetalleCuenta(Long cuentaId);
     byte[] generarEstadoCuentaPdf(Long cuentaId);
     void iniciarTransferencia(Long idCuentaOrigen, Long idCuentaDestino, BigDecimal monto);
-    ComprobanteDTO confirmarTransferencia(String codigoOTP);
+    ComprobanteDTO confirmarTransferencia(Long clienteId, String codigoOTP);
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.bcp.app.Comprobante.Application.ports.out.ComprobanteRepository;
 import com.backend.bcp.app.Comprobante.Domain.Comprobante;
+import com.backend.bcp.app.Comprobante.Infraestructure.entity.ComprobanteEntity;
 import com.backend.bcp.app.Comprobante.Infraestructure.repo.SpringDataComprobanteRepository;
 
 @Service
@@ -16,10 +17,13 @@ public class ComprobanteService implements ComprobanteRepository {
         this.springDataComprobanteRepository = springDataComprobanteRepository;
         this.mapper = mapper;
     }
+    
 
     @Override
-    public void guardarComprobante(Comprobante comprobante) {
-        springDataComprobanteRepository.save(mapper.toEntity(comprobante));
+    public Comprobante guardarComprobante(Comprobante comprobante) {
+        ComprobanteEntity entity = mapper.toEntity(comprobante);
+        ComprobanteEntity savedEntity = springDataComprobanteRepository.save(entity);
+        return mapper.toDomain(savedEntity);
     }
 
 }

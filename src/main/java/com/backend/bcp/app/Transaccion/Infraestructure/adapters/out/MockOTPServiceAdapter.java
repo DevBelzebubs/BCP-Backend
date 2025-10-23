@@ -34,7 +34,7 @@ public class MockOTPServiceAdapter implements OtpService {
         String storedOtp = clientOtpCache.get(idCliente);
         
         if (storedOtp != null && storedOtp.equals(codigoOtp)) {
-            clientOtpCache.remove(idCliente); // El OTP solo sirve una vez
+            clientOtpCache.remove(idCliente);   
             return true;
         }
         return false;
