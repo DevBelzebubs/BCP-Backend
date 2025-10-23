@@ -26,5 +26,9 @@ public class JpaUserRepositoryAdapter implements UserRepository {
     @Override
     public Optional<UsuarioDTO> findByNombre(String nombre) {
         return repository.findByNombre(nombre).map(mapper::toPersistenceDTO);
+    }
+    @Override
+    public Optional<UsuarioDTO> findById(Long id) {
+        return repository.findById(id).map(mapper::toPersistenceDTO);
     }   
 }

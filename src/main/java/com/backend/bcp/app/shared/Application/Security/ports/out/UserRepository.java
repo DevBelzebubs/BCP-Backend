@@ -8,4 +8,5 @@ import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
 public interface UserRepository {
     List<UsuarioDTO> findAllUsuarios();
     Optional<UsuarioDTO> findByNombre(String nombre);
+    Optional<UsuarioDTO> findById(Long id);
 }

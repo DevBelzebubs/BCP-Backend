@@ -2,7 +2,6 @@ package com.backend.bcp.app.Prestamo.Application.persistence;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase
 import com.backend.bcp.app.Prestamo.Application.ports.out.CreditoService;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
 import com.backend.bcp.app.Shared.Domain.Usuario;
+import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionService;
 
 import jakarta.transaction.Transactional;
 
@@ -22,10 +22,12 @@ import jakarta.transaction.Transactional;
 public class SolicitudCreditoServiceImpl implements SolicitudCreditoUseCase {
     private final CreditoService creditoService;
     private final PrestamoMapper mapper;
+    private final NotificacionService notificacionService;
 
-    public SolicitudCreditoServiceImpl(CreditoService creditoService, PrestamoMapper mapper) {
+    public SolicitudCreditoServiceImpl(CreditoService creditoService, PrestamoMapper mapper,NotificacionService notificacionService) {
         this.creditoService = creditoService;
         this.mapper = mapper;
+        this.notificacionService = notificacionService;
     }
 
     @Override
@@ -67,23 +69,38 @@ public class SolicitudCreditoServiceImpl implements SolicitudCreditoUseCase {
             .map(mapper::toDto)
             .orElse(null);
     }
-
+    @Transactional
+    private void actualizarEstadoPrestamo(Long solicitudId, String nuevoEstado, String motivoNotificacion) {
+        PrestamoPersistenceDTO dto = creditoService.findById(solicitudId)
+            .orElseThrow(() -> new RuntimeException("Solicitud de préstamo no encontrada con ID: " + solicitudId));
+        Prestamo prestamo = mapper.fromPersistenceDTO(dto);
+        prestamo.setEstado(nuevoEstado);
+        PrestamoPersistenceDTO dtoActualizado = mapper.toPersistenceDTO(prestamo);
+        creditoService.guardarSolicitudCredito(dtoActualizado);
+        
+        notificacionService.notificarCliente(prestamo.getUsuario().getId(), motivoNotificacion);
+    }
     @Override
+    @Transactional
     public void aprobarSolicitud(Long solicitudId, Long asesorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'aprobarSolicitud'");
+        actualizarEstadoPrestamo(solicitudId, "APROBADO", 
+            "¡Felicidades! Su solicitud de préstamo ha sido APROBADA.");
     }
 
     @Override
+    @Transactional
     public void rechazarSolicitud(Long solicitudId, Long asesorId, String motivo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rechazarSolicitud'");
+        String motivoNotificacion = "Su solicitud de préstamo ha sido RECHAZADA. Motivo: " 
+            + (motivo != null && !motivo.isBlank() ? motivo : "Evaluación crediticia no favorable.");
+
+            actualizarEstadoPrestamo(solicitudId, "RECHAZADO", motivoNotificacion);
     }
 
     @Override
+    @Transactional
     public void marcarPendiente(Long solicitudId, Long asesorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'marcarPendiente'");
+        actualizarEstadoPrestamo(solicitudId, "PENDIENTE_DOCUMENTACION", 
+            "Su solicitud de préstamo requiere documentación adicional. Un asesor se contactará con usted.");
     }
 
 }
