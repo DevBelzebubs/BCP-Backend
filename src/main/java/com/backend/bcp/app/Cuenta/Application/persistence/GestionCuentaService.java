@@ -12,10 +12,13 @@ import com.backend.bcp.app.Comprobante.Domain.Comprobante;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
+import com.backend.bcp.app.Cuenta.Application.mapper.CuentaPersistenceMapper;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 import com.backend.bcp.app.Cuenta.Application.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Application.ports.out.GeneradorEstadoCuentaPdf;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
+import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
+import com.backend.bcp.app.Cuenta.Infraestructure.repo.SpringDataCuentaRepository;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.PendingTransferDTO;
@@ -24,26 +27,38 @@ import com.backend.bcp.app.Transaccion.Application.ports.out.PendingTransferRepo
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class GestionCuentaService implements GestionCuentaUseCase {
-private final CuentaRepository cuentaRepository;
+
+    private final SpringDataCuentaRepository springDataCuentaRepository;
+    private final SpringDataClientRepository springDataClientRepository;
+    private final CuentaRepository cuentaRepository;
     private final TransaccionRepository transaccionRepository;
     private final GeneradorEstadoCuentaPdf generadorPdf;
     private final OtpService otpService;
     private final ComprobanteRepository comprobanteRepository;
     private final PendingTransferRepository pendingTransferRepository;
+    private final CuentaPersistenceMapper cuentaPersistenceMapper;
 
     public GestionCuentaService(CuentaRepository cuentaRepository, TransaccionRepository transaccionRepository,
-            GeneradorEstadoCuentaPdf generadorPdf, OtpService otpService, ComprobanteRepository comprobanteRepository, PendingTransferRepository pendingTransferRepository) {
+            GeneradorEstadoCuentaPdf generadorPdf, OtpService otpService, ComprobanteRepository comprobanteRepository, 
+            PendingTransferRepository pendingTransferRepository, SpringDataCuentaRepository springDataCuentaRepository,
+            SpringDataClientRepository springDataClientRepository,CuentaPersistenceMapper cuentaPersistenceMapper) {
         this.cuentaRepository = cuentaRepository;
         this.transaccionRepository = transaccionRepository;
         this.generadorPdf = generadorPdf;
         this.otpService = otpService;
         this.comprobanteRepository = comprobanteRepository;
         this.pendingTransferRepository = pendingTransferRepository;
+        this.springDataCuentaRepository = springDataCuentaRepository;
+        this.springDataClientRepository = springDataClientRepository;
+        this.cuentaPersistenceMapper = cuentaPersistenceMapper;
     }
     private Cuenta toDomain(CuentaPersistenceDTO dto){
         if (dto == null) throw new RuntimeException("Cuenta no encontrada.");
@@ -106,20 +121,16 @@ private final CuentaRepository cuentaRepository;
     @Override
     @Transactional(readOnly = true)
     public void iniciarTransferencia(Long idCuentaOrigen, Long idCuentaDestino, BigDecimal monto) {
-        // 1. Obtener Cuentas de Dominio
         Cuenta cuentaOrigen = cuentaRepository.obtenerPorId(idCuentaOrigen)
             .map(this::toDomain)
             .orElseThrow(() -> new RuntimeException("Cuenta origen no encontrada."));
 
-        // 2. Validar saldo con la lógica de dominio (lanza excepción si es insuficiente)
         cuentaOrigen.retirar(monto); 
         
-        // 3. Crear DTO Pendiente para almacenar el estado
         Long clienteId = cuentaOrigen.getCliente().getId();
         PendingTransferDTO pendingDTO = new PendingTransferDTO(
             clienteId, idCuentaOrigen, idCuentaDestino, monto,0
         );
-        // 4. Guardar la transferencia pendiente y solicitar OTP
         pendingTransferRepository.savePendingTransfer(pendingDTO); 
         otpService.generarEnviarOtp(clienteId);
     }
@@ -184,5 +195,17 @@ private final CuentaRepository cuentaRepository;
                     comprobanteDomain.getFecha(), 
                     comprobanteDomain.getCodigoAutorizacion()
                 );
+    }
+    @Override
+    @Transactional
+    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO, Long usuarioId) {
+        ClienteEntity cliente = springDataClientRepository.findByIdUsuario_Id(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el usuarioId: " + usuarioId));
+        
+        CuentaEntity nuevaCuentaEntity = cuentaPersistenceMapper.toEntity(cuentaDTO, cliente);
+        
+        CuentaEntity cuentaGuardada = springDataCuentaRepository.save(nuevaCuentaEntity);
+    
+        return cuentaPersistenceMapper.toDTO(cuentaGuardada);
     }
 }

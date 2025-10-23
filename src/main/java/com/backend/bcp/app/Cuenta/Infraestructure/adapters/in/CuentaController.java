@@ -10,7 +10,9 @@ import com.backend.bcp.app.Cuenta.Application.dto.in.TransferenciaRequestDTO;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,18 +33,29 @@ public class CuentaController {
         List<CuentaDTO> cuentas = gestionCuentaUseCase.listarCuentasPorUsuario(usuarioId);
         return ResponseEntity.ok(cuentas);
     }
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<DetalleCuentaDTO> obtenerDetalle(@PathVariable Long usuarioid) {
-        DetalleCuentaDTO detalleCuentaDTO = gestionCuentaUseCase.obtenerDetalleCuenta(usuarioid);
+    @GetMapping("/usuario/{cuentaId}")
+    public ResponseEntity<?> obtenerDetalle(@PathVariable Long cuentaId) {
+    try {
+        DetalleCuentaDTO detalleCuentaDTO = gestionCuentaUseCase.obtenerDetalleCuenta(cuentaId);
+        if (detalleCuentaDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontró el detalle de la cuenta para el usuario con ID: " + cuentaId);
+        }
         return ResponseEntity.ok(detalleCuentaDTO);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest()
+                .body("ID de usuario inválido: " + e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error al obtener el detalle de la cuenta: " + e.getMessage());
     }
+}
     @PostMapping("/{idCuentaOrigen}/transferir")
     public ResponseEntity<?> iniciarTransferencia(@PathVariable Long idCuentaOrigen, @RequestBody TransferenciaRequestDTO transferenciaRequestDTO) {
         try {
             gestionCuentaUseCase.iniciarTransferencia(idCuentaOrigen, transferenciaRequestDTO.idCuentaDestino(), transferenciaRequestDTO.monto());
             return ResponseEntity.ok(java.util.Map.of("mensaje", "Transferencia iniciada. OTP enviado al cliente."));
         } catch (RuntimeException e) {
-            // Maneja A2 (Cuenta no encontrada/Origen) y saldo insuficiente
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
         }
     }
@@ -52,8 +65,16 @@ public class CuentaController {
             ComprobanteDTO comprobante = gestionCuentaUseCase.confirmarTransferencia(codigoOTP);
             return ResponseEntity.ok(comprobante);
         } catch (RuntimeException e) {
-            // Maneja A1 (OTP inválido/límite excedido) y A2 (Cuenta destino no encontrada)
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+    @PostMapping("/usuario/{usuarioId}/crear")
+    public ResponseEntity<?> crearNuevaCuenta(@PathVariable Long usuarioId, @RequestBody CuentaDTO cuentaDTO) {
+        try {
+            CuentaDTO cuentaCreada = gestionCuentaUseCase.crearCuenta(cuentaDTO, usuarioId);
+            return new ResponseEntity<>(cuentaCreada, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 }

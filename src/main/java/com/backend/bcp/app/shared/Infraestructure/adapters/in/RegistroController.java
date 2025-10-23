@@ -1,13 +1,15 @@
-package com.backend.bcp.app.shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.bcp.app.Shared.Application.Security.dto.in.ClienteDTO;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.EmpleadoDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.in.RegistroService;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
-import com.backend.bcp.app.shared.Application.Security.dto.in.ClienteDTO;
-import com.backend.bcp.app.shared.Application.Security.dto.in.EmpleadoDTO;
-import com.backend.bcp.app.shared.Application.Security.ports.in.RegistroService;
 
 import jakarta.validation.Valid;
 
@@ -41,5 +43,15 @@ public class RegistroController {
             e.fillInStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Error", "Error interno"));
         }
+    }
+    @PostMapping("/asesor")
+    public ResponseEntity<AsesorEntity> registrarAsesor(@Valid @RequestBody EmpleadoDTO dto) {
+        AsesorEntity asesor = registroService.registrarAsesor(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(asesor);
+    }
+    @PostMapping("/backoffice")
+    public ResponseEntity<BackOfficeEntity> registrarBackOffice(@Valid @RequestBody EmpleadoDTO dto) {
+        BackOfficeEntity backOffice = registroService.registrarBackOffice(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(backOffice);
     }
 }

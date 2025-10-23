@@ -1,10 +1,11 @@
-package com.backend.bcp.app.shared.Infraestructure.config;
+package com.backend.bcp.app.Shared.Infraestructure.config;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,8 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.backend.bcp.app.shared.Infraestructure.Security.JwtFilter;
-import com.backend.bcp.app.shared.Infraestructure.adapters.out.JwtService;
+import com.backend.bcp.app.Shared.Infraestructure.Security.JwtFilter;
+import com.backend.bcp.app.Shared.Infraestructure.adapters.out.JwtService;
 
 @Configuration
 @EnableWebSecurity
@@ -41,13 +42,13 @@ public class SecurityConfig {
 
             .requestMatchers("/api/cuentas/**", "/api/pagos/**", "/api/transferencias/**", "/api/cliente/**").hasRole("CLIENTE")
 
-            // --- INICIO DE LA CORRECCIÓN ---
-            // 1. REGLA ESPECÍFICA: El CLIENTE SÍ puede solicitar
             .requestMatchers("/api/prestamos/solicitar").hasRole("CLIENTE")
+
+            .requestMatchers(HttpMethod.POST, "/api/reclamos").hasRole("CLIENTE")
+
+            .requestMatchers(HttpMethod.GET, "/api/reclamos/{id}").hasRole("CLIENTE")
             
-            // 2. REGLA GENERAL: Los demás endpoints de prestamos son para Asesores/Admins
             .requestMatchers("/api/prestamos/**", "/api/asesor/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
-            // --- FIN DE LA CORRECCIÓN ---
 
             .requestMatchers("/api/backoffice/**", "/api/reclamos/**", "/api/empleados/**").hasAnyRole("BACKOFFICE","ADMIN")
 

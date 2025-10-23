@@ -6,8 +6,8 @@ import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
 import com.backend.bcp.app.Prestamo.Infraestructure.entity.PrestamoEntity;
-import com.backend.bcp.app.shared.Domain.Usuario;
-import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.Shared.Domain.Usuario;
+import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
 
 @Component
 public class PrestamoMapper {

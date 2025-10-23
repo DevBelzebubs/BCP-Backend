@@ -1,6 +1,6 @@
-package com.backend.bcp.app.shared.Application.Security.ports.out;
+package com.backend.bcp.app.Shared.Application.Security.ports.out;
 
-import com.backend.bcp.app.shared.Domain.Usuario;
+import com.backend.bcp.app.Shared.Domain.Usuario;
 
 import io.jsonwebtoken.Claims;
 

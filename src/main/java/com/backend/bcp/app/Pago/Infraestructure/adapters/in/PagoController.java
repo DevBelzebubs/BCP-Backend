@@ -31,10 +31,8 @@ public class PagoController {
             List<PagoPendienteDTO> pendientes = realizarPagoUseCase.listarPagosPendientes(usuarioId);
             return ResponseEntity.ok(pendientes);
         } catch (IllegalArgumentException e) {
-            // 400 BAD REQUEST: Se utiliza para datos de entrada inválidos (ej. usuarioId no es válido)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            // 500 INTERNAL SERVER ERROR: Fallback genérico
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al listar pagos: " + e.getMessage()));
         }
     }

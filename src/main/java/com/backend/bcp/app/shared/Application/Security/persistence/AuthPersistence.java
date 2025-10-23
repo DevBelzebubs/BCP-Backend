@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Application.Security.persistence;
+package com.backend.bcp.app.Shared.Application.Security.persistence;
 
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -8,17 +8,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Application.Security.dto.out.LoginResponseDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.TokenService;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.Shared.Domain.Usuario;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
-import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.shared.Application.Security.dto.out.LoginResponseDTO;
-import com.backend.bcp.app.shared.Application.Security.ports.in.AuthService;
-import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
-import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class AuthPersistence implements AuthService{
     @Autowired

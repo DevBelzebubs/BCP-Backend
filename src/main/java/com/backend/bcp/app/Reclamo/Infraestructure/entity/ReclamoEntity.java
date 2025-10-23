@@ -40,6 +40,8 @@ public class ReclamoEntity {
     private EstadoReclamo estadoReclamo;
     @Column(name = "Respuesta")
     private String respuesta;
+    @Column(name = "Numero_Seguimiento", unique = true)
+    private String numeroSeguimiento;
     public Long getIdReclamo() {
         return idReclamo;
     }
@@ -82,6 +84,12 @@ public class ReclamoEntity {
     }
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
+    }
+    public String getNumeroSeguimiento() {
+        return numeroSeguimiento;
+    }
+    public void setNumeroSeguimiento(String numeroSeguimiento) {
+        this.numeroSeguimiento = numeroSeguimiento;
     }
     
 }

@@ -9,18 +9,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
+import com.backend.bcp.app.Shared.Infraestructure.Security.JwtConfig;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {
-    "com.backend.bcp.app.shared.Infraestructure.repo",
+    "com.backend.bcp.app.Shared.Infraestructure.repo",
     "com.backend.bcp.app.Usuario.Infraestructure.repo",
     "com.backend.bcp.app.Cuenta.Infraestructure.repo",
     "com.backend.bcp.app.Transaccion.Infraestructure.repo",
     "com.backend.bcp.app.Comprobante.Infraestructure.repo",
     "com.backend.bcp.app.Pago.Infraestructure.repo",
     "com.backend.bcp.app.Servicio.Infraestructure.repo",
-    "com.backend.bcp.app.Prestamo.Infraestructure.repo"
+    "com.backend.bcp.app.Prestamo.Infraestructure.repo",
+    "com.backend.bcp.app.Reclamo.Infraestructure.repo"
 })
 @EntityScan(basePackages = {
     "com.backend.bcp.app", 

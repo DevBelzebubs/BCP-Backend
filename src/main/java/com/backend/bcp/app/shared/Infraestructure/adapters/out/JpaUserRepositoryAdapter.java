@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Infraestructure.adapters.out;
+package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.shared.Application.Security.mapper.UsuarioMapper;
-import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Application.Security.mapper.UsuarioMapper;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.Shared.Infraestructure.repo.SpringDataUserRepository;
 
 @Component
 public class JpaUserRepositoryAdapter implements UserRepository {

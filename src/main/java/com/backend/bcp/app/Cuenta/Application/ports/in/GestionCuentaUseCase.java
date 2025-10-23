@@ -8,6 +8,7 @@ import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 
 public interface GestionCuentaUseCase {
+    CuentaDTO crearCuenta(CuentaDTO cuentaDTO, Long id);
     List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId);
     DetalleCuentaDTO obtenerDetalleCuenta(Long cuentaId);
     byte[] generarEstadoCuentaPdf(Long cuentaId);

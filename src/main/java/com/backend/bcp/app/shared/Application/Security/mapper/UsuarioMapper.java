@@ -1,7 +1,10 @@
-package com.backend.bcp.app.shared.Application.Security.mapper;
+package com.backend.bcp.app.Shared.Application.Security.mapper;
 
 import org.springframework.stereotype.Component;
 
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Domain.Usuario;
+import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
 import com.backend.bcp.app.Usuario.Domain.Admin;
 import com.backend.bcp.app.Usuario.Domain.Asesor;
 import com.backend.bcp.app.Usuario.Domain.BackOffice;
@@ -11,9 +14,6 @@ import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AdminEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
-import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.shared.Domain.Usuario;
-import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
 
 @Component
 public class UsuarioMapper {

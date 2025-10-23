@@ -45,12 +45,9 @@ private final PagoRepository pagoRepository;
         return new Cuenta(dto.id(), cliente, dto.tipo(), dto.estadoCuenta(), dto.numeroCuenta(), dto.saldo());
     }
     private Servicio toServicioDomain(ServicioPersistenceDTO dto) {
-        // Servicio Domain constructor: Servicio(Long idServicio, String nombre, String descripcion, BigDecimal recibo)
         return new Servicio(dto.id(), dto.nombre(), dto.descripcion(), dto.recibo()); 
     }
     private PagoPendienteDTO toPagoPendienteDTO(PagoPersistenceDTO dto) {
-        // Esta función requiere buscar el nombre del servicio, pero para evitar un fetch N+1,
-        // se usa un MOCK que incluye el ID.
         String nombreItemMock = (dto.servicioId() != null) 
                                 ? "Servicio ID: " + dto.servicioId() 
                                 : "Préstamo ID: " + dto.prestamoId();
@@ -77,10 +74,10 @@ private final PagoRepository pagoRepository;
         ServicioPersistenceDTO servicioDto = servicioRepository.obtenerServicioPorId(servicioId)
             .orElseThrow(() -> new RuntimeException("Servicio/Préstamo no encontrado: " + servicioId));
         Servicio servicio = toServicioDomain(servicioDto);
-        cuenta.retirar(monto); // El dominio Cuenta valida fondos insuficientes.
+        cuenta.retirar(monto);
         cuentaRepository.actualizar(cuenta);
         PagoServicio pago = new PagoServicio(
-            null, // ID nulo para autogeneración
+            null,
             monto, 
             LocalDate.now(), 
             servicio,
@@ -94,16 +91,12 @@ private final PagoRepository pagoRepository;
         comprobanteDomain.setMontoPagado(monto);
         comprobanteDomain.setFecha(LocalDate.now());
         
-        // Generar Código de Autorización (Simulación, pero dinámica)
         String codigoAutorizacion = "CMP-PAGO-" + System.currentTimeMillis();
         comprobanteDomain.setCodigoAutorizacion(codigoAutorizacion);
-        
-        // 6. Persistir Comprobante Domain
-        // El repositorio debe devolver el objeto con el ID generado (IdPago)
         comprobanteRepository.guardarComprobante(comprobanteDomain); 
 
         return new ComprobanteDTO(
-            comprobanteDomain.getId(), // Si la persistencia actualiza el ID
+            comprobanteDomain.getId(),
             comprobanteDomain.getServicio(), 
             comprobanteDomain.getMontoPagado(), 
             comprobanteDomain.getFecha(), 

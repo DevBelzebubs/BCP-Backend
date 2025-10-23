@@ -56,16 +56,13 @@ public class PagoPersistenceMapper {
         if (domain instanceof PagoPrestamo pagoPrestamo) {
             PagoPrestamoEntity entity = new PagoPrestamoEntity();
             
-            // 1. Obtener ID de Cliente desde el campo expuesto en la clase Pago (asumido)
             Long clienteId = pagoPrestamo.getClienteId(); 
-            entity.setCliente(createClienteReference(clienteId)); // AJUSTE CLAVE: Setea la FK del cliente en la base
+            entity.setCliente(createClienteReference(clienteId));
             
-            // 2. Seteo de FK específica de Prestamo
             PrestamoEntity prestamoRef = new PrestamoEntity();
             prestamoRef.setIdPrestamo(pagoPrestamo.getPrestamo().getId()); 
             entity.setPrestamo(prestamoRef);
             
-            // 3. Seteo de campos comunes 
             entity.setMonto(pagoPrestamo.getMonto());
             entity.setFecha(pagoPrestamo.getFecha());
             entity.setEstado(pagoPrestamo.getEstado()); 

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
 
 import java.util.Map;
 
@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.backend.bcp.app.shared.Application.Security.dto.in.LoginDTO;
-import com.backend.bcp.app.shared.Application.Security.dto.out.LoginResponseDTO;
-import com.backend.bcp.app.shared.Application.Security.ports.in.AuthService;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.LoginDTO;
+import com.backend.bcp.app.Shared.Application.Security.dto.out.LoginResponseDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
 
 @RestController
 @RequestMapping("/auth")

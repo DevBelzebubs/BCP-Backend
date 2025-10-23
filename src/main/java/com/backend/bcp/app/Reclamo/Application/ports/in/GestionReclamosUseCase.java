@@ -2,10 +2,11 @@ package com.backend.bcp.app.Reclamo.Application.ports.in;
 
 import java.util.List;
 
-import com.backend.bcp.app.Reclamo.Application.dto.ReclamoDTO;
+import com.backend.bcp.app.Reclamo.Application.dto.in.CrearReclamoRequestDTO;
+import com.backend.bcp.app.Reclamo.Application.dto.out.ReclamoResponseDTO;
 
 public interface GestionReclamosUseCase {
-    void crearReclamo(ReclamoDTO reclamoDTO);
-    ReclamoDTO obtenerReclamoPorId(Long id);
-    List<ReclamoDTO> obtenerTodosLosReclamos();
+    ReclamoResponseDTO crearReclamo(CrearReclamoRequestDTO reclamoDTO);
+    ReclamoResponseDTO obtenerReclamoPorId(Long id);
+    List<ReclamoResponseDTO> obtenerTodosLosReclamos();
 }

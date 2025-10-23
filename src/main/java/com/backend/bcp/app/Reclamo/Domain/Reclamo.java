@@ -2,8 +2,8 @@ package com.backend.bcp.app.Reclamo.Domain;
 
 import java.time.LocalDate;
 
+import com.backend.bcp.app.Shared.Domain.Usuario;
 import com.backend.bcp.app.Usuario.Domain.Empleado;
-import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class Reclamo {
     private final Long id;
@@ -18,11 +18,10 @@ public class Reclamo {
         EN_REVISION,
         ATENDIDO
     }
+    private String numeroSeguimiento;
+
     public Reclamo(Long id, Usuario cliente, Empleado empleado, LocalDate fechaCreacion, String descripcion,
-            EstadoReclamo estado, String respuesta) {
-                if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El ID del reclamo debe ser positivo");
-        }
+            EstadoReclamo estado, String respuesta,String numeroSeguimiento) {
         if (cliente == null) {
             throw new IllegalArgumentException("El reclamo debe estar asociado a un cliente");
         }
@@ -39,7 +38,9 @@ public class Reclamo {
         this.descripcion = descripcion;
         this.estado = estado;
         this.respuesta = respuesta;
+        this.numeroSeguimiento = numeroSeguimiento;
     }
+    
     public Long getId() {
         return id;
     }
@@ -89,5 +90,13 @@ public class Reclamo {
         }
         this.estado = EstadoReclamo.ATENDIDO;
         this.respuesta = respuesta;
+    }
+
+    public String getNumeroSeguimiento() {
+        return numeroSeguimiento;
+    }
+
+    public void setNumeroSeguimiento(String numeroSeguimiento) {
+        this.numeroSeguimiento = numeroSeguimiento;
     }
 }

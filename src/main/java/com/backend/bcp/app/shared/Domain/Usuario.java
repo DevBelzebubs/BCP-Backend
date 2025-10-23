@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Domain;
+package com.backend.bcp.app.Shared.Domain;
 
 public class Usuario {
     private Long id;

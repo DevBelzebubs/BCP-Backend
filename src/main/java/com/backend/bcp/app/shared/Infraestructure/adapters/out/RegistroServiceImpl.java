@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Infraestructure.adapters.out;
+package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
 
 import java.time.LocalDate;
 
@@ -6,15 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.backend.bcp.app.Shared.Application.Security.dto.in.ClienteDTO;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.EmpleadoDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.in.RegistroService;
+import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.Shared.Infraestructure.repo.SpringDataUserRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
-import com.backend.bcp.app.shared.Application.Security.dto.in.ClienteDTO;
-import com.backend.bcp.app.shared.Application.Security.dto.in.EmpleadoDTO;
-import com.backend.bcp.app.shared.Application.Security.ports.in.RegistroService;
-import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
-import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class RegistroServiceImpl implements RegistroService {
@@ -23,12 +29,16 @@ public class RegistroServiceImpl implements RegistroService {
     private final SpringDataUserRepository springDataUserRepository;
     private final SpringDataClientRepository springDataClientRepository;
     private final SpringDataEmpleadoRepository springDataEmpleadoRepository;
+    private final SpringDataAsesorRepository springDataAsesorRepository;
+    private final SpringADataBackofficeRepository springADataBackofficeRepository;
     public RegistroServiceImpl(SpringDataUserRepository springDataUserRepository,
             SpringDataClientRepository springDataClientRepository,
-            SpringDataEmpleadoRepository springDataEmpleadoRepository) {
+            SpringDataEmpleadoRepository springDataEmpleadoRepository, SpringDataAsesorRepository springDataAsesorRepository, SpringADataBackofficeRepository springADataBackofficeRepository) {
         this.springDataUserRepository = springDataUserRepository;
-        this.springDataClientRepository = springDataClientRepository;
+        this.springDataClientRepository = springDataClientRepository; 
         this.springDataEmpleadoRepository = springDataEmpleadoRepository;
+        this.springDataAsesorRepository = springDataAsesorRepository;
+        this.springADataBackofficeRepository = springADataBackofficeRepository;
     }
 
     @Override
@@ -48,9 +58,7 @@ public class RegistroServiceImpl implements RegistroService {
 
         return springDataClientRepository.save(cliente);
     }
-
-    @Override
-    public EmpleadoEntity registrarEmpleado(EmpleadoDTO dto) {
+    public EmpleadoEntity crearEmpleado(EmpleadoDTO dto){
         String passwordEncrypt = passwordEncoder.encode(dto.getContrasena());
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNombre(dto.getNombre());
@@ -65,8 +73,29 @@ public class RegistroServiceImpl implements RegistroService {
         empleado.setFechaContratacion(LocalDate.now());
         empleado.setSalario(dto.getSalario());
         empleado.setIdUsuario(usuario);
+        return empleado;
+    }
+    @Override
+    public EmpleadoEntity registrarEmpleado(EmpleadoDTO dto) {
+        EmpleadoEntity empleadoBase = crearEmpleado(dto);
+        return springDataEmpleadoRepository.save(empleadoBase);
+    }
 
-        return springDataEmpleadoRepository.save(empleado);
+    @Override
+    @Transactional
+    public AsesorEntity registrarAsesor(EmpleadoDTO dto) {
+        EmpleadoEntity empleadoBase = crearEmpleado(dto);
+        AsesorEntity asesor = new AsesorEntity();
+        asesor.setIdEmpleado(empleadoBase);
+        return springDataAsesorRepository.save(asesor);
+    }
+
+    @Override
+    public BackOfficeEntity registrarBackOffice(EmpleadoDTO dto) {
+        EmpleadoEntity empleadoBase = crearEmpleado(dto);
+        BackOfficeEntity backOffice = new BackOfficeEntity();
+        backOffice.setIdEmpleado(empleadoBase);
+        return springADataBackofficeRepository.save(backOffice);
     }
 
 }

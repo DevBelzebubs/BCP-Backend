@@ -1,4 +1,4 @@
-package com.backend.bcp.app.shared.Application.Security.dto.in;
+package com.backend.bcp.app.Shared.Application.Security.dto.in;
 
 public class EmpleadoDTO {
     private String nombre;
