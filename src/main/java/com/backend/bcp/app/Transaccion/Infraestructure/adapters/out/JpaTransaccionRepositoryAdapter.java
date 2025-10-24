@@ -1,5 +1,6 @@
 package com.backend.bcp.app.Transaccion.Infraestructure.adapters.out;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,12 @@ public class JpaTransaccionRepositoryAdapter implements TransaccionRepository {
         if (transaccion == null) return;
         
         transaccionRepository.save(mapper.toEntity(transaccion));
+    }
+    @Override
+    public List<MovimientoPersistenceDTO> buscarMovimientosPorFecha(LocalDate fecha) {
+        return transaccionRepository.findByFecha(fecha).stream()
+                .map(mapper::toPersistenceDTO)
+                .collect(Collectors.toList());
     }
 
 }
