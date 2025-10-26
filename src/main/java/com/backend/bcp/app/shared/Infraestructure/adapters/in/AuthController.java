@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.backend.bcp.app.Shared.Application.Security.dto.in.LoginDTO;
 import com.backend.bcp.app.Shared.Application.Security.dto.out.LoginResponseDTO;
 import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
-
+//WORKS!
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

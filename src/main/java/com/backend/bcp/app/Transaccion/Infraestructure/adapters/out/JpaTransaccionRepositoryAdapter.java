@@ -1,16 +1,17 @@
 package com.backend.bcp.app.Transaccion.Infraestructure.adapters.out;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.mapper.TransaccionPersistenceMapper;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
-import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Transaccion.Infraestructure.entity.TransaccionEntity;
 import com.backend.bcp.app.Transaccion.Infraestructure.repo.SpringDataTransaccionRespository;
 
@@ -26,25 +27,30 @@ public class JpaTransaccionRepositoryAdapter implements TransaccionRepository {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<MovimientoPersistenceDTO> buscarUltimosMovimientos(Long cuentaId) {
+    public List<MovimientoAppDTO> buscarUltimosMovimientos(Long cuentaId) {
         List<TransaccionEntity> entities = transaccionRepository.findTop10ByCuenta_IdCuentaOrderByFechaDesc(cuentaId);
         return entities.stream()
-            .map(mapper::toPersistenceDTO)
+            .map(mapper::mapEntityToAppDTO)
             .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public void guardarTransaccion(Transaccion transaccion) {
-        if (transaccion == null) return;
+    @Transactional
+    public void guardarTransaccion(MovimientoAppDTO movimientoAppDTO) {
+        if (movimientoAppDTO == null) return;
         
-        transaccionRepository.save(mapper.toEntity(transaccion));
+        TransaccionEntity entity = mapper.mapAppDTOToEntity(movimientoAppDTO);
+        transaccionRepository.save(entity);
     }
     @Override
-    public List<MovimientoPersistenceDTO> buscarMovimientosPorFecha(LocalDate fecha) {
-        return transaccionRepository.findByFecha(fecha).stream()
-                .map(mapper::toPersistenceDTO)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public List<MovimientoAppDTO> buscarMovimientosPorFecha(LocalDate fecha) {
+        LocalDateTime inicioDelDia = fecha.atStartOfDay();
+        LocalDateTime finDelDia = fecha.atTime(LocalTime.MAX);
+        List<TransaccionEntity> entities = transaccionRepository.findByFechaBetween(inicioDelDia, finDelDia);
+        return entities.stream()
+            .map(mapper::mapEntityToAppDTO)
+            .collect(Collectors.toList());
     }
 
 }

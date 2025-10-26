@@ -13,15 +13,18 @@ import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.mapper.CuentaPersistenceMapper;
+import com.backend.bcp.app.Cuenta.Application.mapper.MovimientoAppPresentationMapper;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 import com.backend.bcp.app.Cuenta.Application.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Application.ports.out.GeneradorEstadoCuentaPdf;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 import com.backend.bcp.app.Cuenta.Infraestructure.repo.SpringDataCuentaRepository;
+import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.PendingTransferDTO;
+import com.backend.bcp.app.Transaccion.Application.mapper.TransaccionPersistenceMapper;
 import com.backend.bcp.app.Transaccion.Application.ports.out.OtpService;
 import com.backend.bcp.app.Transaccion.Application.ports.out.PendingTransferRepository;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
@@ -45,11 +48,13 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     private final ComprobanteRepository comprobanteRepository;
     private final PendingTransferRepository pendingTransferRepository;
     private final CuentaPersistenceMapper cuentaPersistenceMapper;
+    private final MovimientoAppPresentationMapper movimientoAppPresentationMapper;
 
     public GestionCuentaService(CuentaRepository cuentaRepository, TransaccionRepository transaccionRepository,
             GeneradorEstadoCuentaPdf generadorPdf, OtpService otpService, ComprobanteRepository comprobanteRepository, 
             PendingTransferRepository pendingTransferRepository, SpringDataCuentaRepository springDataCuentaRepository,
-            SpringDataClientRepository springDataClientRepository,CuentaPersistenceMapper cuentaPersistenceMapper) {
+            SpringDataClientRepository springDataClientRepository, CuentaPersistenceMapper cuentaPersistenceMapper,
+            MovimientoAppPresentationMapper movimientoAppPresentationMapper) {
         this.cuentaRepository = cuentaRepository;
         this.transaccionRepository = transaccionRepository;
         this.generadorPdf = generadorPdf;
@@ -59,30 +64,14 @@ public class GestionCuentaService implements GestionCuentaUseCase {
         this.springDataCuentaRepository = springDataCuentaRepository;
         this.springDataClientRepository = springDataClientRepository;
         this.cuentaPersistenceMapper = cuentaPersistenceMapper;
-    }
-    private Cuenta toDomain(CuentaPersistenceDTO dto){
-        if (dto == null) throw new RuntimeException("Cuenta no encontrada.");
-
-        Cliente cliente = new Cliente();
-        cliente.setId(dto.cliente().id());
-        return new Cuenta(
-            dto.id(), cliente, dto.tipo(), dto.estadoCuenta(), dto.numeroCuenta(), dto.saldo()
-        );
-    }
-    
-    private CuentaDTO toPresentationDTO(CuentaPersistenceDTO dto) {
-        return new CuentaDTO(dto.id(), dto.tipo(), dto.numeroCuenta(), dto.saldo());
-    }
-
-    private MovimientoDTO toMovimientoDTO(MovimientoPersistenceDTO dto) {
-        return new MovimientoDTO(dto.id(), dto.tipo(), dto.monto(), dto.fecha());
+        this.movimientoAppPresentationMapper = movimientoAppPresentationMapper;
     }
     @Override
     @Transactional(readOnly = true)
     public List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId) {
         List<CuentaPersistenceDTO> dtos = cuentaRepository.obtenerCuentasPorUsuario(usuarioId);
         return dtos.stream()
-            .map(this::toPresentationDTO)
+            .map(cuentaPersistenceMapper::toPresentationDTO)
             .collect(Collectors.toList());
     }
 
@@ -90,13 +79,11 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     @Transactional(readOnly = true)
     public DetalleCuentaDTO obtenerDetalleCuenta(Long cuentaId) {
         CuentaPersistenceDTO cuentaDto = cuentaRepository.obtenerPorId(cuentaId).orElseThrow(()-> new RuntimeException("Cuenta no encontrada"));
-        List<MovimientoPersistenceDTO> movimientoDTOs = transaccionRepository.buscarUltimosMovimientos(cuentaId);
-         List<MovimientoDTO> movimientos = movimientoDTOs.stream()
-            .map(this::toMovimientoDTO)
-            .collect(Collectors.toList());
+        List<MovimientoAppDTO> movimientoAppDTOs = transaccionRepository.buscarUltimosMovimientos(cuentaId);
+        List<MovimientoDTO> movimientos = movimientoAppDTOs.stream().map(movimientoAppPresentationMapper::mapAppDTOToMovimientoDTO).collect(Collectors.toList());
             return new DetalleCuentaDTO(
             cuentaDto.id(),
-            cuentaDto.tipo(), 
+            cuentaDto.tipo(),
             cuentaDto.saldo(),
             movimientos
         );
@@ -106,9 +93,9 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     @Transactional(readOnly = true)
     public byte[] generarEstadoCuentaPdf(Long cuentaId) {
         CuentaPersistenceDTO cuentaDto = cuentaRepository.obtenerPorId(cuentaId).orElseThrow(()-> new RuntimeException("Cuenta no encontrada"));
-        List<MovimientoPersistenceDTO> movimientoDTOs = transaccionRepository.buscarUltimosMovimientos(cuentaId);
+        List<MovimientoAppDTO> movimientoDTOs = transaccionRepository.buscarUltimosMovimientos(cuentaId);
 
-        Cuenta cuentaDomain = toDomain(cuentaDto);
+        Cuenta cuentaDomain = cuentaPersistenceMapper.toDomain(cuentaDto);
 
         List<Transaccion> movimientosDomain = movimientoDTOs.stream()
             .map(dto -> new Transaccion(
@@ -122,7 +109,7 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     @Transactional(readOnly = true)
     public void iniciarTransferencia(Long idCuentaOrigen, Long idCuentaDestino, BigDecimal monto) {
         Cuenta cuentaOrigen = cuentaRepository.obtenerPorId(idCuentaOrigen)
-            .map(this::toDomain)
+            .map(cuentaPersistenceMapper::toDomain)
             .orElseThrow(() -> new RuntimeException("Cuenta origen no encontrada."));
 
         cuentaOrigen.retirar(monto); 
@@ -158,26 +145,26 @@ public class GestionCuentaService implements GestionCuentaUseCase {
                 }
             }   
                 Cuenta cuentaOrigen = cuentaRepository.obtenerPorId(pendingDTO.idCuentaOrigen())
-                .map(this::toDomain)
+                .map(cuentaPersistenceMapper::toDomain)
                 .orElseThrow(() -> new RuntimeException("Cuenta origen no encontrada."));
         
                 Cuenta cuentaDestino = cuentaRepository.obtenerPorId(pendingDTO.idCuentaDestino())
-                .map(this::toDomain)
+                .map(cuentaPersistenceMapper::toDomain)
                 .orElseThrow(() -> new RuntimeException("Cuenta destino no encontrada. (A2)"));
                 BigDecimal monto = pendingDTO.monto();
-                
                 LocalDateTime now = LocalDateTime.now();
-                cuentaOrigen.retirar(monto);
+
+                    cuentaOrigen.retirar(monto);
                 cuentaDestino.depositar(monto);
 
                 cuentaRepository.actualizar(cuentaOrigen);
                 cuentaRepository.actualizar(cuentaDestino);
 
-                Transaccion retiro = new Transaccion(null, cuentaOrigen, "RETIRO", monto, now);
-                Transaccion deposito = new Transaccion(null, cuentaDestino, "DEPOSITO", monto, now);
+                MovimientoAppDTO retiroDto = new MovimientoAppDTO(null, cuentaOrigen.getId(), "RETIRO", monto, now);
+                MovimientoAppDTO depositoDto = new MovimientoAppDTO(null, cuentaDestino.getId(), "DEPOSITO", monto, now);
 
-                transaccionRepository.guardarTransaccion(retiro);
-                transaccionRepository.guardarTransaccion(deposito);
+                transaccionRepository.guardarTransaccion(retiroDto);
+                transaccionRepository.guardarTransaccion(depositoDto);
 
                 pendingTransferRepository.deleteTransfer(String.valueOf(idCliente));
 

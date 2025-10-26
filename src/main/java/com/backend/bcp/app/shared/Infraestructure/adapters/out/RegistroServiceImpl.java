@@ -85,16 +85,18 @@ public class RegistroServiceImpl implements RegistroService {
     @Transactional
     public AsesorEntity registrarAsesor(EmpleadoDTO dto) {
         EmpleadoEntity empleadoBase = crearEmpleado(dto);
+        EmpleadoEntity empleadoGuardado = springDataEmpleadoRepository.save(empleadoBase);
         AsesorEntity asesor = new AsesorEntity();
-        asesor.setIdEmpleado(empleadoBase);
+        asesor.setIdEmpleado(empleadoGuardado);
         return springDataAsesorRepository.save(asesor);
     }
 
     @Override
     public BackOfficeEntity registrarBackOffice(EmpleadoDTO dto) {
         EmpleadoEntity empleadoBase = crearEmpleado(dto);
+        EmpleadoEntity empleadoGuardado = springDataEmpleadoRepository.save(empleadoBase);
         BackOfficeEntity backOffice = new BackOfficeEntity();
-        backOffice.setIdEmpleado(empleadoBase);
+        backOffice.setIdEmpleado(empleadoGuardado);
         return springADataBackofficeRepository.save(backOffice);
     }
 

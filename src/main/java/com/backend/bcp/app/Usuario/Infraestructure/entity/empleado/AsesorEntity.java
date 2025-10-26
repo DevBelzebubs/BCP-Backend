@@ -2,7 +2,6 @@ package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
 import com.backend.bcp.app.Prestamo.Infraestructure.entity.PrestamoEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +18,10 @@ public class AsesorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Asesor")
     private Long idAsesor;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "ID_Empleado", referencedColumnName="ID_Empleado")
     private EmpleadoEntity idEmpleado;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "ID_Prestamos", referencedColumnName = "ID_Prestamos")
     private PrestamoEntity idPrestamo;
     public EmpleadoEntity getIdEmpleado() {

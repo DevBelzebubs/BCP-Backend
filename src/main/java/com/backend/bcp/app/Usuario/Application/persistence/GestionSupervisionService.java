@@ -14,6 +14,7 @@ import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
 import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
+import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.MarcarSospechosoRequestDTO;
@@ -47,8 +48,8 @@ public GestionSupervisionService(ReclamoRepository reclamoRepository, Transaccio
 
     @Override
     public List<OperacionSupervisionDTO> obtenerOperacionesParaSupervisar() {
-        List<ReclamoPersistenceDTO> reclamos = reclamoRepository.findAll().stream().toList();
-        List<MovimientoPersistenceDTO> transacciones = transaccionRepository.buscarMovimientosPorFecha(LocalDate.now());
+        List<ReclamoPersistenceDTO> reclamos = reclamoRepository.findAll();
+        List<MovimientoAppDTO> transacciones = transaccionRepository.buscarMovimientosPorFecha(LocalDate.now());
         Stream<OperacionSupervisionDTO> reclamosStream = reclamos.stream().map(r -> new OperacionSupervisionDTO(
                 r.idReclamo(),
                 "RECLAMO",

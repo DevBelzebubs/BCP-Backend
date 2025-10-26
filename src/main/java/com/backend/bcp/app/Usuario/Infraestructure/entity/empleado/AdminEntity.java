@@ -1,6 +1,5 @@
 package com.backend.bcp.app.Usuario.Infraestructure.entity.empleado;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ public class AdminEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Admin")
     private long idAdmin;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "ID_Empleado", referencedColumnName="ID_Empleado")
     private EmpleadoEntity idEmpleado;
     public long getIdAdmin() {

@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
@@ -14,7 +16,9 @@ import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionResultDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionarConciliacionUseCase;
 
 import jakarta.validation.Valid;
-
+//WORKS!
+@RestController
+@RequestMapping("/api/conciliacion")
 public class ConciliacionController {
     private final GestionarConciliacionUseCase gestionarConciliacionUseCase;
     private final UserRepository userRepository;

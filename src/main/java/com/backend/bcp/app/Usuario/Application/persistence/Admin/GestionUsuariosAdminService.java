@@ -13,6 +13,8 @@ import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
 import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoRol;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionUsuariosAdminUseCase;
 import com.backend.bcp.app.Usuario.Application.ports.out.Admin.AuditoriaRolPort;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
@@ -69,14 +71,29 @@ public class GestionUsuariosAdminService implements GestionUsuariosAdminUseCase 
         if (TipoRol.ADMIN.equals(rolActual)) {
             throw new RuntimeException("No se puede cambiar el rol de un Administrador.");
         }
+        if (TipoRol.ADMIN.equals(rolNuevo) || TipoRol.EMPLEADO.equals(rolNuevo)) {
+             throw new RuntimeException("No se puede asignar el rol " + rolNuevo + " directamente.");
+        }
+
         LocalDateTime fechaHora = LocalDateTime.now();
+
         if (TipoRol.ASESOR.equals(rolActual)) {
             asesorRepository.findByIdEmpleado_IdEmpleado(empleadoId).ifPresent(asesorRepository::delete);
         } else if (TipoRol.BACKOFFICE.equals(rolActual)) {
             backofficeRepository.findByIdEmpleado_IdEmpleado(empleadoId).ifPresent(backofficeRepository::delete);
         }
+
         auditoriaRolPort.guardarAuditoria(adminUserId, empleadoId, rolActual, rolNuevo, fechaHora);
 
+        if (TipoRol.ASESOR.equals(rolNuevo)) {
+            AsesorEntity asesor = new AsesorEntity();
+            asesor.setIdEmpleado(empleado);
+            asesorRepository.save(asesor);
+        } else if (TipoRol.BACKOFFICE.equals(rolNuevo)) {
+            BackOfficeEntity backOffice = new BackOfficeEntity();
+            backOffice.setIdEmpleado(empleado);
+            backofficeRepository.save(backOffice);
+        }
         UsuarioEntity usr = empleado.getIdUsuario();
         return new EmpleadoRolDTO(
                 empleadoId,

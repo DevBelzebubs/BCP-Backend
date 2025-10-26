@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
 import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionResultDTO;
@@ -16,7 +18,7 @@ import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionSer
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.AlertaRepositoryPort;
 
 import jakarta.transaction.Transactional;
-
+@Component
 public class GestionConciliacionService implements GestionarConciliacionUseCase {
         private final TransaccionRepository transaccionRepository; 
         private final AlertaRepositoryPort alertaRepository;     
@@ -37,9 +39,9 @@ public class GestionConciliacionService implements GestionarConciliacionUseCase 
                 .map(OperacionInterbancariaDTO::monto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        List<MovimientoPersistenceDTO> internos = transaccionRepository.buscarMovimientosPorFecha(fecha);
+        List<MovimientoAppDTO> internos = transaccionRepository.buscarMovimientosPorFecha(fecha);
         BigDecimal sumaInterna = internos.stream()
-                .map(MovimientoPersistenceDTO::monto)
+                .map(MovimientoAppDTO::monto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         if (sumaExterna.compareTo(sumaInterna) != 0) {
             String mensajeAlerta = String.format(
