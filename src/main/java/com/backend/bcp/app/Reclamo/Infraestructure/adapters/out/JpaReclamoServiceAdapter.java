@@ -1,5 +1,6 @@
 package com.backend.bcp.app.Reclamo.Infraestructure.adapters.out;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,38 +14,45 @@ import com.backend.bcp.app.Reclamo.Application.mapper.ReclamoMapper;
 import com.backend.bcp.app.Reclamo.Application.ports.in.GestionReclamosUseCase;
 import com.backend.bcp.app.Reclamo.Application.ports.out.ReclamoRepository;
 import com.backend.bcp.app.Reclamo.Domain.Reclamo;
+import com.backend.bcp.app.Reclamo.Domain.Reclamo.EstadoReclamo;
+import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 
 @Component
 public class JpaReclamoServiceAdapter implements GestionReclamosUseCase {
     private final ReclamoRepository repository;
-    private final ReclamoMapper mapper
-    ;
-    public JpaReclamoServiceAdapter(ReclamoRepository repository, ReclamoMapper mapper) {
+    private final ReclamoMapper mapper;
+    private final SpringDataClientRepository clientRepository;
+
+    public JpaReclamoServiceAdapter(ReclamoRepository repository, ReclamoMapper mapper, SpringDataClientRepository clientRepository) {
         this.repository = repository;
         this.mapper = mapper;
+        this.clientRepository = clientRepository;
     }
     @Override
     @Transactional
     public ReclamoResponseDTO crearReclamo(CrearReclamoRequestDTO reclamoDTO) {
-        Reclamo newReclamo = mapper.requestDtoToDomain(reclamoDTO);
+         Long usuarioId = reclamoDTO.getClienteId();
 
-        ReclamoPersistenceDTO dtoParaGuardar = mapper.domainToPersistenceDto(newReclamo);
+         ClienteEntity clienteEntity = clientRepository.findByIdUsuario_Id(usuarioId)
+                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el ID de Usuario: " + usuarioId));
+         String numeroSeguimiento = mapper.generarNumeroSeguimiento();
+         ReclamoPersistenceDTO dtoParaGuardar = new ReclamoPersistenceDTO(
+                 null,
+                 clienteEntity.getIdCliente(),
+                 null,
+                 LocalDate.now(),
+                 reclamoDTO.getDescripcion(),
+                 EstadoReclamo.PENDIENTE,
+                 null,
+                 numeroSeguimiento);
+         ReclamoPersistenceDTO dtoGuardado = repository.guardarReclamo(dtoParaGuardar);
 
-        String numeroSeguimiento = mapper.generarNumeroSeguimiento();
+         Reclamo reclamoGuardadoDomain = mapper.persistenceDtoToDomain(dtoGuardado);
+         ReclamoResponseDTO responseDTO = mapper.domainToResponseDto(reclamoGuardadoDomain);
+         responseDTO.setNumeroSeguimiento(dtoGuardado.numeroSeguimiento());
 
-        ReclamoPersistenceDTO dtoConSeguimiento = new ReclamoPersistenceDTO(
-            dtoParaGuardar.idReclamo(), dtoParaGuardar.clienteId(), dtoParaGuardar.empleadoId(),
-            dtoParaGuardar.fechaCreacion(), dtoParaGuardar.descripcion(), dtoParaGuardar.estadoReclamo(),
-            dtoParaGuardar.respuesta(), numeroSeguimiento
-        );
-
-        ReclamoPersistenceDTO dtoGuardado = repository.guardarReclamo(dtoConSeguimiento);
-
-        Reclamo reclamoGuardadoDomain = mapper.persistenceDtoToDomain(dtoGuardado);
-        ReclamoResponseDTO responseDTO = mapper.domainToResponseDto(reclamoGuardadoDomain);
-        responseDTO.setNumeroSeguimiento(dtoGuardado.numeroSeguimiento());
-
-        return responseDTO;
+         return responseDTO;
     }
     @Override
     @Transactional(readOnly = true)

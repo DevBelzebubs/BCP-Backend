@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+//WORKS!
 @RestController
 @RequestMapping("/api/reportes")
 public class ReporteController {
@@ -39,5 +39,4 @@ public class ReporteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
 }

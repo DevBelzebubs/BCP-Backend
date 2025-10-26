@@ -12,7 +12,7 @@ import com.backend.bcp.app.Reclamo.Application.dto.out.ReclamoResponseDTO;
 import com.backend.bcp.app.Reclamo.Application.ports.in.GestionReclamosUseCase;
 
 import jakarta.validation.Valid;
-
+//WORKS!
 @RestController
 @RequestMapping("/api/reclamos")
 public class ReclamoController {
