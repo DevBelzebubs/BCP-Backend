@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.bcp.app.Pago.Application.dto.in.EditarPagoDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
-import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
-import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceMapper;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.mapper.PagoPersistenceMapper;
 import com.backend.bcp.app.Pago.Application.ports.out.PagoRepository;
 import com.backend.bcp.app.Pago.Domain.Pago;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoEntity;

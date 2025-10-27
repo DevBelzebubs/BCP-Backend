@@ -1,11 +1,11 @@
-package com.backend.bcp.app.Pago.Application.dto.out;
+package com.backend.bcp.app.Pago.Application.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.out.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
-import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
 import com.backend.bcp.app.Pago.Domain.Pago;
 import com.backend.bcp.app.Pago.Domain.PagoPrestamo;
 import com.backend.bcp.app.Pago.Domain.PagoServicio;

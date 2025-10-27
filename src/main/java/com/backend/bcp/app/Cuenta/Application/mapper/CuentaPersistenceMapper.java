@@ -4,11 +4,11 @@ import org.springframework.stereotype.Component;
 
 import com.backend.bcp.app.Cuenta.Application.dto.in.ClienteReferenceDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
-import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.out.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 

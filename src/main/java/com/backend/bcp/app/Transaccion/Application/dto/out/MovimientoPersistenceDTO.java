@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Transaccion.Application.dto.in;
+package com.backend.bcp.app.Transaccion.Application.dto.out;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

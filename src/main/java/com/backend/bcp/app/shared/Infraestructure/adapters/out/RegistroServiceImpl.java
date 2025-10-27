@@ -3,6 +3,7 @@ package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +41,20 @@ public class RegistroServiceImpl implements RegistroService {
         this.springDataAsesorRepository = springDataAsesorRepository;
         this.springADataBackofficeRepository = springADataBackofficeRepository;
     }
-
+    private void validarUsuarioDuplicado(String nombre, String correo, String dni) {
+        if (springDataUserRepository.findByNombre(nombre).isPresent()) {
+            throw new IllegalArgumentException("El nombre de usuario '" + nombre + "' ya está en uso.");
+        }
+        if (springDataUserRepository.findByCorreo(correo).isPresent()) {
+            throw new IllegalArgumentException("El correo electrónico '" + correo + "' ya está registrado.");
+        }
+        if (springDataUserRepository.findByDni(dni).isPresent()) {
+            throw new IllegalArgumentException("El DNI '" + dni + "' ya está registrado.");
+        }
+    }
     @Override
     public ClienteEntity registrarCliente(ClienteDTO dto) {
+        validarUsuarioDuplicado(dto.getNombre(), dto.getCorreo(), dto.getDni());
         String passwordEncrypt = passwordEncoder.encode(dto.getContrasena());
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNombre(dto.getNombre());
@@ -56,9 +68,14 @@ public class RegistroServiceImpl implements RegistroService {
         cliente.setFechaRegistro(LocalDate.now());
         cliente.setIdUsuario(usuario);
 
-        return springDataClientRepository.save(cliente);
+        try {
+            return springDataClientRepository.save(cliente);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Error al registrar: el nombre, correo o DNI ya existe (detectado por BD).");
+        }
     }
     public EmpleadoEntity crearEmpleado(EmpleadoDTO dto){
+        validarUsuarioDuplicado(dto.getNombre(), dto.getCorreo(), dto.getDni());
         String passwordEncrypt = passwordEncoder.encode(dto.getContrasena());
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setNombre(dto.getNombre());
@@ -78,7 +95,11 @@ public class RegistroServiceImpl implements RegistroService {
     @Override
     public EmpleadoEntity registrarEmpleado(EmpleadoDTO dto) {
         EmpleadoEntity empleadoBase = crearEmpleado(dto);
-        return springDataEmpleadoRepository.save(empleadoBase);
+        try {
+             return springDataEmpleadoRepository.save(empleadoBase);
+        } catch (DataIntegrityViolationException e) {
+             throw new IllegalArgumentException("Error al registrar empleado: el nombre, correo o DNI ya existe (detectado por BD).");
+        }
     }
 
     @Override
@@ -88,7 +109,11 @@ public class RegistroServiceImpl implements RegistroService {
         EmpleadoEntity empleadoGuardado = springDataEmpleadoRepository.save(empleadoBase);
         AsesorEntity asesor = new AsesorEntity();
         asesor.setIdEmpleado(empleadoGuardado);
-        return springDataAsesorRepository.save(asesor);
+        try {
+            return springDataAsesorRepository.save(asesor);
+        } catch (DataIntegrityViolationException e) {
+             throw new IllegalArgumentException("Error al registrar asesor: el nombre, correo o DNI ya existe (detectado por BD).");
+        }
     }
 
     @Override
@@ -97,7 +122,11 @@ public class RegistroServiceImpl implements RegistroService {
         EmpleadoEntity empleadoGuardado = springDataEmpleadoRepository.save(empleadoBase);
         BackOfficeEntity backOffice = new BackOfficeEntity();
         backOffice.setIdEmpleado(empleadoGuardado);
-        return springADataBackofficeRepository.save(backOffice);
+        try {
+             return springADataBackofficeRepository.save(backOffice);
+        } catch (DataIntegrityViolationException e) {
+             throw new IllegalArgumentException("Error al registrar backoffice: el nombre, correo o DNI ya existe (detectado por BD).");
+        }
     }
 
 }

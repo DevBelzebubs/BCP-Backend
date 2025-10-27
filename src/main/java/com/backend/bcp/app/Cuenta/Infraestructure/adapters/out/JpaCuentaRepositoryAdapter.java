@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaPersistenceDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.out.CuentaPersistenceDTO;
 import com.backend.bcp.app.Cuenta.Application.mapper.CuentaPersistenceMapper;
 import com.backend.bcp.app.Cuenta.Application.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;

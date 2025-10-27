@@ -1,6 +1,5 @@
 package com.backend.bcp.app.Pago.Application.ports.in;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
@@ -9,7 +8,7 @@ import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 
 public interface RealizarPagoUseCase {
     List<PagoPendienteDTO> listarPagosPendientes(Long usuarioId);
-    ComprobanteDTO realizarPago(Long cuentaId, Long servicioId, BigDecimal monto);
+    ComprobanteDTO realizarPago(Long cuentaId, Long servicioId);
     PagoPendienteDTO editarPago(Long pagoId, EditarPagoDTO editarPagoDTO);
     void eliminarPago(Long pagoId); 
 }

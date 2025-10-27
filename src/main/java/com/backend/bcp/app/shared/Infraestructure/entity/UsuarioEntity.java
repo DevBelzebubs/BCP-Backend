@@ -15,13 +15,13 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Usuario")
     private Long id;
-    @Column(name = "Nombre")
+    @Column(name = "Nombre", unique = true, nullable = false)
     private String nombre;
-    @Column(name = "Contrasena")
+    @Column(name = "Contrasena", nullable = false)
     private String contrasena;
-    @Column(name = "Correo")
+    @Column(name = "Correo", unique = true, nullable = false)
     private String correo;
-    @Column(name = "DNI")
+    @Column(name = "DNI", unique = true, nullable = false)
     private String dni;
     @Column(name = "Direccion")
     private String direccion;

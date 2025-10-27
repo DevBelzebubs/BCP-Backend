@@ -10,14 +10,14 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
 import com.backend.bcp.app.Pago.Domain.Pago;
 import com.backend.bcp.app.Pago.Domain.PagoPrestamo;
 import com.backend.bcp.app.Pago.Domain.PagoServicio;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
 import com.backend.bcp.app.Shared.Application.Security.dto.out.ReporteOperacionDTO;
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteDiarioPdf;
 

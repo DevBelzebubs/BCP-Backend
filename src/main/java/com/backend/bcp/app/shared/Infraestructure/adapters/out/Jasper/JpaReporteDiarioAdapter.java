@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
-import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceMapper;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.mapper.PagoPersistenceMapper;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoEntity;
 import com.backend.bcp.app.Pago.Infraestructure.repo.SpringDataPagoRepository;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
 import com.backend.bcp.app.Prestamo.Infraestructure.entity.PrestamoEntity;
 import com.backend.bcp.app.Prestamo.Infraestructure.repo.SpringDataPrestamoRepository;
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Application.mapper.TransaccionPersistenceMapper;
 import com.backend.bcp.app.Transaccion.Infraestructure.entity.TransaccionEntity;
 import com.backend.bcp.app.Transaccion.Infraestructure.repo.SpringDataTransaccionRespository;

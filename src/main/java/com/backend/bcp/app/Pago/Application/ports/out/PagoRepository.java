@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.backend.bcp.app.Pago.Application.dto.in.EditarPagoDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
-import com.backend.bcp.app.Pago.Application.dto.in.PagoPersistenceDTO;
+import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
 import com.backend.bcp.app.Pago.Domain.Pago;
 
 public interface PagoRepository {

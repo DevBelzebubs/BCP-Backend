@@ -9,4 +9,6 @@ import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
 @Repository
 public interface SpringDataUserRepository extends JpaRepository<UsuarioEntity,Long> {
        Optional<UsuarioEntity> findByNombre(String nombre);
+       Optional<UsuarioEntity> findByCorreo(String correo);
+       Optional<UsuarioEntity> findByDni(String dni);
 }

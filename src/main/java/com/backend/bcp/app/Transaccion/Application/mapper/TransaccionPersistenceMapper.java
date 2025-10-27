@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
-import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoPersistenceDTO;
+import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Transaccion.Infraestructure.entity.TransaccionEntity;
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+//WORKS!
 @RestController
 @RequestMapping("/api/pagos")
 public class PagoController {
@@ -37,12 +37,19 @@ public class PagoController {
         }
     }
     @PostMapping("/realizar")
-    public ResponseEntity<ComprobanteDTO> realizarPago(@RequestBody PagoRequestDTO request) {
-        ComprobanteDTO comprobante = realizarPagoUseCase.realizarPago(
-            request.cuentaId(), 
-            request.servicioId(),
-            request.monto()
-        );
-        return ResponseEntity.ok(comprobante);
+    public ResponseEntity<?> realizarPago(@RequestBody PagoRequestDTO request) {
+        try {
+            ComprobanteDTO comprobante = realizarPagoUseCase.realizarPago(
+                request.cuentaId(),
+                request.pagoId()
+            );
+            return ResponseEntity.ok(comprobante);
+        } catch (RuntimeException e) {
+            e.getStackTrace();
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            e.getStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el pago."));
+        }
     }
 }
