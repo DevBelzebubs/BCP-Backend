@@ -2,17 +2,13 @@ package com.backend.bcp.app.Usuario.Application.persistence;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.backend.bcp.app.Pago.Application.dto.out.PagoPersistenceDTO;
-import com.backend.bcp.app.Pago.Domain.Pago;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
-import com.backend.bcp.app.Prestamo.Domain.Prestamo;
 import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
-import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Application.mapper.JasperMapper;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GenerarReporteDiarioUseCase;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteDiarioPdf;

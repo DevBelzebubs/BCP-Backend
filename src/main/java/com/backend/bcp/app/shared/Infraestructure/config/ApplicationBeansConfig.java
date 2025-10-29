@@ -8,12 +8,10 @@ import com.backend.bcp.app.Shared.Application.Security.persistence.AuthPersisten
 import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.TokenService;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Infraestructure.adapters.out.Jasper.JasperReporteGlobalAdapter;
 import com.backend.bcp.app.Usuario.Application.mapper.JasperMapper;
 import com.backend.bcp.app.Usuario.Application.persistence.ReporteDiarioService;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GenerarReporteDiarioUseCase;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteDiarioPdf;
-import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteGlobalPdf;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.ReporteDiarioDataPort;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;

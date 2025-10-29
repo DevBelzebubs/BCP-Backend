@@ -18,7 +18,7 @@ import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
 
 import jakarta.validation.Valid;
-
+//WOKRS
 @RestController
 @RequestMapping("/api/prestamos")
 public class PrestamoController {

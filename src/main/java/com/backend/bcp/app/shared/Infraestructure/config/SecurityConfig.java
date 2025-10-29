@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import com.backend.bcp.app.Shared.Infraestructure.adapters.out.JwtService;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtService tokenService;
     public SecurityConfig(JwtService tokenService) {
@@ -52,7 +54,9 @@ public class SecurityConfig {
 
             .requestMatchers("/api/backoffice/**", "/api/reclamos/**", "/api/empleados/**", "/api/servicios/**").hasAnyRole("BACKOFFICE","ADMIN")
             
-            .requestMatchers("/api/prestamos/**", "/api/asesor/**", "/api/reportes/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")            
+            .requestMatchers("/api/prestamos/**", "/api/asesor/**", "/api/reportes/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
+            
+            .requestMatchers("/api/empleado/operaciones-ventanilla/**").hasAnyRole("EMPLEADO", "ASESOR", "BACKOFFICE", "ADMIN")      
             .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
