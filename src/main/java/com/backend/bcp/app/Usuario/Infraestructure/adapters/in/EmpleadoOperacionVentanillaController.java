@@ -12,12 +12,15 @@ import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionOperacio
 
 import jakarta.validation.Valid;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,14 +39,15 @@ public class EmpleadoOperacionVentanillaController {
     }
     @PostMapping("/deposito")
     public ResponseEntity<?> registrarDeposito(@Valid @RequestBody DepositoVentanillaDTO request) {
-        try{
+        try {
             Long empleadoId = getAuthenticatedEmpleadoUsuarioId();
             ComprobanteDTO comprobante = gestionOperacionVentanillaUseCase.registrarDepositoVentanilla(request, empleadoId);
-            return ResponseEntity.ok(comprobante);
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
+            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el depósito."));
         }
     }
     @PostMapping("/retiro")

@@ -2,6 +2,7 @@ package com.backend.bcp.app.Shared.Infraestructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
 import com.backend.bcp.app.Shared.Application.Security.persistence.AuthPersistence;
@@ -23,8 +24,8 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmple
 public class ApplicationBeansConfig {
     @Bean
     public AuthService authService(UserRepository userRepository,SpringDataClientRepository clientRepository,
-    SpringDataEmpleadoRepository empleadoRepository,SpringDataAsesorRepository asesorRepository,SpringADataBackofficeRepository backofficeRepository,SpringDataAdminRepository adminRepository, TokenService tokenService) {
-        return new AuthPersistence(userRepository,clientRepository,empleadoRepository,asesorRepository,backofficeRepository,adminRepository,tokenService);
+    SpringDataEmpleadoRepository empleadoRepository,SpringDataAsesorRepository asesorRepository,SpringADataBackofficeRepository backofficeRepository,SpringDataAdminRepository adminRepository, TokenService tokenService,PasswordEncoder passwordEncoder) {
+        return new AuthPersistence(userRepository,clientRepository,empleadoRepository,asesorRepository,backofficeRepository,adminRepository,tokenService,passwordEncoder);
     }
     @Bean
     public GenerarReporteDiarioUseCase generarReporteDiarioUseCase(

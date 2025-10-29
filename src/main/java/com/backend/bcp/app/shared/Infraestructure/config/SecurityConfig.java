@@ -56,7 +56,7 @@ public class SecurityConfig {
             
             .requestMatchers("/api/prestamos/**", "/api/asesor/**", "/api/reportes/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
             
-            .requestMatchers("/api/empleado/operaciones-ventanilla/**").hasAnyRole("EMPLEADO", "ASESOR", "BACKOFFICE", "ADMIN")      
+            .requestMatchers(HttpMethod.POST, "/api/empleado/operaciones-ventanilla/deposito").permitAll()      
             .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)

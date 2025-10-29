@@ -21,7 +21,6 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAseso
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
 
 public class AuthPersistence implements AuthService{
-    @Autowired
     private PasswordEncoder passwordEncoder;
     private final UserRepository usuarioRepository;
     private final SpringDataClientRepository clienteRepository;
@@ -33,12 +32,13 @@ public class AuthPersistence implements AuthService{
 
     public AuthPersistence(UserRepository usuarioRepository, SpringDataClientRepository clienteRepository,
             SpringDataEmpleadoRepository empleadoRepository, SpringDataAsesorRepository asesorRepository,
-            SpringADataBackofficeRepository backOfficeRepository,SpringDataAdminRepository adminRepository, TokenService tokenService) {
+            SpringADataBackofficeRepository backOfficeRepository,SpringDataAdminRepository adminRepository, TokenService tokenService, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.clienteRepository = clienteRepository;
         this.empleadoRepository = empleadoRepository;
         this.asesorRepository = asesorRepository;
         this.backOfficeRepository = backOfficeRepository;
+        this.passwordEncoder = passwordEncoder;
         this.adminRepository = adminRepository;
         this.tokenService = tokenService;
     }
