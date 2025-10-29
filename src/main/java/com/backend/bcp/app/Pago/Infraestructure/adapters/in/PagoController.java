@@ -25,10 +25,10 @@ public class PagoController {
     public PagoController(RealizarPagoUseCase realizarPagoUseCase) {
         this.realizarPagoUseCase = realizarPagoUseCase;
     }
-    @GetMapping("/pendientes/usuario/{usuarioId}")
-    public ResponseEntity<?> listarPagosPendientes(@PathVariable Long usuarioId) {
+    @GetMapping("/pendientes/usuario/{dni}")
+    public ResponseEntity<?> listarPagosPendientes(@PathVariable String dni) {
         try {
-            List<PagoPendienteDTO> pendientes = realizarPagoUseCase.listarPagosPendientes(usuarioId);
+            List<PagoPendienteDTO> pendientes = realizarPagoUseCase.listarPagosPendientes(dni);
             return ResponseEntity.ok(pendientes);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));

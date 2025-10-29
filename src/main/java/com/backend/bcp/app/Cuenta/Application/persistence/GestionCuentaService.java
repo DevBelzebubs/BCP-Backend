@@ -20,6 +20,8 @@ import com.backend.bcp.app.Cuenta.Application.ports.out.GeneradorEstadoCuentaPdf
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 import com.backend.bcp.app.Cuenta.Infraestructure.repo.SpringDataCuentaRepository;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.PendingTransferDTO;
@@ -49,12 +51,13 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     private final PendingTransferRepository pendingTransferRepository;
     private final CuentaPersistenceMapper cuentaPersistenceMapper;
     private final MovimientoAppPresentationMapper movimientoAppPresentationMapper;
+    private final UserRepository userRepository;
 
     public GestionCuentaService(CuentaRepository cuentaRepository, TransaccionRepository transaccionRepository,
             GeneradorEstadoCuentaPdf generadorPdf, OtpService otpService, ComprobanteRepository comprobanteRepository, 
             PendingTransferRepository pendingTransferRepository, SpringDataCuentaRepository springDataCuentaRepository,
             SpringDataClientRepository springDataClientRepository, CuentaPersistenceMapper cuentaPersistenceMapper,
-            MovimientoAppPresentationMapper movimientoAppPresentationMapper) {
+            MovimientoAppPresentationMapper movimientoAppPresentationMapper, UserRepository userRepository) {
         this.cuentaRepository = cuentaRepository;
         this.transaccionRepository = transaccionRepository;
         this.generadorPdf = generadorPdf;
@@ -65,10 +68,14 @@ public class GestionCuentaService implements GestionCuentaUseCase {
         this.springDataClientRepository = springDataClientRepository;
         this.cuentaPersistenceMapper = cuentaPersistenceMapper;
         this.movimientoAppPresentationMapper = movimientoAppPresentationMapper;
+        this.userRepository = userRepository;
     }
     @Override
     @Transactional(readOnly = true)
-    public List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId) {
+    public List<CuentaDTO> listarCuentasPorUsuario(String dni) {
+        Long usuarioId = userRepository.findByDni(dni)
+                .map(UsuarioDTO::id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + dni));
         List<CuentaPersistenceDTO> dtos = cuentaRepository.obtenerCuentasPorUsuario(usuarioId);
         return dtos.stream()
             .map(cuentaPersistenceMapper::toPresentationDTO)
@@ -124,7 +131,10 @@ public class GestionCuentaService implements GestionCuentaUseCase {
 
     @Override
     @Transactional
-    public ComprobanteDTO confirmarTransferencia(Long clienteId, String codigoOTP) {
+    public ComprobanteDTO confirmarTransferencia(String dni, String codigoOTP) {
+        Long clienteId = userRepository.findByDni(dni)
+                .map(UsuarioDTO::id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + dni));
         PendingTransferDTO pendingDTO = pendingTransferRepository.getTransferByOtpKey(String.valueOf(clienteId))
             .orElseThrow(() -> new RuntimeException("No se encontró ninguna transferencia pendiente para este cliente. (A1)"));
             Long idCliente = pendingDTO.idCliente();
@@ -186,7 +196,10 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     }
     @Override
     @Transactional
-    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO, Long usuarioId) {
+    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO, String dni) {
+        Long usuarioId = userRepository.findByDni(dni)
+                .map(UsuarioDTO::id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + dni));
         ClienteEntity cliente = springDataClientRepository.findByIdUsuario_Id(usuarioId)
             .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el usuarioId: " + usuarioId));
         

@@ -7,7 +7,7 @@ import com.backend.bcp.app.Pago.Application.dto.in.EditarPagoDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 
 public interface RealizarPagoUseCase {
-    List<PagoPendienteDTO> listarPagosPendientes(Long usuarioId);
+    List<PagoPendienteDTO> listarPagosPendientes(String dni);
     ComprobanteDTO realizarPago(Long cuentaId, Long servicioId);
     PagoPendienteDTO editarPago(Long pagoId, EditarPagoDTO editarPagoDTO);
     void eliminarPago(Long pagoId); 

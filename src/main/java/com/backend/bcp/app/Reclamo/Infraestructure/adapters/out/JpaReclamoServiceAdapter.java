@@ -15,6 +15,8 @@ import com.backend.bcp.app.Reclamo.Application.ports.in.GestionReclamosUseCase;
 import com.backend.bcp.app.Reclamo.Application.ports.out.ReclamoRepository;
 import com.backend.bcp.app.Reclamo.Domain.Reclamo;
 import com.backend.bcp.app.Reclamo.Domain.Reclamo.EstadoReclamo;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 
@@ -23,16 +25,20 @@ public class JpaReclamoServiceAdapter implements GestionReclamosUseCase {
     private final ReclamoRepository repository;
     private final ReclamoMapper mapper;
     private final SpringDataClientRepository clientRepository;
+    private final UserRepository userRepository;
 
-    public JpaReclamoServiceAdapter(ReclamoRepository repository, ReclamoMapper mapper, SpringDataClientRepository clientRepository) {
+    public JpaReclamoServiceAdapter(ReclamoRepository repository, ReclamoMapper mapper, SpringDataClientRepository clientRepository, UserRepository userRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
     }
     @Override
     @Transactional
     public ReclamoResponseDTO crearReclamo(CrearReclamoRequestDTO reclamoDTO) {
-         Long usuarioId = reclamoDTO.getClienteId();
+         Long usuarioId = userRepository.findByDni(reclamoDTO.getDniCliente()) 
+                 .map(UsuarioDTO::id)
+                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + reclamoDTO.getDniCliente()));
 
          ClienteEntity clienteEntity = clientRepository.findByIdUsuario_Id(usuarioId)
                  .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el ID de Usuario: " + usuarioId));

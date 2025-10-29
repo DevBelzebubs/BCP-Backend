@@ -8,10 +8,10 @@ import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 
 public interface GestionCuentaUseCase {
-    CuentaDTO crearCuenta(CuentaDTO cuentaDTO, Long id);
-    List<CuentaDTO> listarCuentasPorUsuario(Long usuarioId);
+    CuentaDTO crearCuenta(CuentaDTO cuentaDTO, String dni);
+    List<CuentaDTO> listarCuentasPorUsuario(String dni);
     DetalleCuentaDTO obtenerDetalleCuenta(Long cuentaId);
     byte[] generarEstadoCuentaPdf(Long cuentaId);
     void iniciarTransferencia(Long idCuentaOrigen, Long idCuentaDestino, BigDecimal monto);
-    ComprobanteDTO confirmarTransferencia(Long clienteId, String codigoOTP);
+    ComprobanteDTO confirmarTransferencia(String dni, String codigoOTP);
 }

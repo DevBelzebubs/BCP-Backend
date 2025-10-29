@@ -22,6 +22,8 @@ import com.backend.bcp.app.Pago.Infraestructure.entity.PagoEntity;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoServicioEntity;
 import com.backend.bcp.app.Pago.Infraestructure.repo.SpringDataPagoRepository;
 import com.backend.bcp.app.Servicio.Application.ports.out.ServicioRepository;
+import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 
 import jakarta.transaction.Transactional;
@@ -34,20 +36,25 @@ private final PagoRepository pagoRepository;
     private final ComprobanteRepository comprobanteRepository;
     private final PagoPersistenceMapper mapper;
     private final SpringDataClientRepository springDataClientRepository;
+    private final UserRepository userRepository;
 
     public RealizarPagoService(PagoRepository pagoRepository, CuentaRepository cuentaRepository,
             ServicioRepository servicioRepository, ComprobanteRepository comprobanteRepository,
             PagoPersistenceMapper mapper, SpringDataClientRepository springDataClientRepository,
-            SpringDataPagoRepository springDataPagoRepository) {
+            SpringDataPagoRepository springDataPagoRepository, UserRepository userRepository) {
         this.pagoRepository = pagoRepository;
         this.cuentaRepository = cuentaRepository;
         this.comprobanteRepository = comprobanteRepository;
         this.springDataClientRepository = springDataClientRepository;
         this.springDataPagoRepository = springDataPagoRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
     @Override
-    public List<PagoPendienteDTO> listarPagosPendientes(Long usuarioId) {
+    public List<PagoPendienteDTO> listarPagosPendientes(String dni) {
+        Long usuarioId = userRepository.findByDni(dni)
+                .map(UsuarioDTO::id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + dni));
         List<PagoPersistenceDTO> pendientes = pagoRepository.obtenerPendientesPorUsuario(usuarioId);
         return pendientes.stream()
             .map(mapper::toPagoPendienteDTO)

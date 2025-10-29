@@ -9,4 +9,5 @@ public interface UserRepository {
     List<UsuarioDTO> findAllUsuarios();
     Optional<UsuarioDTO> findByNombre(String nombre);
     Optional<UsuarioDTO> findById(Long id);
+    Optional<UsuarioDTO> findByDni(String dni);
 }

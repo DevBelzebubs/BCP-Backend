@@ -110,10 +110,10 @@ public class ReclamoMapper {
 
         return entity;
     }
-    public Reclamo requestDtoToDomain(CrearReclamoRequestDTO dto) {
+    public Reclamo requestDtoToDomain(CrearReclamoRequestDTO dto,Long clienteId) {
         if (dto == null) return null;
         Cliente cliente = new Cliente();
-        cliente.setId(dto.getClienteId());
+        cliente.setId(clienteId);
         return new Reclamo(null, cliente, null, LocalDate.now(), dto.getDescripcion(), EstadoReclamo.PENDIENTE, null,null);
     }
 

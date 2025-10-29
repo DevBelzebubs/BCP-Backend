@@ -28,9 +28,9 @@ public class CuentaController {
     public CuentaController(GestionCuentaUseCase gestionCuentaUseCase) {
         this.gestionCuentaUseCase = gestionCuentaUseCase;
     }
-    @GetMapping("/usuario/{usuarioId}/listar")
-    public ResponseEntity<List<CuentaDTO>> listarCuentasDisponibles(@PathVariable Long usuarioId) {
-        List<CuentaDTO> cuentas = gestionCuentaUseCase.listarCuentasPorUsuario(usuarioId);
+    @GetMapping("/cliente/{dni}/listar")
+    public ResponseEntity<List<CuentaDTO>> listarCuentasDisponibles(@PathVariable String dni) {
+        List<CuentaDTO> cuentas = gestionCuentaUseCase.listarCuentasPorUsuario(dni);
         return ResponseEntity.ok(cuentas);
     }
     @GetMapping("/{cuentaId}")
@@ -60,18 +60,18 @@ public class CuentaController {
         }
     }
     @PostMapping("/confirmar-transferencia")
-    public ResponseEntity<?> postMethodName(@RequestParam Long clienteId, @RequestParam String codigoOTP){
+    public ResponseEntity<?> confirmarTransferencia(@RequestParam String dni, @RequestParam String codigoOTP){
         try {
-            ComprobanteDTO comprobante = gestionCuentaUseCase.confirmarTransferencia(clienteId,codigoOTP);
+            ComprobanteDTO comprobante = gestionCuentaUseCase.confirmarTransferencia(dni,codigoOTP);
             return ResponseEntity.ok(comprobante);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
         }
     }
-    @PostMapping("/usuario/{usuarioId}/crear")
-    public ResponseEntity<?> crearNuevaCuenta(@PathVariable Long usuarioId, @RequestBody CuentaDTO cuentaDTO) {
+    @PostMapping("/usuario/{dni}/crear")
+    public ResponseEntity<?> crearNuevaCuenta(@PathVariable String dni, @RequestBody CuentaDTO cuentaDTO) {
         try {
-            CuentaDTO cuentaCreada = gestionCuentaUseCase.crearCuenta(cuentaDTO, usuarioId);
+            CuentaDTO cuentaCreada = gestionCuentaUseCase.crearCuenta(cuentaDTO, dni);
             return new ResponseEntity<>(cuentaCreada, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
