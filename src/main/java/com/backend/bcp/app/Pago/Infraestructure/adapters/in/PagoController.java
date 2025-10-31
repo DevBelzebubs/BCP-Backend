@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoRequestDTO;
+import com.backend.bcp.app.Pago.Application.dto.in.payflow.DebitoRequestDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
@@ -52,4 +55,16 @@ public class PagoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el pago."));
         }
     }
+    @PostMapping("/solicitar-debito")
+    public ResponseEntity<?> solicitarCredito(@Valid @RequestBody DebitoRequestDTO request) {
+        try{
+            ComprobanteDTO comprobante = realizarPagoUseCase.realizarPagoExterno(request);
+            return ResponseEntity.ok(comprobante);
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }catch(Exception e){
+           return ResponseEntity.status(500).body(Map.of("error", "Error interno al procesar el débito."));
+        }
+    }
+    
 }

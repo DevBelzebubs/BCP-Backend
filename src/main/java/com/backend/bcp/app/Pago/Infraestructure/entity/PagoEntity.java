@@ -37,6 +37,17 @@ public abstract class PagoEntity {
     private LocalDate fecha;
     @Column(name = "Estado")
     private String estado;
+    //Id para la otra app
+    @Column(name = "payflow_service_id")
+    private String payflowServiceId;
+
+    public String getPayflowServiceId() {
+        return payflowServiceId;
+    }
+
+    public void setPayflowServiceId(String payflowServiceId) {
+        this.payflowServiceId = payflowServiceId;
+    }
         
     public Long getIdPago() {
         return idPago;

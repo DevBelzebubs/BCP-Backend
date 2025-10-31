@@ -67,7 +67,9 @@ public class PagoPersistenceMapper {
                 entity.getMonto(),
                 entity.getFecha(),
                 entity.getEstado(),
-                tipoPago);
+                tipoPago,
+                entity.getPayflowServiceId()
+                );
     }
 
     public PagoEntity toEntity(Pago domain) {

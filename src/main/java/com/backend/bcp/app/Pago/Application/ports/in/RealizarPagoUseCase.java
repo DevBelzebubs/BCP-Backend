@@ -5,10 +5,13 @@ import java.util.List;
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.EditarPagoDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
+import com.backend.bcp.app.Pago.Application.dto.in.payflow.DebitoRequestDTO;
 
 public interface RealizarPagoUseCase {
     List<PagoPendienteDTO> listarPagosPendientes(String dni);
     ComprobanteDTO realizarPago(Long cuentaId, Long servicioId);
     PagoPendienteDTO editarPago(Long pagoId, EditarPagoDTO editarPagoDTO);
     void eliminarPago(Long pagoId); 
+    
+    ComprobanteDTO realizarPagoExterno(DebitoRequestDTO debitoRequestDTO);
 }

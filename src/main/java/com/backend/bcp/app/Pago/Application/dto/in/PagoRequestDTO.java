@@ -1,6 +1,5 @@
 package com.backend.bcp.app.Pago.Application.dto.in;
 
-import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotNull;
 

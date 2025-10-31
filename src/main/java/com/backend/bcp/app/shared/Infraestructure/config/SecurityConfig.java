@@ -39,6 +39,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**","/api/registro/**").permitAll()
+
+            .requestMatchers("/api/pagos/solicitar-debito").hasRole("PAYFLOW_SERVICE")
             
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
@@ -49,6 +51,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/reclamos").hasRole("CLIENTE")
 
             .requestMatchers(HttpMethod.GET, "/api/reclamos/{id}").hasRole("CLIENTE")
+
+            .requestMatchers("/api/cliente/dashboard").hasRole("CLIENTE")
             
             .requestMatchers("/api/prestamos/**", "/api/asesor/**").hasAnyRole("ASESOR", "BACKOFFICE","ADMIN")
 

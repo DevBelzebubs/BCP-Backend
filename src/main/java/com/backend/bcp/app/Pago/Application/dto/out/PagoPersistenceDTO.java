@@ -9,5 +9,7 @@ public record PagoPersistenceDTO(Long id,
     BigDecimal monto,
     LocalDate fecha,
     String estado,
-    String tipoPago) {
+    String tipoPago,
+    String payflowServiceId
+    ) {
 }
