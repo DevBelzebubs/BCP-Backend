@@ -40,7 +40,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**","/api/registro/**").permitAll()
 
-            .requestMatchers("/api/pagos/solicitar-debito").hasRole("PAYFLOW_SERVICE")
+            .requestMatchers("/api/s2s/pagos/solicitar-debito").hasRole("PAYFLOW_SERVICE")
             
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
 

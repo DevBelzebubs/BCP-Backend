@@ -27,6 +27,11 @@ public class JwtService implements TokenService {
         return Jwts.builder()
             .subject(user.getNombre())
             .claim("tipoUsuario", tipoUsuario)
+            .claim("bcpUsuarioId", user.getId())
+            .claim("dni", user.getDni())
+            .claim("email", user.getCorreo())
+            .claim("telefono", user.getTelefono())
+            .claim("nombreCompleto", user.getNombre())
             .expiration(new Date(System.currentTimeMillis() + expiration))
             .signWith(secret)
             .compact();

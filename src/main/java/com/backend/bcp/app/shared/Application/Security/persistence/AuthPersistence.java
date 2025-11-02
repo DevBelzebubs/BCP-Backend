@@ -82,4 +82,13 @@ public class AuthPersistence implements AuthService{
         String token = tokenService.generateToken(domainUser, tipoUsuario.get());
         return new LoginResponseDTO(userDto.nombre(),token,tipoUsuario.get());
     }
+
+    @Override
+    public LoginResponseDTO generarTokenServicio(String serviceName, String serviceRole) {
+        Usuario payflowServiceUser = new Usuario();
+        payflowServiceUser.setNombre(serviceName);
+        String token = tokenService.generateToken(payflowServiceUser, serviceRole);
+        
+        return new LoginResponseDTO(serviceName, token, serviceRole);
+    }
 }
