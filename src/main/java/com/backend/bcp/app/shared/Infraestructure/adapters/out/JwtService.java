@@ -49,7 +49,7 @@ public class JwtService implements TokenService {
 
     @Override
     public String getUser(String token) {
-        return getClaims(token).getSubject();     
+        return getClaims(token).getSubject();
     }
 
     @Override

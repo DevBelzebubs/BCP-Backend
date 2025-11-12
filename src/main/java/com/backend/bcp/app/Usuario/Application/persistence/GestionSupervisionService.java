@@ -15,7 +15,6 @@ import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
 import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
-import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.MarcarSospechosoRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.out.OperacionSupervisionDTO;

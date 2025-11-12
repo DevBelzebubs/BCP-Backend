@@ -9,7 +9,7 @@ INSERT INTO empleado (ID_Empleado, Fecha_Contratacion, Salario, ID_Usuario) VALU
 INSERT INTO Admin (ID_Admin, ID_Empleado) VALUES (1, 1);
 
 -- USUARIO CLIENTE (ID 2) (Contraseña '12345')
-INSERT INTO usuario (ID_Usuario, Nombre, Contrasena, Correo, DNI, Direccion, Telefono) VALUES (2, 'cliente_prueba', '$2a$10$QNVb8Ck1Y.0y28AMsFpao.gpb36aK2MUNi5hv59S93x1zHrvc7AUy', 'cliente@ejemplo.com', '87654321', 'Calle Falsa 123', '987654321');
+INSERT INTO usuario (ID_Usuario, Nombre, Contrasena, Correo, DNI, Direccion, Telefono) VALUES (2, 'cliente_prueba', '$2a$10$8Lh3UZYaZtUQLjlN85XcjuMobOPwuahWVimzv43D0aFZ/tJPrGchq', 'cliente@ejemplo.com', '87654321', 'Calle Falsa 123', '987654321');
 INSERT INTO cliente (ID_Cliente, Fecha_Registro, Usuario_ID_Usuario) VALUES (1, CURDATE(), 2);
 
 -- CUENTA DEL CLIENTE 1

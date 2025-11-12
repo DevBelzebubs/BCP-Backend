@@ -21,7 +21,7 @@ public class JwtConfig {
         if (secretBase64 == null || secretBase64.isEmpty()) {
             throw new IllegalArgumentException("La clave secreta JWT no puede ser nula.");
         }
-        byte[] keyBytes = Base64.getDecoder().decode(secretBase64);
+        byte[] keyBytes = secretBase64.getBytes(java.nio.charset.StandardCharsets.UTF_8);
         this.SECRET_KEY = Keys.hmacShaKeyFor(keyBytes); 
         System.out.println("✅ Clave secreta JWT CREADA en JwtConfig. HashCode: " + this.SECRET_KEY.hashCode());
     }

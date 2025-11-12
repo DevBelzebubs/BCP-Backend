@@ -24,7 +24,7 @@ public class ClienteEntity {
     @Column(name = "Fecha_Registro")
     private LocalDate fechaRegistro;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Usuario_ID_Usuario", referencedColumnName = "ID_USUARIO")
+    @JoinColumn(name = "Usuario_ID_Usuario", referencedColumnName = "ID_Usuario")
     private UsuarioEntity idUsuario;
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
