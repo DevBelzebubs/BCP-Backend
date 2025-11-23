@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.out.AuditoriaRolDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionAuditoriaUseCase;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/api/admin/auditoria")

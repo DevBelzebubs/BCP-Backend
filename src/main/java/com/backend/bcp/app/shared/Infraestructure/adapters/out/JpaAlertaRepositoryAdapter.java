@@ -1,12 +1,12 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
+package com.backend.bcp.app.shared.Infraestructure.adapters.out;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
-import com.backend.bcp.app.Shared.Application.mapper.AlertaMapper;
-import com.backend.bcp.app.Shared.Infraestructure.entity.AlertaEntity;
-import com.backend.bcp.app.Shared.Infraestructure.repo.SpringDataAlertaRepository;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.AlertaRepositoryPort;
+import com.backend.bcp.app.shared.Application.dto.out.AlertaPersistenceDTO;
+import com.backend.bcp.app.shared.Application.mapper.AlertaMapper;
+import com.backend.bcp.app.shared.Infraestructure.entity.AlertaEntity;
+import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataAlertaRepository;
 
 @Component
 public class JpaAlertaRepositoryAdapter implements AlertaRepositoryPort {

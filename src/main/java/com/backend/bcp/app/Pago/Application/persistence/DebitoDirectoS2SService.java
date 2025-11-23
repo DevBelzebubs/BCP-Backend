@@ -13,10 +13,10 @@ import com.backend.bcp.app.Cuenta.Application.ports.out.CuentaRepository;
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Pago.Application.dto.in.payflow.DebitoDirectoRequestDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.DebitoDirectoS2SUseCase;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 import jakarta.transaction.Transactional;
 

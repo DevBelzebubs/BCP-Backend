@@ -1,13 +1,13 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
+package com.backend.bcp.app.shared.Infraestructure.adapters.out;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Shared.Application.Security.ports.out.TokenService;
-import com.backend.bcp.app.Shared.Domain.Usuario;
-import com.backend.bcp.app.Shared.Infraestructure.Security.JwtConfig;
+import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
+import com.backend.bcp.app.shared.Domain.Usuario;
+import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

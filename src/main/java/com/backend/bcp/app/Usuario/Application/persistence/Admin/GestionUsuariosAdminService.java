@@ -7,10 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.backend.bcp.app.Shared.Application.dto.in.CambiarRolRequestDTO;
-import com.backend.bcp.app.Shared.Application.dto.out.EmpleadoRolDTO;
-import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoRol;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionUsuariosAdminUseCase;
 import com.backend.bcp.app.Usuario.Application.ports.out.Admin.AuditoriaRolPort;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
@@ -20,6 +16,10 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBack
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
+import com.backend.bcp.app.shared.Application.dto.in.CambiarRolRequestDTO;
+import com.backend.bcp.app.shared.Application.dto.out.EmpleadoRolDTO;
+import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoRol;
 
 @Service
 public class GestionUsuariosAdminService implements GestionUsuariosAdminUseCase {

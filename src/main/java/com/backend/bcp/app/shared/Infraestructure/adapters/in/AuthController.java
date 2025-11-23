@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.shared.Infraestructure.adapters.in;
 
 
 import org.springframework.http.HttpStatus;
@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 //WORKS!
 import org.springframework.web.bind.annotation.*;
 
-import com.backend.bcp.app.Shared.Application.Security.dto.in.LoginDTO;
-import com.backend.bcp.app.Shared.Application.Security.dto.out.LoginResponseDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Application.Security.dto.in.LoginDTO;
+import com.backend.bcp.app.shared.Application.Security.dto.out.LoginResponseDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.in.AuthService;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/auth")

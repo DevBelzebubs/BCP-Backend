@@ -1,10 +1,10 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.shared.Infraestructure.adapters.in;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GenerarReporteDiarioUseCase;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import java.time.LocalDate;
 

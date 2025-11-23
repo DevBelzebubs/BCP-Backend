@@ -7,7 +7,7 @@ import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoRequestDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import java.util.List;
 

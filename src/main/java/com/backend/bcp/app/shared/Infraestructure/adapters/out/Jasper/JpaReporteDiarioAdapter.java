@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.out.Jasper;
+package com.backend.bcp.app.shared.Infraestructure.adapters.out.Jasper;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

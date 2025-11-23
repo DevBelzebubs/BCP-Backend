@@ -13,7 +13,7 @@ import java.util.List;
 import com.backend.bcp.app.Reclamo.Application.dto.in.CrearReclamoRequestDTO;
 import com.backend.bcp.app.Reclamo.Application.dto.out.ReclamoResponseDTO;
 import com.backend.bcp.app.Reclamo.Application.ports.in.GestionReclamosUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.entity;
+package com.backend.bcp.app.shared.Infraestructure.entity;
 
 
 import jakarta.persistence.Column;

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.config;
+package com.backend.bcp.app.shared.Infraestructure.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

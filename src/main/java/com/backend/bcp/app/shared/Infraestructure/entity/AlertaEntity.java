@@ -1,9 +1,9 @@
-package com.backend.bcp.app.Shared.Infraestructure.entity;
+package com.backend.bcp.app.shared.Infraestructure.entity;
 
 import java.time.LocalDateTime;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.EstadoAlerta;
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.EstadoAlerta;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoAlerta;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

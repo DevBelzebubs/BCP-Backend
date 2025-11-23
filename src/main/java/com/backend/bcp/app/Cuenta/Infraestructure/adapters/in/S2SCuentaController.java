@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/api/s2s/cuentas")

@@ -16,7 +16,7 @@ import com.backend.bcp.app.Servicio.Application.dto.in.CrearServicioDTO;
 import com.backend.bcp.app.Servicio.Application.dto.in.EditarServicioDTO;
 import com.backend.bcp.app.Servicio.Application.dto.out.ServicioResponseDTO;
 import com.backend.bcp.app.Servicio.Application.ports.in.GestionServicioUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 // WORKS!

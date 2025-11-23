@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Application.persistence;
+package com.backend.bcp.app.shared.Application.persistence;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,10 +10,10 @@ import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Application.dto.in.LoadClientDataDTO;
-import com.backend.bcp.app.Shared.Domain.ports.in.GestionClienteUseCase;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Application.dto.in.LoadClientDataDTO;
+import com.backend.bcp.app.shared.Domain.ports.in.GestionClienteUseCase;
 
 @Service
 public class ClienteDashboardService implements GestionClienteUseCase {

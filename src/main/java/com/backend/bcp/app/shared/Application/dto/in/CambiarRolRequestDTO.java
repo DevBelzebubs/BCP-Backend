@@ -1,6 +1,6 @@
-package com.backend.bcp.app.Shared.Application.dto.in;
+package com.backend.bcp.app.shared.Application.dto.in;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoRol;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoRol;
 
 import jakarta.validation.constraints.NotNull;
 

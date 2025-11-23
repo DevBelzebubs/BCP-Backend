@@ -1,9 +1,9 @@
-package com.backend.bcp.app.Shared.Application.mapper;
+package com.backend.bcp.app.shared.Application.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
-import com.backend.bcp.app.Shared.Infraestructure.entity.AlertaEntity;
+import com.backend.bcp.app.shared.Application.dto.out.AlertaPersistenceDTO;
+import com.backend.bcp.app.shared.Infraestructure.entity.AlertaEntity;
 
 @Component
 public class AlertaMapper {

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.backend.bcp.app.Shared.Infraestructure.Security.JwtConfig;
+import com.backend.bcp.app.shared.Infraestructure.Security.JwtConfig;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {

@@ -1,16 +1,16 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.shared.Infraestructure.adapters.in;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Shared.Application.Security.dto.in.ClienteDTO;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.EmpleadoDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.in.RegistroService;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntity;
+import com.backend.bcp.app.shared.Application.Security.dto.in.ClienteDTO;
+import com.backend.bcp.app.shared.Application.Security.dto.in.EmpleadoDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.in.RegistroService;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 

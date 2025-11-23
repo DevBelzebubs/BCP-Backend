@@ -1,6 +1,6 @@
-package com.backend.bcp.app.Shared.Domain.ports.in;
+package com.backend.bcp.app.shared.Domain.ports.in;
 
-import com.backend.bcp.app.Shared.Application.dto.in.LoadClientDataDTO;
+import com.backend.bcp.app.shared.Application.dto.in.LoadClientDataDTO;
 
 public interface GestionClienteUseCase {
     LoadClientDataDTO cargarDatosDashboard(String dni);

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.Security;
+package com.backend.bcp.app.shared.Infraestructure.Security;
 
 import java.util.Base64;
 

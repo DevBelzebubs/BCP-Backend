@@ -4,7 +4,7 @@ package com.backend.bcp.app.Prestamo.Infraestructure.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

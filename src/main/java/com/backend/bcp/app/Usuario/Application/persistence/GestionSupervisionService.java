@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.backend.bcp.app.Reclamo.Application.dto.out.ReclamoPersistenceDTO;
 import com.backend.bcp.app.Reclamo.Application.ports.out.ReclamoRepository;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.MarcarSospechosoRequestDTO;
@@ -22,6 +18,10 @@ import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionSupervis
 import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionService;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.AlertaRepositoryPort;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteGlobalPdf;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Application.dto.out.AlertaPersistenceDTO;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoAlerta;
 
 import jakarta.transaction.Transactional;
 

@@ -2,7 +2,7 @@ package com.backend.bcp.app.Usuario.Domain;
 
 import java.time.LocalDate;
 
-import com.backend.bcp.app.Shared.Domain.Usuario;
+import com.backend.bcp.app.shared.Domain.Usuario;
 
 public class Empleado extends Usuario {
     private double pago;

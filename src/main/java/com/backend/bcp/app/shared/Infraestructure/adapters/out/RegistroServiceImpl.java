@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.out;
+package com.backend.bcp.app.shared.Infraestructure.adapters.out;
 
 import java.time.LocalDate;
 
@@ -7,11 +7,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Shared.Application.Security.dto.in.ClienteDTO;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.EmpleadoDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.in.RegistroService;
-import com.backend.bcp.app.Shared.Infraestructure.entity.UsuarioEntity;
-import com.backend.bcp.app.Shared.Infraestructure.repo.SpringDataUserRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
@@ -20,6 +15,11 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClient
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBackofficeRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
+import com.backend.bcp.app.shared.Application.Security.dto.in.ClienteDTO;
+import com.backend.bcp.app.shared.Application.Security.dto.in.EmpleadoDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.in.RegistroService;
+import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
+import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository;
 
 import jakarta.transaction.Transactional;
 

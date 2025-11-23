@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Application.Security.dto.in;
+package com.backend.bcp.app.shared.Application.Security.dto.in;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -5,9 +5,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionService;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 
 @Service

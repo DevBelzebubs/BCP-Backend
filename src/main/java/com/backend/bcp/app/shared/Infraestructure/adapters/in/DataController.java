@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
+package com.backend.bcp.app.shared.Infraestructure.adapters.in;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Application.dto.in.LoadClientDataDTO;
-import com.backend.bcp.app.Shared.Domain.ports.in.GestionClienteUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Application.dto.in.LoadClientDataDTO;
+import com.backend.bcp.app.shared.Domain.ports.in.GestionClienteUseCase;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/api/cliente")

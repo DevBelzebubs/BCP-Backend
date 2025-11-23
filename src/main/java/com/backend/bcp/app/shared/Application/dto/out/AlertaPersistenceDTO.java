@@ -1,9 +1,9 @@
-package com.backend.bcp.app.Shared.Application.dto.out;
+package com.backend.bcp.app.shared.Application.dto.out;
 
 import java.time.LocalDateTime;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.EstadoAlerta;
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.EstadoAlerta;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoAlerta;
 
 public record AlertaPersistenceDTO(
         Long id,

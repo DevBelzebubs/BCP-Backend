@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.AuditoriaRolEntity;
-import com.backend.bcp.app.Shared.Infraestructure.repo.SpringDataAuditoriaRolRepository;
 import com.backend.bcp.app.Usuario.Application.dto.out.AuditoriaRolDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionAuditoriaUseCase;
+import com.backend.bcp.app.shared.Infraestructure.entity.AuditoriaRolEntity;
+import com.backend.bcp.app.shared.Infraestructure.repo.SpringDataAuditoriaRolRepository;
 
 @Service
 public class GestionAuditoriaService implements GestionAuditoriaUseCase {

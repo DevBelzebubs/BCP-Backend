@@ -20,8 +20,6 @@ import com.backend.bcp.app.Cuenta.Application.ports.out.GeneradorEstadoCuentaPdf
 import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Cuenta.Infraestructure.entity.CuentaEntity;
 import com.backend.bcp.app.Cuenta.Infraestructure.repo.SpringDataCuentaRepository;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.in.PendingTransferDTO;
@@ -34,6 +32,8 @@ import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

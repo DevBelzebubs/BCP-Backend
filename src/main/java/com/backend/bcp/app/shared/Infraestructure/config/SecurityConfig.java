@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.config;
+package com.backend.bcp.app.shared.Infraestructure.config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +18,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.backend.bcp.app.Shared.Infraestructure.Security.JwtFilter;
-import com.backend.bcp.app.Shared.Infraestructure.adapters.out.JwtService;
+import com.backend.bcp.app.shared.Infraestructure.Security.JwtFilter;
+import com.backend.bcp.app.shared.Infraestructure.adapters.out.JwtService;
 
 @Configuration
 @EnableWebSecurity

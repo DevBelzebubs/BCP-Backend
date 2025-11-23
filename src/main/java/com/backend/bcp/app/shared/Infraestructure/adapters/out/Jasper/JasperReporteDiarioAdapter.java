@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.adapters.out.Jasper;
+package com.backend.bcp.app.shared.Infraestructure.adapters.out.Jasper;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
@@ -16,10 +16,10 @@ import com.backend.bcp.app.Pago.Domain.PagoPrestamo;
 import com.backend.bcp.app.Pago.Domain.PagoServicio;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoPersistenceDTO;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
-import com.backend.bcp.app.Shared.Application.Security.dto.out.ReporteOperacionDTO;
 import com.backend.bcp.app.Transaccion.Application.dto.out.MovimientoPersistenceDTO;
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.GeneradorReporteDiarioPdf;
+import com.backend.bcp.app.shared.Application.Security.dto.out.ReporteOperacionDTO;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;

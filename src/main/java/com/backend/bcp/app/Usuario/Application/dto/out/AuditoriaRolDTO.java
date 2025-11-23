@@ -2,7 +2,7 @@ package com.backend.bcp.app.Usuario.Application.dto.out;
 
 import java.time.LocalDateTime;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoRol;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoRol;
 
 public record AuditoriaRolDTO(
     Long id,

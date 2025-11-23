@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionResultDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionarConciliacionUseCase;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 //WORKS!

@@ -16,8 +16,6 @@ import com.backend.bcp.app.Cuenta.Domain.Cuenta;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoEntity;
 import com.backend.bcp.app.Pago.Infraestructure.entity.PagoServicioEntity;
 import com.backend.bcp.app.Pago.Infraestructure.repo.SpringDataPagoRepository;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.Empleado.DepositoVentanillaDTO;
@@ -26,6 +24,8 @@ import com.backend.bcp.app.Usuario.Application.dto.in.Empleado.RetiroVentanillaD
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionOperacionVentanillaUseCase;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 import jakarta.transaction.Transactional;
 

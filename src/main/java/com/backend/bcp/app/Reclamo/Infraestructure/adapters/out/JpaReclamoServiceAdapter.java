@@ -15,10 +15,10 @@ import com.backend.bcp.app.Reclamo.Application.ports.in.GestionReclamosUseCase;
 import com.backend.bcp.app.Reclamo.Application.ports.out.ReclamoRepository;
 import com.backend.bcp.app.Reclamo.Domain.Reclamo;
 import com.backend.bcp.app.Reclamo.Domain.Reclamo.EstadoReclamo;
-import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
+import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 @Component
 public class JpaReclamoServiceAdapter implements GestionReclamosUseCase {

@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Infraestructure.Security;
+package com.backend.bcp.app.shared.Infraestructure.Security;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.backend.bcp.app.Shared.Application.Security.ports.out.TokenService;
+import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

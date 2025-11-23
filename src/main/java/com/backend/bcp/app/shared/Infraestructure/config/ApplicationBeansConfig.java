@@ -1,14 +1,10 @@
-package com.backend.bcp.app.Shared.Infraestructure.config;
+package com.backend.bcp.app.shared.Infraestructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
-import com.backend.bcp.app.Shared.Application.Security.persistence.AuthPersistence;
-import com.backend.bcp.app.Shared.Application.Security.ports.in.AuthService;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.TokenService;
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Usuario.Application.mapper.JasperMapper;
 import com.backend.bcp.app.Usuario.Application.persistence.ReporteDiarioService;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GenerarReporteDiarioUseCase;
@@ -19,6 +15,10 @@ import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringADataBack
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAdminRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataAsesorRepository;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Empleado.SpringDataEmpleadoRepository;
+import com.backend.bcp.app.shared.Application.Security.persistence.AuthPersistence;
+import com.backend.bcp.app.shared.Application.Security.ports.in.AuthService;
+import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
 
 @Configuration
 public class ApplicationBeansConfig {

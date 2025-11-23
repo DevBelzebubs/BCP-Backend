@@ -15,7 +15,7 @@ import com.backend.bcp.app.Prestamo.Application.dto.in.RechazoRequestDTO;
 import com.backend.bcp.app.Prestamo.Application.dto.in.SolicitudCreditoDTO;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 //WOKRS

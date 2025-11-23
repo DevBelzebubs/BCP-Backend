@@ -1,4 +1,4 @@
-package com.backend.bcp.app.Shared.Application.Security.dto.out;
+package com.backend.bcp.app.shared.Application.Security.dto.out;
 
 public class LoginResponseDTO {
     private String nombre;

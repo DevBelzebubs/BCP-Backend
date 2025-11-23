@@ -1,6 +1,6 @@
-package com.backend.bcp.app.Shared.Application.dto.out;
+package com.backend.bcp.app.shared.Application.dto.out;
 
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoRol;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoRol;
 
 public record EmpleadoRolDTO(
     Long empleadoId,

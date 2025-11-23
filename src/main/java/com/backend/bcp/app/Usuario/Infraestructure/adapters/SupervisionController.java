@@ -11,11 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.in.MarcarSospechosoRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.out.OperacionSupervisionDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionSupervisionUseCase;
+import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
+
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

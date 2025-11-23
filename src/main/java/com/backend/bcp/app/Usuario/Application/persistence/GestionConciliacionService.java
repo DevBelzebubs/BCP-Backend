@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.backend.bcp.app.Shared.Application.dto.out.AlertaPersistenceDTO;
-import com.backend.bcp.app.Shared.Infraestructure.entity.enums.TipoAlerta;
 import com.backend.bcp.app.Transaccion.Application.dto.in.MovimientoAppDTO;
 import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionRepository;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionRequestDTO;
@@ -16,6 +14,8 @@ import com.backend.bcp.app.Usuario.Application.dto.in.OperacionInterbancariaDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionarConciliacionUseCase;
 import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionService;
 import com.backend.bcp.app.Usuario.Application.ports.out.Empleado.AlertaRepositoryPort;
+import com.backend.bcp.app.shared.Application.dto.out.AlertaPersistenceDTO;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoAlerta;
 
 import jakarta.transaction.Transactional;
 @Component

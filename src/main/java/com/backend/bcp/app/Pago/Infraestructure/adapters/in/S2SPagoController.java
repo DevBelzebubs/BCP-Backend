@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.payflow.DebitoRequestDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
-import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
+import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 

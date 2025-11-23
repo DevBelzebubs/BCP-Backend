@@ -13,8 +13,8 @@ import com.backend.bcp.app.Prestamo.Application.mapper.PrestamoMapper;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
 import com.backend.bcp.app.Prestamo.Application.ports.out.CreditoService;
 import com.backend.bcp.app.Prestamo.Domain.Prestamo;
-import com.backend.bcp.app.Shared.Domain.Usuario;
 import com.backend.bcp.app.Usuario.Application.ports.out.Cliente.NotificacionService;
+import com.backend.bcp.app.shared.Domain.Usuario;
 
 import jakarta.transaction.Transactional;
 
