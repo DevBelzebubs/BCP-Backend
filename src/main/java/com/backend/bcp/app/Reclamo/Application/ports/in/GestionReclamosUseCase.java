@@ -9,4 +9,5 @@ public interface GestionReclamosUseCase {
     ReclamoResponseDTO crearReclamo(CrearReclamoRequestDTO reclamoDTO);
     ReclamoResponseDTO obtenerReclamoPorId(Long id);
     List<ReclamoResponseDTO> obtenerTodosLosReclamos();
+    List<ReclamoResponseDTO> obtenerReclamosPorClienteId(Long clienteId);
 }

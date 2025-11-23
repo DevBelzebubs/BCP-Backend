@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
-
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/api/s2s/cuentas")
@@ -20,13 +20,14 @@ import com.backend.bcp.app.Cuenta.Application.ports.in.GestionCuentaUseCase;
 public class S2SCuentaController {
     @Autowired
     private GestionCuentaUseCase gestionCuentaUseCase;
-@GetMapping("/cliente/{dni}")
-    public ResponseEntity<List<CuentaDTO>> listsCuentasS2S(@PathVariable String dni) {
-        try{
+
+    @GetMapping("/cliente/{dni}")
+    public ResponseEntity<ApiResponse<List<CuentaDTO>>> listsCuentasS2S(@PathVariable String dni) {
+        try {
             List<CuentaDTO> cuentas = gestionCuentaUseCase.listarCuentasPorUsuario(dni);
-            return ResponseEntity.ok(cuentas);
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok(ApiResponse.success("Cuentas listadas", cuentas));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         }
     }
 }

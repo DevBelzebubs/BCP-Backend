@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.in.MarcarSospechosoRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.out.OperacionSupervisionDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionSupervisionUseCase;
@@ -28,37 +29,43 @@ public class SupervisionController {
         this.gestionSupervisionUseCase = gestionSupervisionUseCase;
         this.userRepository = userRepository;
     }
+
     @GetMapping("/operaciones")
-    public ResponseEntity<List<OperacionSupervisionDTO>> listarOperaciones() {
+    public ResponseEntity<ApiResponse<List<OperacionSupervisionDTO>>> listarOperaciones() {
         try {
             List<OperacionSupervisionDTO> operaciones = gestionSupervisionUseCase.obtenerOperacionesParaSupervisar();
-            return ResponseEntity.ok(operaciones);
+            return ResponseEntity.ok(ApiResponse.success("Operaciones obtenidas", operaciones));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.error("Error al listar operaciones: " + e.getMessage(), null));
         }
     }
-    @PostMapping("/marcar-sospechosa")
-    public ResponseEntity<?> marcarComoSospechosa(@Valid @RequestBody MarcarSospechosoRequestDTO request) {
-         try {
-             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-             String username = authentication.getName();
-             Long backOfficeUserId = userRepository.findByNombre(username)
-                     .map(dto -> dto.id())
-                     .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
 
-             Long alertaId = gestionSupervisionUseCase.marcarOperacionComoSospechosa(request, backOfficeUserId);
-             return ResponseEntity.ok(Map.of(
-                     "mensaje", "Operación marcada como sospechosa. Alerta generada.",
-                     "alertaId", alertaId
-             ));
-         } catch (Exception e) {
-             e.printStackTrace();
-             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-         }
+    @PostMapping("/marcar-sospechosa")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> marcarComoSospechosa(
+            @Valid @RequestBody MarcarSospechosoRequestDTO request) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            Long backOfficeUserId = userRepository.findByNombre(username)
+                    .map(dto -> dto.id())
+                    .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
+
+            Long alertaId = gestionSupervisionUseCase.marcarOperacionComoSospechosa(request, backOfficeUserId);
+
+            Map<String, Object> responseData = Map.of(
+                    "mensaje", "Operación marcada como sospechosa. Alerta generada.",
+                    "alertaId", alertaId);
+            return ResponseEntity.ok(ApiResponse.success("Operación marcada como sospechosa", responseData));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
+        }
     }
-    @GetMapping(value = "/reporte-global", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> generarReporteGlobal() {
+
+    @GetMapping(value = "/reporte-global")
+    public ResponseEntity<?> generarReporteGlobal() {
         try {
             byte[] pdfBytes = gestionSupervisionUseCase.generarReporteGlobalOperaciones();
 
@@ -72,7 +79,9 @@ public class SupervisionController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(ApiResponse.error("Error al generar el reporte global: " + e.getMessage(), null));
         }
     }
 }

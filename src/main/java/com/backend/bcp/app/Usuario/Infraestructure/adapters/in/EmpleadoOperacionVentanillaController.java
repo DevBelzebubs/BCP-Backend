@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.in.Empleado.DepositoVentanillaDTO;
 import com.backend.bcp.app.Usuario.Application.dto.in.Empleado.PagoVentanillaDTO;
 import com.backend.bcp.app.Usuario.Application.dto.in.Empleado.RetiroVentanillaDTO;
@@ -12,15 +13,10 @@ import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionOperacio
 
 import jakarta.validation.Valid;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,46 +34,48 @@ public class EmpleadoOperacionVentanillaController {
         this.userRepository = userRepository;
     }
     @PostMapping("/deposito")
-    public ResponseEntity<?> registrarDeposito(@Valid @RequestBody DepositoVentanillaDTO request) {
+    public ResponseEntity<ApiResponse<ComprobanteDTO>> registrarDeposito(@Valid @RequestBody DepositoVentanillaDTO request) {
         try {
             Long empleadoId = getAuthenticatedEmpleadoUsuarioId();
             ComprobanteDTO comprobante = gestionOperacionVentanillaUseCase.registrarDepositoVentanilla(request, empleadoId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Depósito realizado con éxito", comprobante));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el depósito."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Error interno al procesar el depósito", null));
         }
     }
     @PostMapping("/retiro")
-    public ResponseEntity<?> registrarRetiro(@Valid @RequestBody RetiroVentanillaDTO request) {
+    public ResponseEntity<ApiResponse<ComprobanteDTO>> registrarRetiro(@Valid @RequestBody RetiroVentanillaDTO request) {
          try {
             Long empleadoId = getAuthenticatedEmpleadoUsuarioId();
             ComprobanteDTO comprobante = gestionOperacionVentanillaUseCase.registrarRetiroVentanilla(request, empleadoId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
-        } catch (IllegalStateException | IllegalArgumentException e) {
-             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Retiro realizado con éxito", comprobante));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el retiro."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Error interno al procesar el retiro", null));
         }
     }
     @PostMapping("/pago")
-    public ResponseEntity<?> registrarPago(@Valid @RequestBody PagoVentanillaDTO request) {
+    public ResponseEntity<ApiResponse<ComprobanteDTO>> registrarPago(@Valid @RequestBody PagoVentanillaDTO request) {
          try {
             Long empleadoId = getAuthenticatedEmpleadoUsuarioId();
             ComprobanteDTO comprobante = gestionOperacionVentanillaUseCase.registrarPagoVentanilla(request, empleadoId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(comprobante);
-        } catch (IllegalStateException | IllegalArgumentException e) {
-             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Pago realizado con éxito", comprobante));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el pago."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Error interno al procesar el pago", null));
         }
     }
     private Long getAuthenticatedEmpleadoUsuarioId() {

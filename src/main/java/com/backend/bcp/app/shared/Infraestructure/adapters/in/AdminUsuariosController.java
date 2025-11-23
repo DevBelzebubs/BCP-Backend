@@ -1,8 +1,6 @@
 package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
 
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Shared.Application.dto.in.CambiarRolRequestDTO;
 import com.backend.bcp.app.Shared.Application.dto.out.EmpleadoRolDTO;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionUsuariosAdminUseCase;
 
 import jakarta.validation.Valid;
@@ -31,12 +30,12 @@ public class AdminUsuariosController {
         this.userRepository = userRepository;
     }
     @GetMapping("/roles")
-    public ResponseEntity<List<EmpleadoRolDTO>> listarEmpleados() {
+    public ResponseEntity<ApiResponse<List<EmpleadoRolDTO>>> listarEmpleados() {
         List<EmpleadoRolDTO> empleados = gestionUsuariosUseCase.listarEmpleadosConRoles();
-        return ResponseEntity.ok(empleados);
+        return ResponseEntity.ok(ApiResponse.success("Lista de empleados y roles obtenida", empleados));
     }
     @PutMapping("/{empleadoId}/rol")
-    public ResponseEntity<?> cambiarRol(@PathVariable Long empleadoId, @Valid @RequestBody CambiarRolRequestDTO request) {
+    public ResponseEntity<ApiResponse<EmpleadoRolDTO>> cambiarRol(@PathVariable Long empleadoId, @Valid @RequestBody CambiarRolRequestDTO request) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String adminUsername = authentication.getName();
@@ -45,12 +44,13 @@ public class AdminUsuariosController {
                     .orElseThrow(() -> new RuntimeException("Admin no encontrado"));
 
             EmpleadoRolDTO empleadoActualizado = gestionUsuariosUseCase.cambiarRolEmpleado(empleadoId, request, adminUserId);
-            return ResponseEntity.ok(empleadoActualizado);
+            return ResponseEntity.ok(ApiResponse.success("Rol actualizado exitosamente", empleadoActualizado));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(Map.of("error", "Error interno al cambiar el rol."));
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.error("Error interno al cambiar el rol.", null));
         }
     }
 }

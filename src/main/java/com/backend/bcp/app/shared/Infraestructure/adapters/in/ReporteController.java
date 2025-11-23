@@ -3,6 +3,7 @@ package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GenerarReporteDiarioUseCase;
 
 import java.time.LocalDate;
@@ -24,19 +25,24 @@ public class ReporteController {
     public ReporteController(GenerarReporteDiarioUseCase generarReporteDiarioUseCase) {
         this.generarReporteDiarioUseCase = generarReporteDiarioUseCase;
     }
-    @GetMapping(value = "/diario", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> generarReporteDiario(@RequestParam(name = "fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
-        try{
+    @GetMapping(value = "/diario")
+    public ResponseEntity<?> generarReporteDiario(@RequestParam(name = "fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+        try {
             byte[] pdfBytes = generarReporteDiarioUseCase.generarReporte(fecha);
+            
             String filename = "Reporte_Diario_" + fecha.toString() + ".pdf";
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("inline", filename); 
             headers.setContentLength(pdfBytes.length);
+            
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        }catch(Exception e){
+            
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(ApiResponse.error("Error al generar el reporte diario: " + e.getMessage(), null));
         }
     }
 }

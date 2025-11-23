@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoPendienteDTO;
 import com.backend.bcp.app.Pago.Application.dto.in.PagoRequestDTO;
-import com.backend.bcp.app.Pago.Application.dto.in.payflow.DebitoRequestDTO;
 import com.backend.bcp.app.Pago.Application.ports.in.RealizarPagoUseCase;
-
-import jakarta.validation.Valid;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,30 +26,28 @@ public class PagoController {
         this.realizarPagoUseCase = realizarPagoUseCase;
     }
     @GetMapping("/pendientes/usuario/{dni}")
-    public ResponseEntity<?> listarPagosPendientes(@PathVariable String dni) {
+    public ResponseEntity<ApiResponse<List<PagoPendienteDTO>>> listarPagosPendientes(@PathVariable String dni) {
         try {
             List<PagoPendienteDTO> pendientes = realizarPagoUseCase.listarPagosPendientes(dni);
-            return ResponseEntity.ok(pendientes);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.ok(ApiResponse.success("Pagos pendientes listados", pendientes));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al listar pagos: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Error al listar pagos: " + e.getMessage(), null));
         }
     }
     @PostMapping("/realizar")
-    public ResponseEntity<?> realizarPago(@RequestBody PagoRequestDTO request) {
+    public ResponseEntity<ApiResponse<ComprobanteDTO>> realizarPago(@RequestBody PagoRequestDTO request) {
         try {
             ComprobanteDTO comprobante = realizarPagoUseCase.realizarPago(
                 request.cuentaId(),
                 request.pagoId()
             );
-            return ResponseEntity.ok(comprobante);
+            return ResponseEntity.ok(ApiResponse.success("Pago realizado con éxito", comprobante));
         } catch (RuntimeException e) {
-            e.getStackTrace();
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
-            e.getStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error interno al procesar el pago."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Error interno al procesar el pago", null));
         }
     }
 }

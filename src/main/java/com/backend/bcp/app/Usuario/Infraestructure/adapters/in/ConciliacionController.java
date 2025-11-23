@@ -1,7 +1,4 @@
 package com.backend.bcp.app.Usuario.Infraestructure.adapters.in;
-
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionRequestDTO;
 import com.backend.bcp.app.Usuario.Application.dto.in.ConciliacionResultDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Empleado.GestionarConciliacionUseCase;
@@ -28,7 +26,7 @@ public class ConciliacionController {
         this.userRepository = userRepository;
     }
     @PostMapping("/procesar")
-    public ResponseEntity<?> procesarConciliacion(@Valid @RequestBody ConciliacionRequestDTO request) {
+    public ResponseEntity<ApiResponse<ConciliacionResultDTO>> procesarConciliacion(@Valid @RequestBody ConciliacionRequestDTO request) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
@@ -38,10 +36,11 @@ public class ConciliacionController {
                     .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado en la base de datos"));
 
             ConciliacionResultDTO resultado = gestionarConciliacionUseCase.procesarConciliacion(request, backOfficeUserId);
-            return ResponseEntity.ok(resultado);
+            return ResponseEntity.ok(ApiResponse.success("Conciliación procesada", resultado));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(Map.of("error", "Error procesando la conciliación: " + e.getMessage()));
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.error("Error procesando la conciliación: " + e.getMessage(), null));
         }
     }
 }

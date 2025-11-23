@@ -1,6 +1,5 @@
 package com.backend.bcp.app.Servicio.Infraestructure.adapters.in;
 
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import com.backend.bcp.app.Servicio.Application.dto.in.CrearServicioDTO;
 import com.backend.bcp.app.Servicio.Application.dto.in.EditarServicioDTO;
 import com.backend.bcp.app.Servicio.Application.dto.out.ServicioResponseDTO;
 import com.backend.bcp.app.Servicio.Application.ports.in.GestionServicioUseCase;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 // WORKS!
@@ -29,35 +29,38 @@ public class ServicioController {
         this.gestionServicioUseCase = gestionServicioUseCase;
     }
     @PostMapping
-    public ResponseEntity<ServicioResponseDTO> crearServicio(@Valid @RequestBody CrearServicioDTO crearDto) {
+    public ResponseEntity<ApiResponse<ServicioResponseDTO>> crearServicio(@Valid @RequestBody CrearServicioDTO crearDto) {
         ServicioResponseDTO nuevoServicio = gestionServicioUseCase.crearServicio(crearDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoServicio);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Servicio creado correctamente", nuevoServicio));
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarServicio(@PathVariable Long id, @Valid @RequestBody EditarServicioDTO editarDto) {
+    public ResponseEntity<ApiResponse<ServicioResponseDTO>> editarServicio(@PathVariable Long id, @Valid @RequestBody EditarServicioDTO editarDto) {
         try {
             ServicioResponseDTO servicioActualizado = gestionServicioUseCase.editarServicio(id, editarDto);
-            return ResponseEntity.ok(servicioActualizado);
+            return ResponseEntity.ok(ApiResponse.success("Servicio actualizado", servicioActualizado));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(e.getMessage(), null));
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarServicio(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<String>> eliminarServicio(@PathVariable Long id) {
         try {
             gestionServicioUseCase.eliminarServicio(id);
-            return ResponseEntity.ok(Map.of("mensaje", "Servicio eliminado correctamente"));
+            return ResponseEntity.ok(ApiResponse.success("Servicio eliminado correctamente", null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(e.getMessage(), null));
         }
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerServicioPorId(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ServicioResponseDTO>> obtenerServicioPorId(@PathVariable Long id) {
          try {
             ServicioResponseDTO servicio = gestionServicioUseCase.obtenerServicio(id);
-            return ResponseEntity.ok(servicio);
+            return ResponseEntity.ok(ApiResponse.success("Servicio encontrado", servicio));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(e.getMessage(), null));
         }
     }
 }

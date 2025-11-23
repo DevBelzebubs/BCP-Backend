@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.bcp.app.Shared.Application.Security.dto.in.ClienteDTO;
 import com.backend.bcp.app.Shared.Application.Security.dto.in.EmpleadoDTO;
 import com.backend.bcp.app.Shared.Application.Security.ports.in.RegistroService;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.AsesorEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.BackOfficeEntity;
@@ -13,7 +14,6 @@ import com.backend.bcp.app.Usuario.Infraestructure.entity.empleado.EmpleadoEntit
 
 import jakarta.validation.Valid;
 
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,32 +34,29 @@ public class RegistroController {
     }
 
     @PostMapping("/cliente")
-    public ResponseEntity<?> registrarCliente (@Valid @RequestBody ClienteDTO dto) {
+    public ResponseEntity<ApiResponse<ClienteEntity>> registrarCliente (@Valid @RequestBody ClienteDTO dto) {
         try {
             ClienteEntity cliente = registroService.registrarCliente(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Cliente registrado exitosamente", cliente));
         } catch (IllegalArgumentException | DataIntegrityViolationException e) {
-            log.warn("Intento de registro de cliente fallido (duplicado u otro): {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            log.warn("Error de validación: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         } catch (Exception e) {
-            log.error("Error inesperado al registrar cliente: ", e);
+            log.error("Error inesperado: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("error", "Ocurrió un error interno al registrar el cliente."));
+                    .body(ApiResponse.error("Ocurrió un error interno al registrar el cliente.", null));
         }
     }
 
     @PostMapping("/empleado")
-    public ResponseEntity<?> registrarEmpleado(@Valid @RequestBody EmpleadoDTO dto) {
+    public ResponseEntity<ApiResponse<EmpleadoEntity>> registrarEmpleado(@Valid @RequestBody EmpleadoDTO dto) {
         try{
             EmpleadoEntity empleado = registroService.registrarEmpleado(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(empleado);
-        } catch (IllegalArgumentException | DataIntegrityViolationException e) {
-            log.warn("Intento de registro de empleado fallido (duplicado u otro): {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Empleado registrado exitosamente", empleado));
         } catch (Exception e){
-            log.error("Error inesperado al registrar empleado: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("error", "Ocurrió un error interno al registrar el empleado."));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         }
     }
 
@@ -67,29 +64,21 @@ public class RegistroController {
     public ResponseEntity<?> registrarAsesor(@Valid @RequestBody EmpleadoDTO dto) {
          try {
             AsesorEntity asesor = registroService.registrarAsesor(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(asesor);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Asesor registrado exitosamente", asesor));
         } catch (IllegalArgumentException | DataIntegrityViolationException e) {
-            log.warn("Intento de registro de asesor fallido (duplicado u otro): {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        } catch (Exception e) {
-            log.error("Error inesperado al registrar asesor: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("error", "Ocurrió un error interno al registrar el asesor."));
-        }
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
+        } 
     }
 
     @PostMapping("/backoffice")
     public ResponseEntity<?> registrarBackOffice(@Valid @RequestBody EmpleadoDTO dto) {
          try {
             BackOfficeEntity backOffice = registroService.registrarBackOffice(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(backOffice);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("BackOffice registrado exitosamente", backOffice));
         } catch (IllegalArgumentException | DataIntegrityViolationException e) {
-            log.warn("Intento de registro de backoffice fallido (duplicado u otro): {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        } catch (Exception e) {
-            log.error("Error inesperado al registrar backoffice: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("error", "Ocurrió un error interno al registrar el backoffice."));
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         }
     }
 }

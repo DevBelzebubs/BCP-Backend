@@ -1,13 +1,13 @@
 package com.backend.bcp.app.Usuario.Infraestructure.adapters.in;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 import com.backend.bcp.app.Usuario.Application.dto.out.AuditoriaRolDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionAuditoriaUseCase;
 
@@ -21,13 +21,14 @@ private final GestionAuditoriaUseCase gestionAuditoriaUseCase;
     }
 
     @GetMapping("/roles")
-    public ResponseEntity<?> listarAuditoriasDeRoles() {
+    public ResponseEntity<ApiResponse<List<AuditoriaRolDTO>>> listarAuditoriasDeRoles() {
         try {
             List<AuditoriaRolDTO> auditorias = gestionAuditoriaUseCase.listarAuditoriasRol();
-            return ResponseEntity.ok(auditorias);
+            return ResponseEntity.ok(ApiResponse.success("Listado de auditorías obtenido", auditorias));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(Map.of("error", "Error al obtener auditorías de roles."));
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.error("Error al obtener auditorías de roles: " + e.getMessage(), null));
         }
     }
 }

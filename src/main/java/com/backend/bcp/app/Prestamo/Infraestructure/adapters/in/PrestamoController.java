@@ -1,7 +1,6 @@
 package com.backend.bcp.app.Prestamo.Infraestructure.adapters.in;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import com.backend.bcp.app.Prestamo.Application.dto.in.RechazoRequestDTO;
 import com.backend.bcp.app.Prestamo.Application.dto.in.SolicitudCreditoDTO;
 import com.backend.bcp.app.Prestamo.Application.dto.out.PrestamoResponseDTO;
 import com.backend.bcp.app.Prestamo.Application.ports.in.SolicitudCreditoUseCase;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 
 import jakarta.validation.Valid;
 //WOKRS
@@ -29,56 +29,58 @@ public class PrestamoController {
     }
 
     @PostMapping("/solicitar")
-    public ResponseEntity<PrestamoResponseDTO> solicitarCredito(@Valid @RequestBody SolicitudCreditoDTO solicitudDTO) {
+    public ResponseEntity<ApiResponse<PrestamoResponseDTO>> solicitarCredito(@Valid @RequestBody SolicitudCreditoDTO solicitudDTO) {
         try {
             PrestamoResponseDTO nuevaSolicitud = solicitudCreditoUseCase.crearSolicitudCredito(solicitudDTO);
-            return new ResponseEntity<>(nuevaSolicitud, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Solicitud creada correctamente", nuevaSolicitud));
         } catch (Exception e) {
-            System.err.println("Error en solicitarCredito: " + e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error(e.getMessage(), null));
         }
     }
     @GetMapping
-    public ResponseEntity<List<PrestamoResponseDTO>> listarSolicitudes() {
-        return ResponseEntity.ok(solicitudCreditoUseCase.obtenerSolicitudes());
+    public ResponseEntity<ApiResponse<List<PrestamoResponseDTO>>> listarSolicitudes() {
+        return ResponseEntity.ok(ApiResponse.success("Listado de solicitudes", solicitudCreditoUseCase.obtenerSolicitudes()));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<PrestamoResponseDTO> obtenerSolicitudPorId(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<PrestamoResponseDTO>> obtenerSolicitudPorId(@PathVariable Long id) {
         PrestamoResponseDTO solicitud = solicitudCreditoUseCase.findSolicitudById(id);
         if (solicitud == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("Solicitud no encontrada", null));
         }
-        return ResponseEntity.ok(solicitud);
+        return ResponseEntity.ok(ApiResponse.success("Solicitud encontrada", solicitud));
     }
     @PostMapping("/{id}/aprobar")
-    public ResponseEntity<?> aprobarSolicitud(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<String>> aprobarSolicitud(@PathVariable Long id) {
         Long asesorId = null; 
         try {
             solicitudCreditoUseCase.aprobarSolicitud(id, asesorId);
-            return ResponseEntity.ok(Map.of("mensaje", "Solicitud " + id + " APROBADA."));
+            return ResponseEntity.ok(ApiResponse.success("Solicitud " + id + " APROBADA.", null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(e.getMessage(), null));
         }
     }
     @PostMapping("/{id}/rechazar")
-    public ResponseEntity<?> rechazarSolicitud(@PathVariable Long id, @RequestBody RechazoRequestDTO request) {
+    public ResponseEntity<ApiResponse<String>> rechazarSolicitud(@PathVariable Long id, @RequestBody RechazoRequestDTO request) {
         Long asesorId = null;
         try {
             solicitudCreditoUseCase.rechazarSolicitud(id, asesorId, request.motivo());
-            return ResponseEntity.ok(Map.of("mensaje", "Solicitud " + id + " RECHAZADA."));
+            return ResponseEntity.ok(ApiResponse.success("Solicitud " + id + " RECHAZADA.", null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(e.getMessage(), null));
         }
     }
     @PostMapping("/{id}/solicitar-documentacion")
-    public ResponseEntity<?> solicitarDocumentacion(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<String>> solicitarDocumentacion(@PathVariable Long id) {
         Long asesorId = null;
         try {
             solicitudCreditoUseCase.marcarPendiente(id, asesorId);
-            return ResponseEntity.ok(Map.of("mensaje", "Solicitud " + id + " marcada como PENDIENTE_DOCUMENTACION."));
+            return ResponseEntity.ok(ApiResponse.success("Solicitud " + id + " marcada como PENDIENTE_DOCUMENTACION.", null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(e.getMessage(), null));
         }
     }
 }

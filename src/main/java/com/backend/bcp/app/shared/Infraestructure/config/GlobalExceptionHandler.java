@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -26,9 +27,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(error.getField(), error.getDefaultMessage());
         });
         
-        body.put("errors", errors);
-        body.put("message", "Error de validación. Por favor, revise los campos.");
+        String errorMsg = "Error de validación en los campos: " + errors.toString();
+        return new ResponseEntity<>(ApiResponse.error(errorMsg, null), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null), HttpStatus.BAD_REQUEST);
+    }
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Object>> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(ApiResponse.error("Error interno del servidor: " + ex.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

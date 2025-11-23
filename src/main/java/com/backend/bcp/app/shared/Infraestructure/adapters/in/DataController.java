@@ -1,7 +1,5 @@
 package com.backend.bcp.app.Shared.Infraestructure.adapters.in;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +11,7 @@ import com.backend.bcp.app.Shared.Application.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.app.Shared.Application.Security.ports.out.UserRepository;
 import com.backend.bcp.app.Shared.Application.dto.in.LoadClientDataDTO;
 import com.backend.bcp.app.Shared.Domain.ports.in.GestionClienteUseCase;
+import com.backend.bcp.app.Shared.Infraestructure.config.ApiResponse;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -25,17 +24,19 @@ public class DataController {
         this.userRepository = userRepository;
     }
     @GetMapping("/dashboard")
-    public ResponseEntity<?> getDashboardData() {
-        try{
+    public ResponseEntity<ApiResponse<LoadClientDataDTO>> getDashboardData() {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
 
-            UsuarioDTO usuario = userRepository.findByNombre(username).orElseThrow(()-> new RuntimeException("Usuario autenticado no encontrado"));
+            UsuarioDTO usuario = userRepository.findByNombre(username)
+                    .orElseThrow(()-> new RuntimeException("Usuario autenticado no encontrado"));
+            
             LoadClientDataDTO dashboardData = gestionClienteUseCase.cargarDatosDashboard(usuario.dni());
 
-            return ResponseEntity.ok(dashboardData);
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.ok(ApiResponse.success("Datos del dashboard cargados", dashboardData));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         }
     }
 }

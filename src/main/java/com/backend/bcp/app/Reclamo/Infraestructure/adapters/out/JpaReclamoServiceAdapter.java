@@ -85,5 +85,20 @@ public class JpaReclamoServiceAdapter implements GestionReclamosUseCase {
             })
             .collect(Collectors.toList());
         }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReclamoResponseDTO> obtenerReclamosPorClienteId(Long clienteId) {
+        List<ReclamoPersistenceDTO> persistenceDTOs = repository.findAll();
+        return persistenceDTOs.stream()
+            .filter(pDto -> pDto.clienteId() != null && pDto.clienteId().equals(clienteId))
+            .map(pDto -> {
+                Reclamo domain = mapper.persistenceDtoToDomain(pDto);
+                ReclamoResponseDTO responseDto = mapper.domainToResponseDto(domain);
+                responseDto.setNumeroSeguimiento(pDto.numeroSeguimiento());
+                return responseDto;
+            })
+            .collect(Collectors.toList());
+    }
     }
 
