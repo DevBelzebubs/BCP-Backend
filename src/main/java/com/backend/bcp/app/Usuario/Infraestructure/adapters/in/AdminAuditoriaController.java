@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.bcp.app.Usuario.Application.dto.in.RegistroAuditoriaDTO;
 import com.backend.bcp.app.Usuario.Application.dto.out.AuditoriaRolDTO;
 import com.backend.bcp.app.Usuario.Application.ports.in.Admin.GestionAuditoriaUseCase;
 import com.backend.bcp.app.shared.Infraestructure.config.ApiResponse;
@@ -29,6 +30,17 @@ private final GestionAuditoriaUseCase gestionAuditoriaUseCase;
             e.printStackTrace();
             return ResponseEntity.internalServerError()
                     .body(ApiResponse.error("Error al obtener auditorías de roles: " + e.getMessage(), null));
+        }
+    }
+    @GetMapping("/financiera")
+    public ResponseEntity<ApiResponse<List<RegistroAuditoriaDTO>>> listarAuditoriasFinancieras() {
+        try {
+            List<RegistroAuditoriaDTO> auditorias = gestionAuditoriaUseCase.listarAuditoriasFinancieras();
+            return ResponseEntity.ok(ApiResponse.success("Listado de auditoría financiera obtenido", auditorias));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                    .body(ApiResponse.error("Error al obtener auditoría financiera: " + e.getMessage(), null));
         }
     }
 }
