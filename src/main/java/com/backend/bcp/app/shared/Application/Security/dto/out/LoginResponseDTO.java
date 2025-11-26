@@ -4,10 +4,12 @@ public class LoginResponseDTO {
     private String nombre;
     private String token;
     private String tipoUsuario;
-    public LoginResponseDTO(String nombre, String token,String tipoUsuario) {
+    private String dni;
+    public LoginResponseDTO(String nombre, String token,String tipoUsuario, String dni) {
         this.nombre = nombre;
         this.token = token;
         this.tipoUsuario = tipoUsuario;
+        this.dni = dni;
     }
     
     public String getToken() {
@@ -31,6 +33,14 @@ public class LoginResponseDTO {
 
     public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
     
 }

@@ -34,5 +34,10 @@ public class JpaUserRepositoryAdapter implements UserRepository {
     @Override
     public Optional<UsuarioDTO> findByDni(String dni) {
         return repository.findByDni(dni).map(mapper::toPersistenceDTO);
+    }
+    @Override
+    public Optional<UsuarioDTO> findByCorreo(String correo) {
+        return repository.findByCorreo(correo)
+                .map(mapper::toPersistenceDTO);
     }   
 }

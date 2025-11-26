@@ -44,8 +44,8 @@ public class AuthPersistence implements AuthService{
     }
 
     @Override
-    public LoginResponseDTO login(String nombre, String contrasena) {
-        UsuarioDTO userDto = usuarioRepository.findByNombre(nombre).orElseThrow(() -> 
+    public LoginResponseDTO login(String nombreOrCorreo, String contrasena) {
+        UsuarioDTO userDto = usuarioRepository.findByNombre(nombreOrCorreo).or(()-> usuarioRepository.findByCorreo(nombreOrCorreo)).orElseThrow(() -> 
             new UsernameNotFoundException("Usuario no encontrado") 
         );
         if (!passwordEncoder.matches(contrasena, userDto.contrasena())) {
@@ -80,7 +80,7 @@ public class AuthPersistence implements AuthService{
             userDto.telefono()
         );
         String token = tokenService.generateToken(domainUser, tipoUsuario.get());
-        return new LoginResponseDTO(userDto.nombre(),token,tipoUsuario.get());
+        return new LoginResponseDTO(userDto.nombre(),token,tipoUsuario.get(),userDto.dni());
     }
 
     @Override
@@ -89,6 +89,6 @@ public class AuthPersistence implements AuthService{
         payflowServiceUser.setNombre(serviceName);
         String token = tokenService.generateToken(payflowServiceUser, serviceRole);
         
-        return new LoginResponseDTO(serviceName, token, serviceRole);
+        return new LoginResponseDTO(serviceName, token, serviceRole, payflowServiceUser.getDni());
     }
 }

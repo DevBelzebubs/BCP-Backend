@@ -44,7 +44,7 @@ public class SecurityConfig {
             
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-            .requestMatchers("/api/cuentas/**", "/api/pagos/**", "/api/transferencias/**", "/api/cliente/**").hasRole("CLIENTE")
+            .requestMatchers("/api/cuentas/**", "/api/pagos/**", "/api/transferencias/**", "/api/cliente/**").hasAnyRole("CLIENTE","PAYFLOW_SERVICE")
 
             .requestMatchers("/api/prestamos/solicitar").hasRole("CLIENTE")
 
