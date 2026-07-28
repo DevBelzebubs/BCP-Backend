@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
+import com.backend.bcp.app.Cuenta.Application.dto.in.AbrirCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.TransferenciaRequestDTO;
@@ -76,6 +77,16 @@ public class CuentaController {
         try {
             CuentaDTO cuentaCreada = gestionCuentaUseCase.crearCuenta(cuentaDTO, dni);
             return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Cuenta creada exitosamente", cuentaCreada));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
+        }
+    }
+
+    @PostMapping("/abrir-cuenta")
+    public ResponseEntity<ApiResponse<CuentaDTO>> abrirCuenta(@RequestBody AbrirCuentaDTO dto) {
+        try {
+            CuentaDTO cuentaCreada = gestionCuentaUseCase.abrirCuenta(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Cuenta abierta exitosamente", cuentaCreada));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), null));
         }

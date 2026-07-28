@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.backend.bcp.app.Comprobante.Application.dto.ComprobanteDTO;
 import com.backend.bcp.app.Comprobante.Application.ports.out.ComprobanteRepository;
 import com.backend.bcp.app.Comprobante.Domain.Comprobante;
+import com.backend.bcp.app.Cuenta.Application.dto.in.AbrirCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.CuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.in.DetalleCuentaDTO;
 import com.backend.bcp.app.Cuenta.Application.dto.out.CuentaPersistenceDTO;
@@ -31,10 +32,15 @@ import com.backend.bcp.app.Transaccion.Application.ports.out.TransaccionReposito
 import com.backend.bcp.app.Transaccion.Domain.Transaccion;
 import com.backend.bcp.app.Usuario.Domain.Cliente;
 import com.backend.bcp.app.Usuario.Infraestructure.entity.cliente.ClienteEntity;
+import com.backend.bcp.app.shared.Infraestructure.entity.UsuarioEntity;
 import com.backend.bcp.app.Usuario.Infraestructure.repo.Cliente.SpringDataClientRepository;
 import com.backend.bcp.app.shared.Application.Security.dto.in.UsuarioDTO;
 import com.backend.bcp.app.shared.Application.Security.ports.out.UserRepository;
+import com.backend.bcp.app.shared.Application.Security.ports.out.TokenService;
+import com.backend.bcp.app.shared.Domain.Usuario;
+import com.backend.bcp.app.shared.Infraestructure.entity.enums.TipoCuenta;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,12 +58,15 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     private final CuentaPersistenceMapper cuentaPersistenceMapper;
     private final MovimientoAppPresentationMapper movimientoAppPresentationMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository springDataUserRepository;
 
     public GestionCuentaService(CuentaRepository cuentaRepository, TransaccionRepository transaccionRepository,
             GeneradorEstadoCuentaPdf generadorPdf, OtpService otpService, ComprobanteRepository comprobanteRepository, 
             PendingTransferRepository pendingTransferRepository, SpringDataCuentaRepository springDataCuentaRepository,
             SpringDataClientRepository springDataClientRepository, CuentaPersistenceMapper cuentaPersistenceMapper,
-            MovimientoAppPresentationMapper movimientoAppPresentationMapper, UserRepository userRepository) {
+            MovimientoAppPresentationMapper movimientoAppPresentationMapper, UserRepository userRepository,
+            PasswordEncoder passwordEncoder, com.backend.bcp.app.shared.Infraestructure.repo.SpringDataUserRepository springDataUserRepository) {
         this.cuentaRepository = cuentaRepository;
         this.transaccionRepository = transaccionRepository;
         this.generadorPdf = generadorPdf;
@@ -69,6 +78,8 @@ public class GestionCuentaService implements GestionCuentaUseCase {
         this.cuentaPersistenceMapper = cuentaPersistenceMapper;
         this.movimientoAppPresentationMapper = movimientoAppPresentationMapper;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.springDataUserRepository = springDataUserRepository;
     }
     @Override
     @Transactional(readOnly = true)
@@ -197,6 +208,15 @@ public class GestionCuentaService implements GestionCuentaUseCase {
     @Override
     @Transactional
     public CuentaDTO crearCuenta(CuentaDTO cuentaDTO, String dni) {
+        if (cuentaDTO.tipo() == null || cuentaDTO.tipo().isBlank()) {
+            throw new RuntimeException("El tipo de cuenta es obligatorio");
+        }
+        try {
+            TipoCuenta.valueOf(cuentaDTO.tipo());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tipo de cuenta no válido. Los tipos permitidos son: AHORROS, CORRIENTE, CUENTA_SUELDO, PLAZO_FIJO");
+        }
+
         Long usuarioId = userRepository.findByDni(dni)
                 .map(UsuarioDTO::id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con DNI: " + dni));
@@ -208,5 +228,72 @@ public class GestionCuentaService implements GestionCuentaUseCase {
         CuentaEntity cuentaGuardada = springDataCuentaRepository.save(nuevaCuentaEntity);
     
         return cuentaPersistenceMapper.toDTO(cuentaGuardada);
+    }
+
+    @Override
+    @Transactional
+    public CuentaDTO abrirCuenta(AbrirCuentaDTO dto) {
+        if (dto.tipoCuenta() == null || dto.tipoCuenta().isBlank()) {
+            throw new RuntimeException("El tipo de cuenta es obligatorio");
+        }
+        try {
+            TipoCuenta.valueOf(dto.tipoCuenta());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tipo de cuenta no válido. Los tipos permitidos son: AHORROS, CORRIENTE, CUENTA_SUELDO, PLAZO_FIJO");
+        }
+
+        boolean clienteExiste = userRepository.findByDni(dto.dni()).isPresent();
+
+        if (!clienteExiste) {
+            if (dto.nombre() == null || dto.nombre().isBlank()) {
+                throw new RuntimeException("El nombre es obligatorio para nuevos clientes");
+            }
+            if (dto.correo() == null || dto.correo().isBlank()) {
+                throw new RuntimeException("El correo es obligatorio para nuevos clientes");
+            }
+            if (dto.contrasena() == null || dto.contrasena().isBlank()) {
+                throw new RuntimeException("La contraseña es obligatoria para nuevos clientes");
+            }
+            if (dto.telefono() == null || dto.telefono().isBlank()) {
+                throw new RuntimeException("El teléfono es obligatorio para nuevos clientes");
+            }
+            if (dto.direccion() == null || dto.direccion().isBlank()) {
+                throw new RuntimeException("La dirección es obligatoria para nuevos clientes");
+            }
+
+            UsuarioEntity usuario = new UsuarioEntity();
+            usuario.setNombre(dto.nombre());
+            usuario.setContrasena(passwordEncoder.encode(dto.contrasena()));
+            usuario.setCorreo(dto.correo());
+            usuario.setDni(dto.dni());
+            usuario.setDireccion(dto.direccion());
+            usuario.setTelefono(dto.telefono());
+            springDataUserRepository.save(usuario);
+
+            ClienteEntity cliente = new ClienteEntity();
+            cliente.setFechaRegistro(java.time.LocalDate.now());
+            cliente.setIdUsuario(usuario);
+            springDataClientRepository.save(cliente);
+        }
+
+        Long usuarioId = userRepository.findByDni(dto.dni())
+                .map(UsuarioDTO::id)
+                .orElseThrow(() -> new RuntimeException("Error al crear la cuenta: usuario no encontrado"));
+        ClienteEntity cliente = springDataClientRepository.findByIdUsuario_Id(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado para el usuarioId: " + usuarioId));
+        
+        String numeroCuenta = generarNumeroCuenta();
+        CuentaDTO cuentaDTO = new CuentaDTO(null, dto.tipoCuenta(), numeroCuenta, BigDecimal.ZERO);
+        CuentaEntity nuevaCuentaEntity = cuentaPersistenceMapper.toEntity(cuentaDTO, cliente);
+        
+        CuentaEntity cuentaGuardada = springDataCuentaRepository.save(nuevaCuentaEntity);
+    
+        return cuentaPersistenceMapper.toDTO(cuentaGuardada);
+    }
+
+    private String generarNumeroCuenta() {
+        long timestamp = System.currentTimeMillis();
+        int random = (int) (Math.random() * 10000);
+        return String.format("123-%013d-0-%02d", timestamp % 10000000000000L, random % 100);
     }
 }

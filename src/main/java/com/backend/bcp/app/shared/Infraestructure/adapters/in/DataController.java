@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,14 @@ public class DataController {
         this.gestionClienteUseCase = gestionClienteUseCase;
         this.userRepository = userRepository;
     }
+
+    @GetMapping("/{dni}/buscar")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> buscarPorDni(@PathVariable String dni) {
+        return userRepository.findByDni(dni)
+            .map(usuario -> ResponseEntity.ok(ApiResponse.success("Cliente encontrado", usuario)))
+            .orElse(ResponseEntity.ok(ApiResponse.success("Cliente no encontrado", null)));
+    }
+
     @GetMapping("/dashboard")
     public ResponseEntity<ApiResponse<LoadClientDataDTO>> getDashboardData() {
         try {

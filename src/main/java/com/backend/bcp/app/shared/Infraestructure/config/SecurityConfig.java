@@ -39,6 +39,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**","/api/registro/**").permitAll()
+            .requestMatchers("/api/cliente/{dni}/buscar").permitAll()
+            .requestMatchers("/api/cuentas/abrir-cuenta").permitAll()
 
             .requestMatchers("/api/s2s/pagos/solicitar-debito").hasRole("PAYFLOW_SERVICE")
             
